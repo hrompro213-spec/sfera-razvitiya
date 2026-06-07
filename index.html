@@ -3,15 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сфера Развития — летний интенсив для школьников 1–9 классов</title>
+  <title>Сфера Развития — летний онлайн-интенсив для школьников 1–9 классов</title>
   <meta name="description" content="Летний онлайн-интенсив для школьников 1–9 классов: русский язык, математика, нейротренировки и подготовка к ОГЭ. Бесплатная диагностика и вводное занятие.">
-  <!-- TODO: добавить canonical и og:url после фактического подключения домена sferarazvitiya.ru. -->
+  <meta name="robots" content="index, follow">
+  <!-- TODO: после подключения реального домена добавить canonical, например:
+  <link rel="canonical" href="https://ВАШ-ДОМЕН/">
+  -->
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Сфера Развития">
+  <meta property="og:title" content="Сфера Развития — летний онлайн-интенсив для школьников 1–9 классов">
+  <meta property="og:description" content="Подтягиваем знания, внимание и уверенность ребёнка за лето: русский язык, математика, нейротренировки и подготовка к ОГЭ.">
+  <meta property="og:image" content="images/hero.jpg">
+  <!-- TODO: после подключения реального домена добавить og:url:
+  <meta property="og:url" content="https://ВАШ-ДОМЕН/">
+  -->
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Сфера Развития — летний онлайн-интенсив для школьников">
+  <meta name="twitter:description" content="Онлайн-занятия для 1–9 классов: закрываем пробелы, развиваем внимание и готовимся к новому учебному году.">
+  <meta name="twitter:image" content="images/hero.jpg">
+
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": "#organization",
+        "name": "Сфера Развития",
+        "description": "Онлайн-интенсив для школьников 1–9 классов по русскому языку, математике, развитию внимания, памяти и подготовке к ОГЭ.",
+        "logo": "images/logo_black.png",
+        "telephone": "+79872617779",
+        "sameAs": [
+          "https://max.ru/u/f9LHodD0cOIm5I3ZWYpkPE-hwEkZxMSVgINMWR4_n5Te3Z4QABp1GVYDHuQ",
+          "https://t.me/Tatiana_SferaR",
+          "https://m.vk.com/sferaon"
+        ],
+        "areaServed": "RU",
+        "availableLanguage": "ru",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+79872617779",
+          "contactType": "customer support",
+          "availableLanguage": "ru"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "#teacher",
+        "name": "Татьяна Викторовна Задонская",
+        "jobTitle": "Педагог и специалист по когнитивному развитию",
+        "image": "images/teacher.jpg",
+        "description": "Педагог с опытом более 15 лет, основатель проекта «Сфера Развития». Помогает детям развивать память, внимание, мышление и увереннее справляться со школьными предметами.",
+        "worksFor": {
+          "@id": "#organization"
+        },
+        "alumniOf": [
+          {
+            "@type": "EducationalOrganization",
+            "name": "ПКИ РУК"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "КГУКИ"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "НИИДПО"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "#faq-page",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Что будет на бесплатной диагностике?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Познакомимся с ребёнком, определим текущий уровень, обсудим трудности и подберём подходящий формат занятий."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли заниматься только русским или только математикой?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. Формат можно подобрать индивидуально после вводной встречи."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Подойдут ли занятия, если ребёнок сильно отстал?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. Мы начинаем с диагностики и двигаемся от текущего уровня ребёнка, без давления и сравнения с другими."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Что такое нейротренировки?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Это упражнения на внимание, память, логику, речь и скорость мышления. Они помогают ребёнку легче воспринимать и запоминать учебный материал."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли заниматься индивидуально?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. Индивидуальные занятия подойдут, если ребёнку нужен личный темп или точечная помощь."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Где проходят занятия?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Онлайн в Zoom. Ребёнку нужен интернет, компьютер или планшет и спокойное место для урока."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body data-theme="light">
+<!-- Yandex.Metrika counter -->
+<!-- TODO: вставьте сюда реальный код счётчика Яндекс.Метрики после создания счётчика. -->
+<!-- /Yandex.Metrika counter -->
 
 <div class="top-cta">
-  <a data-contact-link="whatsapp">Записаться на бесплатную диагностику →</a>
+  <a data-contact-link="max">СТАРТ ЛЕТНЕГО ИНТЕНСИВА с 15 июня · записаться в MAX →</a>
 </div>
 
 <header>
@@ -37,11 +166,12 @@
 <main>
   <section class="hero" id="hero">
     <div class="container">
-      <span class="badge">Летний онлайн-интенсив · 1–9 классы · старт 8 июня</span>
+      <span class="badge">СТАРТ ЛЕТНЕГО ИНТЕНСИВА с 15 июня</span>
       <h1>Поможем ребёнку подтянуть знания и увереннее начать новый учебный год</h1>
-      <p>Русский язык, математика и развитие внимания, памяти и мышления в тёплом онлайн-формате с педагогом.</p>
+      <p>РУССКИЙ ЯЗЫК И МАТЕМАТИКА. Развитие внимания, памяти и мышления в тёплом онлайн-формате с педагогом.</p>
       <div class="hero-actions">
-        <a class="btn btn-lg" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
+        <a class="btn btn-lg" data-contact-link="max" data-analytics-goal="hero_cta_click" data-analytics-label="hero_max">Записаться в MAX</a>
+        <a class="btn btn-lg btn-secondary" data-contact-link="phone" data-analytics-goal="hero_cta_click" data-analytics-label="hero_phone">Позвонить</a>
       </div>
       <p class="hero-note">На вводном занятии определим уровень ребёнка, подберём формат и ответим на вопросы родителей.</p>
       <div class="timer" id="timer">
@@ -67,7 +197,7 @@
           <span class="age-badge">1–4 классы</span>
           <div class="ico">🌱</div>
           <h3>Младшая школа</h3>
-          <p>Укрепляем базу: чтение, письмо, счёт, внимание и усидчивость. Помогаем ребёнку учиться спокойнее и увереннее.</p>
+          <p>Укрепляем базу: чтение, письмо, счёт, внимание и мышление. Закрепляем ключевые темы по предметным урокам. Помогаем ребёнку учиться спокойнее и увереннее.</p>
         </article>
         <article class="card audience-card">
           <span class="age-badge">5–7 классы</span>
@@ -79,7 +209,7 @@
           <span class="age-badge">8–9 классы</span>
           <div class="ico">🎯</div>
           <h3>Подготовка к ОГЭ</h3>
-          <p>Разбираем формат экзамена, типовые задания и стратегии решения. Работаем с ошибками и повышаем уверенность.</p>
+          <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения, разбор "ловушек" ОГЭ.</p>
         </article>
       </div>
     </div>
@@ -122,7 +252,7 @@
         <article class="step">
           <span class="step-num">01</span>
           <h3>Онлайн в Zoom</h3>
-          <p>Ребёнок занимается из дома, без дороги и лишней нагрузки.</p>
+          <p>Ребёнок занимается из дома, без лишней нагрузки на родителей.</p>
         </article>
         <article class="step">
           <span class="step-num">02</span>
@@ -151,7 +281,7 @@
         <article class="program-card">
           <span>1–4 классы</span>
           <h3>База младшей школы</h3>
-          <p>Чтение, письмо, устный счёт, развитие внимания, памяти, речи и логики.</p>
+          <p>Математика и русский язык - закрепление ключевых тем. Чтение, письмо, устный счёт, развитие внимания, памяти, речи и логики.</p>
         </article>
         <article class="program-card">
           <span>5–7 классы</span>
@@ -161,7 +291,7 @@
         <article class="program-card">
           <span>8–9 классы</span>
           <h3>Подготовка к ОГЭ</h3>
-          <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения и работа над ошибками.</p>
+          <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения, разбор "ловушек" ОГЭ.</p>
         </article>
       </div>
     </div>
@@ -228,7 +358,7 @@
           <span class="old">9 600 ₽</span>
           <div class="amount">7 500 <small>₽</small></div>
           <p>12 занятий · 3 раза в неделю<br>Для тех, кому важно подтянуть основные темы и поддерживать учебный ритм.</p>
-          <a class="btn" data-contact-link="whatsapp">Подобрать формат на диагностике</a>
+          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="standard">Подобрать формат в MAX</a>
         </article>
         <article class="price featured">
           <span class="tag">ХИТ · Максимальный результат</span>
@@ -236,13 +366,13 @@
           <span class="old">12 800 ₽</span>
           <div class="amount">9 600 <small>₽</small></div>
           <p>16 занятий · 4 раза в неделю<br>Предметы, практика, нейротренировки и развитие базовых навыков.</p>
-          <a class="btn" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
+          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="full-intensive">Записаться в MAX</a>
         </article>
         <article class="price">
           <h3>Индивидуально</h3>
           <div class="amount">1 800 <small>₽</small></div>
           <p>Персональный формат<br>Для точечной работы со сложными темами, ОГЭ или базовыми навыками.</p>
-          <a class="btn" data-contact-link="whatsapp">Подобрать формат на диагностике</a>
+          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="individual">Подобрать формат в MAX</a>
         </article>
       </div>
     </div>
@@ -261,30 +391,106 @@
       <p class="section-sub">Запишитесь на бесплатную диагностику. Мы спокойно разберём ситуацию, ответим на вопросы и предложим понятный план занятий.</p>
       <a class="cta-phone" data-contact-link="phone" data-contact-phone>Телефон</a>
       <div class="contact-actions">
-        <a class="btn btn-lg" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
+        <a class="btn btn-lg" data-contact-link="max">Написать в MAX</a>
+        <a class="btn btn-lg btn-secondary" href="#application-form">Оставить заявку</a>
       </div>
       <p class="cta-note">Это бесплатно и ни к чему не обязывает.</p>
-      <div class="contact-grid" aria-label="Контакты">
-        <article class="contact-card">
-          <h3>Быстрая связь</h3>
-          <p>Можно написать в WhatsApp, отправить SMS или позвонить по телефону.</p>
-          <div class="contact-links" data-contact-list="contact"></div>
-        </article>
-        <article class="contact-card max-card">
-          <div>
-            <h3>MAX</h3>
-            <p>Прямая ссылка пока не подключена. На десктопе можно отсканировать QR, а на телефоне — скопировать контакт.</p>
-            <dl class="max-details">
-              <div><dt>Профиль</dt><dd data-max-profile></dd></div>
-              <div><dt>Проект</dt><dd data-max-project></dd></div>
-            </dl>
-            <button class="copy-btn max-copy-mobile" type="button" data-copy-max>Скопировать контакт MAX</button>
+      <div class="contact-layout">
+        <form class="application-form" id="application-form" novalidate>
+          <h3>Форма записи</h3>
+          <p>Оставьте контакты, и мы свяжемся с вами, чтобы подобрать формат занятий.</p>
+
+          <div class="form-grid">
+            <label class="form-field">
+              <span>Имя родителя</span>
+              <input type="text" name="parent_name" autocomplete="name" required placeholder="Например, Анна">
+            </label>
+
+            <label class="form-field">
+              <span>Телефон</span>
+              <input type="tel" name="phone" autocomplete="tel" required inputmode="tel" placeholder="+7 987 261 77 79">
+            </label>
+
+            <label class="form-field">
+              <span>Класс ребёнка</span>
+              <select name="child_grade" required>
+                <option value="">Выберите класс</option>
+                <option value="1 класс">1 класс</option>
+                <option value="2 класс">2 класс</option>
+                <option value="3 класс">3 класс</option>
+                <option value="4 класс">4 класс</option>
+                <option value="5 класс">5 класс</option>
+                <option value="6 класс">6 класс</option>
+                <option value="7 класс">7 класс</option>
+                <option value="8 класс">8 класс</option>
+                <option value="9 класс">9 класс</option>
+              </select>
+            </label>
+
+            <label class="form-field">
+              <span>Удобный способ связи</span>
+              <select name="preferred_contact" required>
+                <option value="">Выберите способ</option>
+                <option value="max">MAX</option>
+                <option value="phone">Позвонить</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="telegram">Telegram</option>
+                <option value="vk">VK</option>
+                <option value="email">Email</option>
+                <option value="sms">SMS</option>
+              </select>
+            </label>
           </div>
-          <figure class="max-qr">
-            <img alt="QR-код MAX для Сферы Развития" data-max-qr>
-            <figcaption data-max-caption></figcaption>
-          </figure>
-        </article>
+
+          <label class="form-field">
+            <span>Цель занятий</span>
+            <textarea name="study_goal" rows="4" required placeholder="Например: подтянуть математику, подготовиться к ОГЭ, развить внимание"></textarea>
+          </label>
+
+          <label class="checkbox-field">
+            <input type="checkbox" name="personal_data_agreement" value="yes" required>
+            <span>Я соглашаюсь на обработку персональных данных и ознакомлен(а) с <a href="privacy.html">политикой конфиденциальности</a> и <a href="consent.html">согласием на обработку данных</a>.</span>
+          </label>
+
+          <input type="hidden" name="utm_source">
+          <input type="hidden" name="utm_medium">
+          <input type="hidden" name="utm_campaign">
+          <input type="hidden" name="utm_content">
+          <input type="hidden" name="utm_term">
+          <input type="hidden" name="referrer">
+          <input type="hidden" name="landing_url">
+          <input type="hidden" name="selected_plan">
+          <input type="hidden" name="user_agent">
+          <label class="honeypot-field" aria-hidden="true">
+            <span>Сайт</span>
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+
+          <p class="form-message" data-form-message aria-live="polite"></p>
+          <div class="form-error-contacts is-hidden" data-form-error-contacts></div>
+
+          <button class="btn form-submit" type="submit">Отправить заявку</button>
+        </form>
+
+        <div class="contact-side" aria-label="Контакты">
+          <article class="contact-card">
+            <h3>Быстрая связь</h3>
+            <p>Основной канал связи — MAX. Также можно позвонить, написать в WhatsApp, Telegram, VK, Email или SMS.</p>
+            <div class="contact-links" data-contact-list="contact"></div>
+          </article>
+          <article class="contact-card max-card">
+            <div>
+              <h3>MAX</h3>
+              <p>MAX — основной мессенджер для записи на диагностику и быстрых вопросов по интенсиву.</p>
+              <a class="btn max-card-cta" data-contact-link="max">Написать в MAX</a>
+              <button class="copy-btn max-copy-mobile" type="button" data-copy-max>Скопировать ссылку MAX</button>
+            </div>
+            <figure class="max-qr">
+              <img alt="QR-код MAX для Сферы Развития" data-max-qr>
+              <figcaption data-max-caption></figcaption>
+            </figure>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -299,7 +505,7 @@
 
 <footer class="footer">
   <p>© 2026 «Сфера Развития» · Летний интенсив · Онлайн (Zoom)</p>
-  <p>Запись: <a class="footer-link" data-contact-link="phone" data-contact-phone>телефон</a> · <a class="footer-link" data-contact-link="whatsapp">WhatsApp</a></p>
+  <p>Запись: <a class="footer-link" data-contact-link="max">MAX</a> · <a class="footer-link" data-contact-link="phone" data-contact-phone>телефон</a> · <a class="footer-link" data-contact-link="whatsapp">WhatsApp</a></p>
 </footer>
 
 <script src="app.js" defer></script>

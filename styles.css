@@ -69,7 +69,7 @@ h3 {
 }
 
 .is-hidden {
-  display: none;
+  display: none !important;
 }
 
 .logo-light {
@@ -741,14 +741,15 @@ section {
   color: var(--muted);
 }
 
-.contact-grid {
+.contact-layout {
   display: grid;
-  grid-template-columns: minmax(260px, .8fr) minmax(300px, 1.2fr);
+  grid-template-columns: minmax(320px, 1.15fr) minmax(280px, .85fr);
   margin-top: 34px;
   gap: 20px;
   text-align: left;
 }
 
+.application-form,
 .contact-card {
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -757,25 +758,126 @@ section {
   padding: 26px 24px;
 }
 
+.application-form h3,
 .contact-card h3 {
   margin-bottom: 10px;
   color: var(--gold2);
   font-size: 22px;
 }
 
+.application-form p,
 .contact-card p {
   color: var(--muted);
   font-size: 16px;
 }
 
-.contact-links {
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.form-grid .form-field {
+  margin-top: 0;
+}
+
+.honeypot-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  padding: 13px 14px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.form-field textarea {
+  min-height: 118px;
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200, 150, 47, .16);
+  outline: none;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: color-mix(in srgb, var(--muted) 78%, transparent);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 14px;
+  gap: 10px;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--gold);
+  flex-shrink: 0;
+}
+
+.checkbox-field a {
+  color: var(--gold2);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.form-message {
+  min-height: 24px;
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.form-message.is-error {
+  color: #b13b2e;
+}
+
+.form-message.is-success {
+  color: var(--gold2);
+}
+
+.form-error-contacts {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
-.contact-links a {
+.form-error-contacts a {
   border: 1px solid var(--line);
   border-radius: 30px;
   color: var(--gold2);
@@ -783,11 +885,71 @@ section {
   padding: 8px 14px;
 }
 
+.form-submit {
+  margin-top: 18px;
+}
+
+.form-submit:disabled {
+  cursor: wait;
+  opacity: .72;
+  transform: none;
+}
+
+.contact-side {
+  display: grid;
+  gap: 20px;
+}
+
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.contact-links a {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: rgba(200, 150, 47, .08);
+  color: var(--gold2);
+  font-weight: 800;
+  min-height: 44px;
+  padding: 9px 14px;
+  text-align: center;
+  transition: background .2s, color .2s, transform .2s;
+}
+
+.contact-links a:hover,
+.thank-actions a:hover,
+.form-error-contacts a:hover {
+  background: linear-gradient(135deg, #f5d287, var(--gold));
+  color: #1a1306;
+  transform: translateY(-2px);
+}
+
+.contact-links a[data-contact-link="max"],
+.thank-actions a[data-contact-link="max"],
+.form-error-contacts a[data-contact-link="max"],
+.floating-widget a[data-contact-link="max"],
+.mobile-sticky-bar a[data-contact-link="max"] {
+  background: linear-gradient(135deg, #f5d287, var(--gold));
+  color: #1a1306;
+  box-shadow: 0 8px 20px rgba(200, 150, 47, .24);
+}
+
 .max-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 22px;
+}
+
+.max-card-cta {
+  margin-top: 18px;
+  padding: 12px 24px;
+  font-size: 16px;
 }
 
 .max-details {
@@ -906,6 +1068,94 @@ section {
   display: none;
 }
 
+.simple-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.simple-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg2);
+  padding: 18px 0;
+}
+
+.simple-header .nav {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.simple-main {
+  padding: 56px 0;
+}
+
+.simple-card {
+  max-width: 860px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  padding: clamp(26px, 5vw, 46px);
+}
+
+.simple-card h1 {
+  margin-bottom: 16px;
+  color: var(--gold2);
+  font-size: clamp(30px, 5vw, 44px);
+}
+
+.simple-card h2 {
+  margin: 28px 0 10px;
+  color: var(--gold2);
+  font-size: 24px;
+}
+
+.simple-card p,
+.simple-card li {
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.simple-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0 20px;
+}
+
+.simple-card .lead {
+  max-width: 700px;
+  color: var(--text);
+  font-size: 20px;
+}
+
+.thank-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.thank-actions a {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: rgba(200, 150, 47, .08);
+  color: var(--gold2);
+  font-weight: 800;
+  min-height: 44px;
+  padding: 10px 16px;
+  text-align: center;
+  transition: background .2s, color .2s, transform .2s;
+}
+
+.simple-back {
+  display: inline-block;
+  margin-top: 28px;
+  color: var(--gold2);
+  font-weight: 800;
+}
+
 .footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
@@ -937,7 +1187,7 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .contact-grid {
+  .contact-layout {
     grid-template-columns: 1fr;
   }
 }
@@ -967,6 +1217,15 @@ section {
     width: 100%;
     height: auto;
     max-height: 360px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .application-form,
+  .contact-card {
+    padding: 22px 18px;
   }
 
   .max-card {
