@@ -1,298 +1,307 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Сфера Развития — Летний интенсив 2026 для школьников</title>
-<meta name="description" content="Летний онлайн-интенсив для школьников: нейротренировки, русский язык и математика, подготовка к ОГЭ. Старт 8 июня 2026. Бесплатный вводный урок.">
-<style>
-/* ===== СВЕТЛАЯ ТЕМА — ОСНОВНАЯ ===== */
-:root{
-  --bg:#fbf7ef;--bg2:#f4ecdc;--card:#ffffff;
-  --gold:#c8962f;--gold2:#a9791f;--pink:#e8a9b8;
-  --text:#221f18;--muted:#5c574c;
-  --line:rgba(200,150,47,.3);--shadow:0 10px 30px rgba(160,120,40,.12);
-}
-[data-theme="dark"]{
-  --bg:#0e0d10;--bg2:#181820;--card:#17161d;
-  --gold:#e0b15c;--gold2:#f5d287;--pink:#e8a9b8;
-  --text:#f3f0e9;--muted:#b8b3a8;
-  --line:rgba(224,177,92,.25);--shadow:0 10px 30px rgba(0,0,0,.5);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
-.container{max-width:1100px;margin:0 auto;padding:0 20px}
-h1,h2,h3{font-weight:800;line-height:1.2}
-a{color:inherit;text-decoration:none}
-
-.logo-light{display:inline}
-.logo-dark{display:none}
-[data-theme="dark"] .logo-light{display:none}
-[data-theme="dark"] .logo-dark{display:inline}
-
-header{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1100px;margin:0 auto;flex-wrap:wrap;gap:10px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--gold2)}
-.logo img{height:42px;width:auto}
-.nav-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.nav-phone{font-weight:700;color:var(--gold2);white-space:nowrap}
-.theme-btn{background:none;border:1px solid var(--line);color:var(--text);border-radius:30px;padding:6px 14px;cursor:pointer;font-size:14px}
-
-.top-cta{background:linear-gradient(135deg,#f5d287,var(--gold));text-align:center;padding:12px 20px}
-.top-cta a{color:#1a1306;font-weight:800;font-size:clamp(16px,2.4vw,22px)}
-
-.hero{position:relative;text-align:center;padding:90px 20px 70px;color:#fff;background:linear-gradient(rgba(40,30,10,.55),rgba(40,30,10,.55)),url('images/hero.jpg') center/cover no-repeat}
-.hero .badge{display:inline-block;background:var(--gold);color:#1a1306;padding:7px 20px;border-radius:30px;font-weight:700;font-size:14px;margin-bottom:22px}
-.hero h1{font-size:clamp(32px,6vw,58px);margin-bottom:18px;text-shadow:0 2px 14px rgba(0,0,0,.4)}
-.hero h1 span{background:linear-gradient(135deg,#f5d287,#e8a9b8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:clamp(17px,2.5vw,21px);max-width:680px;margin:0 auto 30px;text-shadow:0 2px 10px rgba(0,0,0,.4)}
-
-.btn{display:inline-block;background:linear-gradient(135deg,#f5d287,var(--gold));color:#1a1306;font-weight:800;font-size:18px;padding:16px 38px;border-radius:50px;cursor:pointer;border:none;box-shadow:0 8px 25px rgba(200,150,47,.4);transition:transform .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(200,150,47,.55)}
-.btn-lg{font-size:20px;padding:18px 46px}
-
-.timer{display:flex;justify-content:center;gap:14px;margin-top:36px;flex-wrap:wrap}
-.timer .unit{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:14px 18px;min-width:78px;backdrop-filter:blur(6px)}
-.timer .num{font-size:34px;font-weight:800;color:#f5d287;display:block}
-.timer .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.5px;opacity:.9}
-
-.infobar{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:34px}
-.infobar .chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);padding:12px 22px;border-radius:14px;font-size:16px;backdrop-filter:blur(6px)}
-.infobar .chip b{color:#f5d287;display:block;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
-
-section{padding:60px 0}
-.section-title{text-align:center;font-size:clamp(26px,4vw,38px);margin-bottom:14px}
-.section-title span{color:var(--gold2)}
-.section-sub{text-align:center;color:var(--muted);max-width:760px;margin:0 auto 40px;font-size:19px}
-
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 26px;transition:transform .2s;box-shadow:var(--shadow)}
-.card:hover{transform:translateY(-5px)}
-.card .ico{font-size:38px;margin-bottom:14px}
-.card h3{font-size:23px;margin-bottom:10px;color:var(--gold2)}
-.card p{color:var(--muted);font-size:18px}
-
-.schedule{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-.day{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;text-align:center;box-shadow:var(--shadow)}
-.day .d{font-size:32px;font-weight:800;color:var(--gold2);margin-bottom:8px}
-.day p{color:var(--muted);font-size:18px}
-
-.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;align-items:stretch}
-.price{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px 26px;text-align:center;position:relative;box-shadow:var(--shadow)}
-.price.featured{border:2px solid var(--gold);transform:scale(1.03)}
-.price .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f5d287,var(--gold));color:#1a1306;font-weight:700;font-size:12px;padding:5px 16px;border-radius:30px;white-space:nowrap}
-.price h3{font-size:19px;margin-bottom:12px}
-.price .old{color:var(--muted);text-decoration:line-through;font-size:16px}
-.price .amount{font-size:30px;font-weight:800;color:var(--gold2);margin:4px 0}
-.price .amount small{font-size:16px}
-.price p{color:var(--muted);font-size:15px;margin-top:10px}
-.price .btn{margin-top:18px;font-size:16px;padding:12px 28px}
-
-.teacher-photo{width:170px;height:215px;object-fit:cover;border-radius:16px;flex-shrink:0;border:2px solid var(--gold)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сфера Развития — летний интенсив для школьников 1–9 классов</title>
+  <meta name="description" content="Летний онлайн-интенсив для школьников 1–9 классов: русский язык, математика, нейротренировки и подготовка к ОГЭ. Бесплатная диагностика и вводное занятие.">
+  <!-- TODO: добавить canonical и og:url после фактического подключения домена sferarazvitiya.ru. -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body data-theme="light">
 
-<!-- Верхний призыв -->
 <div class="top-cta">
-  <a href="https://wa.me/79872617779">📌 Запись на бесплатный пробный урок →</a>
+  <a data-contact-link="whatsapp">Записаться на бесплатную диагностику →</a>
 </div>
 
-<!-- Шапка -->
 <header>
   <div class="nav">
-    <a href="#" class="logo">
+    <a href="#hero" class="logo" aria-label="Сфера Развития — к первому экрану">
       <img src="images/logo_white.png" class="logo-light" alt="Сфера Развития">
       <img src="images/logo_black.png" class="logo-dark" alt="Сфера Развития">
       Сфера Развития
     </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="#audience">Кому подходит</a>
+      <a href="#results">Что получит ребёнок</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#faq">FAQ</a>
+    </nav>
     <div class="nav-right">
-      <a href="tel:89872617779" class="nav-phone">8 987 261 77 79</a>
-      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Тёмная</button>
+      <a class="nav-phone" data-contact-link="phone" data-contact-phone>Телефон</a>
+      <button class="theme-btn" type="button" id="themeBtn" aria-label="Переключить тему">🌙 Тёмная</button>
     </div>
   </div>
 </header>
 
-<!-- Первый экран -->
-<section class="hero">
-  <div class="container">
-    <span class="badge">СТАРТ 8 ИЮНЯ 2026 · НАБОР ОТКРЫТ</span>
-    <h1>Зарядись <span>знаниями</span><br>перед новым учебным годом!</h1>
-    <p>Летний онлайн-интенсив для школьников: нейротренировки, русский язык и математика, подготовка к ОГЭ.</p>
-    <a href="https://wa.me/79872617779" class="btn btn-lg">Записаться на бесплатный урок</a>
-    <div class="timer" id="timer">
-      <div class="unit"><span class="num" id="d">00</span><span class="lbl">дней</span></div>
-      <div class="unit"><span class="num" id="h">00</span><span class="lbl">часов</span></div>
-      <div class="unit"><span class="num" id="m">00</span><span class="lbl">минут</span></div>
-      <div class="unit"><span class="num" id="s">00</span><span class="lbl">секунд</span></div>
-    </div>
-    <div class="infobar">
-      <div class="chip"><b>Формат</b>Мини-группа / индивидуально</div>
-      <div class="chip"><b>Где</b>Онлайн · Zoom</div>
-      <div class="chip"><b>Урок</b>1 час 20 минут</div>
-    </div>
-  </div>
-</section>
-
-<!-- Что сделаем -->
-<section>
-  <div class="container">
-    <h2 class="section-title">Что мы <span>сделаем</span> за лето</h2>
-    <p class="section-sub">Не дайте каникулам «стереть» знания — превратите лето в мощный рывок вперёд!</p>
-    <div class="cards">
-      <div class="card"><div class="ico">🧠</div><h3>Нейротренировки</h3><p>Прокачаем внимание, память, логику, вербальный интеллект и скорость мышления.</p></div>
-      <div class="card"><div class="ico">📚</div><h3>Русский и математика</h3><p>Систематизируем знания, разберём сложные темы, закрепим чтение, письмо и счёт.</p></div>
-      <div class="card"><div class="ico">🎯</div><h3>Подготовка к ОГЭ</h3><p>Для 8–9 классов: формат экзамена, типовые задания, стратегии и работа над ошибками.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- Расписание -->
-<section style="background:var(--bg2)">
-  <div class="container">
-    <h2 class="section-title">Общее <span>расписание</span></h2>
-    <p class="section-sub">Сбалансированная неделя: тренировка когнитивных навыков + предметы + база.</p>
-    <div class="schedule">
-      <div class="day"><div class="d">ПН</div><p>Нейротренировки, нейроупражнения</p></div>
-      <div class="day"><div class="d">ВТ</div><p>2 урока: русский и математика (разбор темы + практика)</p></div>
-      <div class="day"><div class="d">СР</div><p>Тренировка базовых навыков, нейроупражнения</p></div>
-      <div class="day"><div class="d">ЧТ</div><p>2 урока: практика по изученной теме</p></div>
-      <div class="day"><div class="d">ПТ</div><p>Индивидуальные / парные занятия</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- Цены -->
-<section>
-  <div class="container">
-    <h2 class="section-title">Стоимость <span>обучения</span></h2>
-    <p class="section-sub">Комплекс «предмет + нейротренировки» выгоднее и эффективнее обычного репетиторства.</p>
-    <div class="prices">
-      <div class="price">
-        <h3>Стандарт</h3>
-        <span class="old">9 600 ₽</span>
-        <div class="amount">7 500 <small>₽</small></div>
-        <p>12 занятий · 3 раза в неделю<br>(625 ₽ за занятие)</p>
-        <a href="https://wa.me/79872617779" class="btn">Выбрать</a>
+<main>
+  <section class="hero" id="hero">
+    <div class="container">
+      <span class="badge">Летний онлайн-интенсив · 1–9 классы · старт 8 июня</span>
+      <h1>Поможем ребёнку подтянуть знания и увереннее начать новый учебный год</h1>
+      <p>Русский язык, математика и развитие внимания, памяти и мышления в тёплом онлайн-формате с педагогом.</p>
+      <div class="hero-actions">
+        <a class="btn btn-lg" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
       </div>
-      <div class="price featured">
-        <span class="tag">ХИТ · Максимальный результат</span>
-        <h3>Полный интенсив</h3>
-        <span class="old">12 800 ₽</span>
-        <div class="amount">9 600 <small>₽</small></div>
-        <p>16 занятий · ПН–ЧТ, 4 раза в неделю<br>(600 ₽ за занятие · выгода 3 200 ₽)</p>
-        <a href="https://wa.me/79872617779" class="btn">Записаться</a>
+      <p class="hero-note">На вводном занятии определим уровень ребёнка, подберём формат и ответим на вопросы родителей.</p>
+      <div class="timer" id="timer">
+        <div class="unit"><span class="num" id="d">00</span><span class="lbl">дней</span></div>
+        <div class="unit"><span class="num" id="h">00</span><span class="lbl">часов</span></div>
+        <div class="unit"><span class="num" id="m">00</span><span class="lbl">минут</span></div>
+        <div class="unit"><span class="num" id="s">00</span><span class="lbl">секунд</span></div>
       </div>
-      <div class="price">
-        <h3>Разовое / Индивидуальное</h3>
-        <div class="amount">800 <small>₽</small></div>
-        <p>Групповое занятие<br><b>Индивидуальное — 1 800 ₽</b><br>Попробовать или добрать тему</p>
-        <a href="https://wa.me/79872617779" class="btn">Записаться</a>
+      <div class="infobar">
+        <div class="chip"><b>Формат</b>Мини-группа / индивидуально</div>
+        <div class="chip"><b>Где</b>Онлайн · Zoom</div>
+        <div class="chip"><b>Первый шаг</b>Бесплатная диагностика</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Преподаватель -->
-<section style="background:var(--bg2)">
-  <div class="container">
-    <h2 class="section-title">Ваш <span>преподаватель</span></h2>
-    <div style="display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:var(--shadow)">
-      <img src="images/teacher.jpg" alt="Татьяна Викторовна Задонская" class="teacher-photo">
-      <div style="flex:1;min-width:260px">
-        <h3 style="font-size:24px;color:var(--gold2)">Татьяна Викторовна Задонская</h3>
-        <p style="color:var(--muted);margin:4px 0 16px">Педагог, специалист по когнитивному развитию</p>
-        <p style="font-weight:700;margin-bottom:6px">Образование:</p>
-        <ul style="list-style:none;color:var(--muted);margin-bottom:14px">
-          <li>✦ ПКИ РУК (Москва)</li>
-          <li>✦ КГУКИ (Казань)</li>
-          <li>✦ НИИДПО (Санкт-Петербург)</li>
-        </ul>
-        <p style="font-weight:700;margin-bottom:6px">Опыт — более 15 лет в образовании:</p>
-        <ul style="list-style:none;color:var(--muted);margin-bottom:14px">
-          <li>✦ Центр внешкольного развития</li>
-          <li>✦ СОШ №80 (Казань)</li>
-          <li>✦ Преподаватель техникума КТНиПЭТ (2013)</li>
-          <li>✦ Школа скорочтения (2018)</li>
-          <li>✦ С 2024 — онлайн-преподаватель Школы когнитивного развития «УмноШкола»</li>
-          <li>✦ Основатель проекта «Сфера Развития»</li>
-        </ul>
-        <p style="color:var(--muted)">Готовит к ОГЭ, развивает память, внимание и мышление у детей.</p>
-        <p style="color:var(--muted);margin-top:10px;font-size:15px"><b>Увлечения:</b> опыт работы на TV «KZN.Звезда» и в проекте «Загадки Казани» в качестве экскурсовода.</p>
+  <section id="audience">
+    <div class="container">
+      <h2 class="section-title">Кому подойдёт <span>интенсив</span></h2>
+      <p class="section-sub">Мы подбираем программу под возраст, уровень и учебные задачи ребёнка.</p>
+      <div class="cards cards-3">
+        <article class="card audience-card">
+          <span class="age-badge">1–4 классы</span>
+          <div class="ico">🌱</div>
+          <h3>Младшая школа</h3>
+          <p>Укрепляем базу: чтение, письмо, счёт, внимание и усидчивость. Помогаем ребёнку учиться спокойнее и увереннее.</p>
+        </article>
+        <article class="card audience-card">
+          <span class="age-badge">5–7 классы</span>
+          <div class="ico">📘</div>
+          <h3>Средняя школа</h3>
+          <p>Закрываем пробелы по русскому и математике, учим разбирать темы по шагам и доводить задания до результата.</p>
+        </article>
+        <article class="card audience-card">
+          <span class="age-badge">8–9 классы</span>
+          <div class="ico">🎯</div>
+          <h3>Подготовка к ОГЭ</h3>
+          <p>Разбираем формат экзамена, типовые задания и стратегии решения. Работаем с ошибками и повышаем уверенность.</p>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- СКРЫТЫЙ блок отзывов (включим позже: убрать display:none) -->
-<section id="reviews" style="display:none">
-  <div class="container">
-    <h2 class="section-title">Отзывы <span>родителей</span></h2>
-    <p class="section-sub">Видео и фото отзывы наших учеников.</p>
-    <div class="cards">
-      <div class="card">
-        <p style="color:var(--muted)">«Текст отзыва родителя...»</p>
-        <p style="margin-top:12px;font-weight:700;color:var(--gold2)">— Имя</p>
+  <section class="section-alt" id="results">
+    <div class="container">
+      <h2 class="section-title">Что получит <span>ребёнок</span></h2>
+      <p class="section-sub">Цель занятий — не просто «позаниматься летом», а помочь ребёнку почувствовать прогресс.</p>
+      <div class="cards">
+        <article class="card result-card">
+          <div class="ico">📌</div>
+          <h3>Закроет пробелы</h3>
+          <p>Разберёт темы, которые вызывали трудности в течение года.</p>
+        </article>
+        <article class="card result-card">
+          <div class="ico">🧠</div>
+          <h3>Станет внимательнее</h3>
+          <p>Через нейротренировки прокачает память, концентрацию и скорость мышления.</p>
+        </article>
+        <article class="card result-card">
+          <div class="ico">✅</div>
+          <h3>Увереннее решает задания</h3>
+          <p>Научится понимать условие, действовать по алгоритму и проверять себя.</p>
+        </article>
+        <article class="card result-card">
+          <div class="ico">☀️</div>
+          <h3>Спокойнее войдёт в учебный год</h3>
+          <p>Вернётся к школьному режиму без резкого стресса после каникул.</p>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FAQ -->
-<section>
-  <div class="container">
-    <h2 class="section-title">Частые <span>вопросы</span></h2>
-    <div id="faq"></div>
-  </div>
-</section>
+  <section id="format">
+    <div class="container">
+      <h2 class="section-title">Как проходят <span>занятия</span></h2>
+      <p class="section-sub">Удобный онлайн-формат с живым преподавателем и понятной структурой урока.</p>
+      <div class="steps">
+        <article class="step">
+          <span class="step-num">01</span>
+          <h3>Онлайн в Zoom</h3>
+          <p>Ребёнок занимается из дома, без дороги и лишней нагрузки.</p>
+        </article>
+        <article class="step">
+          <span class="step-num">02</span>
+          <h3>Мини-группы или индивидуально</h3>
+          <p>Подбираем формат после диагностики: кому-то важна группа, кому-то нужен личный темп.</p>
+        </article>
+        <article class="step">
+          <span class="step-num">03</span>
+          <h3>Урок 1 час 20 минут</h3>
+          <p>Достаточно времени, чтобы разобрать тему, потренироваться и закрепить материал.</p>
+        </article>
+        <article class="step">
+          <span class="step-num">04</span>
+          <h3>Практика на каждом занятии</h3>
+          <p>Не только объясняем, но и сразу отрабатываем задания вместе с ребёнком.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<!-- Призыв -->
-<section style="text-align:center;background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="container">
-    <h2 class="section-title">Перед первым уроком — <span>бесплатное вводное занятие!</span></h2>
-    <p class="section-sub">Познакомимся с преподавателем, платформой и форматом. Зададите все вопросы.</p>
-    <a href="tel:89872617779" style="display:block;font-size:clamp(26px,5vw,40px);font-weight:800;color:var(--gold2);margin:18px 0">8 987 261 77 79</a>
-    <a href="https://wa.me/79872617779" class="btn btn-lg">Записаться бесплатно</a>
-  </div>
-</section>
+  <section class="section-alt" id="program">
+    <div class="container">
+      <h2 class="section-title">Программа <span>по возрастам</span></h2>
+      <p class="section-sub">На диагностике уточняем уровень и собираем маршрут: база, предметы, нейротренировки или подготовка к ОГЭ.</p>
+      <div class="program-grid">
+        <article class="program-card">
+          <span>1–4 классы</span>
+          <h3>База младшей школы</h3>
+          <p>Чтение, письмо, устный счёт, развитие внимания, памяти, речи и логики.</p>
+        </article>
+        <article class="program-card">
+          <span>5–7 классы</span>
+          <h3>Предметы и самостоятельность</h3>
+          <p>Русский язык, математика, работа с пробелами, развитие учебных навыков.</p>
+        </article>
+        <article class="program-card">
+          <span>8–9 классы</span>
+          <h3>Подготовка к ОГЭ</h3>
+          <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения и работа над ошибками.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<footer style="text-align:center;padding:30px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)">
+  <section id="teacher">
+    <div class="container">
+      <h2 class="section-title">Занятия ведёт педагог <span>с опытом более 15 лет</span></h2>
+      <article class="teacher-card">
+        <img src="images/teacher.jpg" alt="Татьяна Викторовна Задонская" class="teacher-photo">
+        <div class="teacher-content">
+          <h3>Татьяна Викторовна Задонская</h3>
+          <p class="teacher-role">Педагог и специалист по когнитивному развитию</p>
+          <p class="teacher-text">Помогает детям развивать память, внимание, мышление и увереннее справляться со школьными предметами.</p>
+          <p class="teacher-text">В работе сочетает предметную подготовку и нейротренировки, чтобы ребёнок не просто «зазубрил», а лучше понимал и запоминал материал.</p>
+          <p class="teacher-label">Образование:</p>
+          <ul class="teacher-list">
+            <li>✦ ПКИ РУК (Москва)</li>
+            <li>✦ КГУКИ (Казань)</li>
+            <li>✦ НИИДПО (Санкт-Петербург)</li>
+          </ul>
+          <p class="teacher-label">Опыт:</p>
+          <ul class="teacher-list">
+            <li>✦ Более 15 лет в образовании</li>
+            <li>✦ Школа скорочтения и когнитивного развития</li>
+            <li>✦ Основатель проекта «Сфера Развития»</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-alt" id="trust">
+    <div class="container">
+      <h2 class="section-title">Почему родители <span>выбирают нас</span></h2>
+      <p class="section-sub">Пока мы не публикуем отзывы без согласия семей, поэтому показываем принципы, по которым строится работа.</p>
+      <div class="trust-grid">
+        <article class="trust-card">
+          <span>01</span>
+          <h3>Начинаем с диагностики</h3>
+          <p>Сначала понимаем уровень ребёнка и только потом предлагаем формат занятий.</p>
+        </article>
+        <article class="trust-card">
+          <span>02</span>
+          <h3>Работаем без давления</h3>
+          <p>Объясняем спокойно, поддерживаем ребёнка и помогаем увидеть собственный прогресс.</p>
+        </article>
+        <article class="trust-card">
+          <span>03</span>
+          <h3>Соединяем предметы и мышление</h3>
+          <p>Развиваем не только знания, но и внимание, память, речь, логику и учебную самостоятельность.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <h2 class="section-title">Выберите удобный <span>формат занятий</span></h2>
+      <p class="section-sub">Перед оплатой приглашаем на бесплатную диагностику, чтобы подобрать подходящий вариант.</p>
+      <div class="prices">
+        <article class="price">
+          <h3>Стандарт</h3>
+          <span class="old">9 600 ₽</span>
+          <div class="amount">7 500 <small>₽</small></div>
+          <p>12 занятий · 3 раза в неделю<br>Для тех, кому важно подтянуть основные темы и поддерживать учебный ритм.</p>
+          <a class="btn" data-contact-link="whatsapp">Подобрать формат на диагностике</a>
+        </article>
+        <article class="price featured">
+          <span class="tag">ХИТ · Максимальный результат</span>
+          <h3>Полный интенсив</h3>
+          <span class="old">12 800 ₽</span>
+          <div class="amount">9 600 <small>₽</small></div>
+          <p>16 занятий · 4 раза в неделю<br>Предметы, практика, нейротренировки и развитие базовых навыков.</p>
+          <a class="btn" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
+        </article>
+        <article class="price">
+          <h3>Индивидуально</h3>
+          <div class="amount">1 800 <small>₽</small></div>
+          <p>Персональный формат<br>Для точечной работы со сложными темами, ОГЭ или базовыми навыками.</p>
+          <a class="btn" data-contact-link="whatsapp">Подобрать формат на диагностике</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="faq">
+    <div class="container">
+      <h2 class="section-title">Частые <span>вопросы</span></h2>
+      <div id="faqList"></div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <h2 class="section-title">Хотите понять, какой формат подойдёт вашему ребёнку?</h2>
+      <p class="section-sub">Запишитесь на бесплатную диагностику. Мы спокойно разберём ситуацию, ответим на вопросы и предложим понятный план занятий.</p>
+      <a class="cta-phone" data-contact-link="phone" data-contact-phone>Телефон</a>
+      <div class="contact-actions">
+        <a class="btn btn-lg" data-contact-link="whatsapp">Записаться на бесплатную диагностику</a>
+      </div>
+      <p class="cta-note">Это бесплатно и ни к чему не обязывает.</p>
+      <div class="contact-grid" aria-label="Контакты">
+        <article class="contact-card">
+          <h3>Быстрая связь</h3>
+          <p>Можно написать в WhatsApp, отправить SMS или позвонить по телефону.</p>
+          <div class="contact-links" data-contact-list="contact"></div>
+        </article>
+        <article class="contact-card max-card">
+          <div>
+            <h3>MAX</h3>
+            <p>Прямая ссылка пока не подключена. На десктопе можно отсканировать QR, а на телефоне — скопировать контакт.</p>
+            <dl class="max-details">
+              <div><dt>Профиль</dt><dd data-max-profile></dd></div>
+              <div><dt>Проект</dt><dd data-max-project></dd></div>
+            </dl>
+            <button class="copy-btn max-copy-mobile" type="button" data-copy-max>Скопировать контакт MAX</button>
+          </div>
+          <figure class="max-qr">
+            <img alt="QR-код MAX для Сферы Развития" data-max-qr>
+            <figcaption data-max-caption></figcaption>
+          </figure>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<aside class="floating-widget" aria-label="Быстрые контакты">
+  <span class="floating-widget-title">Связаться</span>
+  <div class="floating-widget-links" data-contact-list="widget"></div>
+</aside>
+
+<nav class="mobile-sticky-bar" aria-label="Быстрая связь на мобильном" data-contact-list="mobile"></nav>
+
+<footer class="footer">
   <p>© 2026 «Сфера Развития» · Летний интенсив · Онлайн (Zoom)</p>
-  <p style="margin-top:6px">Запись: <a href="tel:89872617779" style="color:var(--gold2)">8 987 261 77 79</a></p>
+  <p>Запись: <a class="footer-link" data-contact-link="phone" data-contact-phone>телефон</a> · <a class="footer-link" data-contact-link="whatsapp">WhatsApp</a></p>
 </footer>
 
-<script>
-function toggleTheme(){
-  const b=document.body, btn=document.getElementById('themeBtn');
-  if(b.getAttribute('data-theme')==='dark'){b.setAttribute('data-theme','light');btn.textContent='🌙 Тёмная';}
-  else{b.setAttribute('data-theme','dark');btn.textContent='☀️ Светлая';}
-}
-const target=new Date('2026-06-08T00:00:00').getTime();
-function tick(){
-  const now=Date.now(), diff=target-now;
-  if(diff<=0){document.getElementById('timer').innerHTML='<div class="unit"><span class="num">Старт!</span></div>';return;}
-  const d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-  document.getElementById('d').textContent=String(d).padStart(2,'0');
-  document.getElementById('h').textContent=String(h).padStart(2,'0');
-  document.getElementById('m').textContent=String(m).padStart(2,'0');
-  document.getElementById('s').textContent=String(s).padStart(2,'0');
-}
-tick();setInterval(tick,1000);
-const faqs=[
- ['Что такое нейротренировки (тренировка когнитивных навыков)?','Это упражнения для развития памяти, внимания, логики, восприятия, речи и скорости мышления. Они усиливают нейропластичность мозга. Примеры: головоломки, мнемотехники, упражнения на память, логические задачи, нейрогимнастика, цифровые тренажёры. Тренируя эти навыки, ребёнок быстрее и лучше понимает школьные предметы.'],
- ['Обязательно ли приходить на нейротренировки?','Нет, можно оплачивать только предметные уроки. Но эффективность будет ниже: проблемы с учёбой часто из-за низкого внимания и памяти. Комплекс «предмет + нейротренировки» выгоднее и даёт результат, которого не даёт обычное репетиторство.'],
- ['Что такое тренировка базовых навыков?','На этих занятиях мы уделяем внимание базовым навыкам: чтению, письму и устному счёту.'],
- ['Как проходят предметные уроки по вторникам и четвергам?','Во вторник знакомимся с темой, записываем ключевое в блокнот-шпаргалку и выполняем мини-практику. В четверг — практические задания. Урок 1 час 20 минут: 40 мин русский + 40 мин математика. Пропуск вторника может затруднить четверг.'],
- ['Какие уроки входят в абонемент на 12 занятий?','3 урока в неделю (ПН–ЧТ). Рекомендуем понедельник, вторник и четверг. Если нет проблем с техникой чтения, письма и счёта — среду можно пропустить. Если есть — лучше приобрести абонемент на 16 занятий.'],
- ['Обязательно ли приходить на индивидуальные занятия по пятницам?','Нет. Это дополнительные занятия для тех, кому нужна помощь со сложной темой или базовыми навыками. Они не входят в общий абонемент.']
-];
-document.getElementById('faq').innerHTML=faqs.map(f=>`
-<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;box-shadow:var(--shadow)">
-  <div onclick="this.nextElementSibling.style.maxHeight=this.nextElementSibling.style.maxHeight?'':'500px';this.querySelector('span').style.transform=this.querySelector('span').style.transform?'':'rotate(45deg)'" style="padding:20px 24px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;g
-  ap:12px;font-size:17px">${f[0]}<span style="color:var(--gold2);font-size:24px;transition:.3s">+</span></div>
-  <div style="max-height:0;overflow:hidden;transition:max-height .4s;padding:0 24px"><p style="padding-bottom:20px;color:var(--muted)">${f[1]}</p></div>
-</div>`).join('');
-</script>
+<script src="app.js" defer></script>
 </body>
 </html>
