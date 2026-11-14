@@ -101,6 +101,16 @@ const CONTACT_CONFIG = {
 
 window.SFERA_CONTACTS = CONTACT_CONFIG;
 
+const TARIFF_MESSAGES = {
+  "oge-individual": "Здравствуйте! Интересует индивидуальная подготовка к ОГЭ, 1 500 ₽ за час.",
+  "oge-vip": "Здравствуйте! Интересует VIP-группа (2–3 человека) по подготовке к ОГЭ, 1 000 ₽ за час.",
+  "oge-group": "Здравствуйте! Интересует групповое занятие по подготовке к ОГЭ, 500 ₽ за час."
+};
+
+const COPY_TOAST_TIMEOUT = 5000;
+const COLLAPSE_ANIMATION_MS = 500;
+let copyToastTimer = null;
+
 const faqs = [
   {
     question: "Что будет на бесплатной диагностике?",
@@ -279,11 +289,19 @@ function initMaxContact() {
 
 function setTheme(theme) {
   const themeBtn = getElement("themeBtn");
+  const themeLabel = theme === "dark" ? "Светлая" : "Тёмная";
 
   document.body.dataset.theme = theme;
 
   if (themeBtn) {
-    themeBtn.textContent = theme === "dark" ? "☀️ Светлая" : "🌙 Тёмная";
+    const label = themeBtn.querySelector(".theme-btn-text");
+
+    if (label) {
+      label.textContent = themeLabel;
+    } else {
+      // Кнопки без разметки иконок (служебные страницы) получают только текст.
+      themeBtn.textContent = themeLabel;
+    }
   }
 
   localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -347,6 +365,133 @@ function initFaq() {
   faqRoot.replaceChildren(list);
 }
 
+function updateCollapseToggle(root, expanded) {
+  const toggle = root.querySelector("[data-collapse-toggle]");
+
+  if (!toggle) {
+    return;
+  }
+
+  toggle.setAttribute("aria-expanded", String(expanded));
+  toggle.textContent = expanded ? "Свернуть" : "Показать ещё";
+}
+
+function expandCollapseItem(item) {
+  item.dataset.collapseState = "open";
+  item.classList.add("is-open");
+  item.style.overflow = "hidden";
+  item.style.maxHeight = "0px";
+  item.style.opacity = "0";
+
+  // Принудительный reflow, чтобы transition начался именно с нулевой высоты.
+  void item.offsetHeight;
+
+  item.style.maxHeight = `${item.scrollHeight}px`;
+  item.style.opacity = "1";
+
+  // Страховка: даже если transitionend не придёт, карточка раскроется полностью.
+  window.setTimeout(() => {
+    if (item.dataset.collapseState === "open") {
+      item.style.maxHeight = "none";
+      item.style.overflow = "visible";
+    }
+  }, COLLAPSE_ANIMATION_MS);
+}
+
+function collapseCollapseItem(item) {
+  if (!item.classList.contains("is-open")) {
+    return;
+  }
+
+  item.dataset.collapseState = "closed";
+  item.style.overflow = "hidden";
+  item.style.maxHeight = `${item.scrollHeight}px`;
+  item.style.opacity = "1";
+
+  void item.offsetHeight;
+
+  item.style.maxHeight = "0px";
+  item.style.opacity = "0";
+
+  // Страховка, если transitionend не придёт (например, анимации отключены).
+  window.setTimeout(() => {
+    if (item.dataset.collapseState === "closed" && item.classList.contains("is-open")) {
+      item.classList.remove("is-open");
+      item.removeAttribute("style");
+    }
+  }, COLLAPSE_ANIMATION_MS);
+}
+
+function initCollapseItem(item) {
+  item.addEventListener("transitionend", (event) => {
+    if (event.propertyName !== "max-height") {
+      return;
+    }
+
+    if (item.dataset.collapseState === "open") {
+      item.style.maxHeight = "none";
+      item.style.overflow = "visible";
+      return;
+    }
+
+    item.classList.remove("is-open");
+    item.removeAttribute("style");
+  });
+}
+
+function setCollapsibleState(root, expanded) {
+  root.querySelectorAll("[data-collapse-item]").forEach((item) => {
+    if (expanded) {
+      expandCollapseItem(item);
+    } else {
+      collapseCollapseItem(item);
+    }
+  });
+
+  updateCollapseToggle(root, expanded);
+}
+
+function initCollapsibleSections() {
+  document.querySelectorAll(".is-collapsible").forEach((root) => {
+    const toggle = root.querySelector("[data-collapse-toggle]");
+
+    if (!toggle) {
+      return;
+    }
+
+    root.querySelectorAll("[data-collapse-item]").forEach(initCollapseItem);
+
+    updateCollapseToggle(root, toggle.getAttribute("aria-expanded") === "true");
+
+    toggle.addEventListener("click", () => {
+      setCollapsibleState(root, toggle.getAttribute("aria-expanded") !== "true");
+    });
+  });
+}
+
+function expandCollapsibleFromHash() {
+  const id = window.location.hash.slice(1);
+
+  if (!id) {
+    return;
+  }
+
+  const target = document.getElementById(id);
+
+  if (!target || !target.classList.contains("is-collapsible")) {
+    return;
+  }
+
+  const toggle = target.querySelector("[data-collapse-toggle]");
+
+  if (!toggle || toggle.getAttribute("aria-expanded") === "true") {
+    return;
+  }
+
+  setCollapsibleState(target, true);
+  window.setTimeout(() => target.scrollIntoView({ block: "start" }), 80);
+}
+
 async function copyText(text) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);
@@ -386,6 +531,49 @@ function initMaxCopy() {
     } catch {
       copyButton.textContent = "Не удалось скопировать";
     }
+  });
+}
+
+function showCopyToast() {
+  const toast = getElement("copyToast");
+
+  if (!toast) {
+    return;
+  }
+
+  toast.classList.add("is-visible");
+  clearTimeout(copyToastTimer);
+  copyToastTimer = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, COPY_TOAST_TIMEOUT);
+}
+
+function copyTariffMessage(message) {
+  if (!navigator.clipboard?.writeText) {
+    return Promise.resolve(false);
+  }
+
+  return navigator.clipboard.writeText(message).then(
+    () => true,
+    () => false
+  );
+}
+
+function initTariffClicks() {
+  document.querySelectorAll("a.price[data-tariff]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const message = TARIFF_MESSAGES[link.dataset.tariff];
+
+      if (!message) {
+        return;
+      }
+
+      copyTariffMessage(message).then((copied) => {
+        if (copied) {
+          showCopyToast();
+        }
+      });
+    });
   });
 }
 
@@ -564,10 +752,14 @@ function initApplicationForm() {
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initFaq();
+  initCollapsibleSections();
   initConfiguredContactLinks();
   initContactLists();
   initMaxContact();
   initMaxCopy();
+  initTariffClicks();
   initAnalyticsEvents();
   initApplicationForm();
+  expandCollapsibleFromHash();
+  window.addEventListener("hashchange", expandCollapsibleFromHash);
 });

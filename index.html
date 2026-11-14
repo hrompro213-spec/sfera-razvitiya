@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +25,7 @@
   <meta name="twitter:description" content="Онлайн-занятия для 1–9 классов: закрываем пробелы, развиваем внимание и готовимся к новому учебному году.">
   <meta name="twitter:image" content="images/hero.jpg">
 
+  <script>document.documentElement.classList.replace("no-js", "js");</script>
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
   {
@@ -135,6 +136,50 @@
   </script>
 </head>
 <body data-theme="light">
+<svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <circle cx="12" cy="12" r="4.6"/>
+    <path d="M12 12h.01"/>
+  </symbol>
+  <symbol id="icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 6.4C10.4 5.1 8.3 4.5 5.6 4.5v13c2.7 0 4.8.6 6.4 1.9 1.6-1.3 3.7-1.9 6.4-1.9v-13c-2.7 0-4.8.6-6.4 1.9Z"/>
+    <path d="M12 6.4v13"/>
+  </symbol>
+  <symbol id="icon-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20.2v-7"/>
+    <path d="M12 13.2c0-3 2-5 5-5 0 3-2 5-5 5Z"/>
+    <path d="M11.8 15.4c0-2.2-1.6-4-3.9-4 0 2.2 1.6 4 3.9 4Z"/>
+    <path d="M7 20.2h10"/>
+  </symbol>
+  <symbol id="icon-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5.4A2.9 2.9 0 0 0 6.5 7 2.8 2.8 0 0 0 5.1 11.9 2.9 2.9 0 0 0 6.6 16.6 2.8 2.8 0 0 0 12 17.7Z"/>
+    <path d="M12 5.4A2.9 2.9 0 0 1 17.5 7a2.8 2.8 0 0 1 1.4 4.9 2.9 2.9 0 0 1-1.5 4.7A2.8 2.8 0 0 1 12 17.7"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="m8.4 12.2 2.5 2.5 4.7-4.9"/>
+  </symbol>
+  <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 20h16"/>
+    <path d="M7.5 20v-4.4"/>
+    <path d="M12 20V11"/>
+    <path d="M16.5 20V6.6"/>
+  </symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.4 14.4A8.5 8.5 0 0 1 9.6 3.6 8.5 8.5 0 1 0 20.4 14.4Z"/>
+  </symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4.2"/>
+    <path d="M12 2.8v2.2M12 19v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.8 12H5M19 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/>
+  </symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- reserved: цифровая грамотность -->
+    <rect x="4.6" y="10.2" width="14.8" height="9.6" rx="3"/>
+    <path d="M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6"/>
+    <path d="M12 14v2"/>
+  </symbol>
+</svg>
 <div class="top-cta top-cta--alt">
   <p class="top-cta-text">Курс ОГЭ по математике с нуля — для 8 классов. К экзамену нужно готовиться заранее.</p>
   <a class="top-cta-link" data-contact-link="max">Записаться в MAX →</a>
@@ -153,12 +198,16 @@
     <nav class="nav-links" aria-label="Основная навигация">
       <a href="#audience">Кому подходит</a>
       <a href="#results">Что получит ребёнок</a>
-      <a href="#pricing">Тарифы</a>
+      <a href="#pricing">Цены</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-right">
       <a class="nav-phone" data-contact-link="phone" data-contact-phone>Телефон</a>
-      <button class="theme-btn" type="button" id="themeBtn" aria-label="Переключить тему">🌙 Тёмная</button>
+      <button class="theme-btn" type="button" id="themeBtn" aria-label="Переключить тему">
+        <svg class="theme-btn-icon theme-btn-icon--moon icon" aria-hidden="true"><use href="#icon-moon"></use></svg>
+        <svg class="theme-btn-icon theme-btn-icon--sun icon" aria-hidden="true"><use href="#icon-sun"></use></svg>
+        <span class="theme-btn-text">Тёмная</span>
+      </button>
     </div>
   </div>
 </header>
@@ -167,8 +216,8 @@
   <section class="hero" id="hero">
     <div class="container">
       <a class="badge badge--link" data-contact-link="max">Предварительная запись на летний интенсив · места ограничены</a>
-      <h1>Поможем ребёнку подтянуть знания и увереннее начать новый учебный год</h1>
-      <p>РУССКИЙ ЯЗЫК И МАТЕМАТИКА. Развитие внимания, памяти и мышления в тёплом онлайн-формате с педагогом.</p>
+      <h1>Возвращаем желание учиться и помогаем понять материал</h1>
+      <p>Русский язык, математика и развитие внимания, памяти и мышления — в тёплом онлайн-формате с педагогом.</p>
       <div class="hero-actions">
         <a class="btn btn-lg" data-contact-link="max" data-analytics-goal="hero_cta_click" data-analytics-label="hero_max">Записаться в MAX</a>
         <a class="btn btn-lg btn-secondary" data-contact-link="phone" data-analytics-goal="hero_cta_click" data-analytics-label="hero_phone">Позвонить</a>
@@ -189,7 +238,7 @@
       <div class="audience-stack">
         <article class="card audience-card audience-card--primary">
           <span class="age-badge">8–9 классы</span>
-          <div class="ico">🎯</div>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-target"></use></svg></div>
           <h3>Подготовка к ОГЭ</h3>
           <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения, разбор "ловушек" ОГЭ.</p>
           <a class="btn audience-card-cta" data-contact-link="max">Записаться в MAX →</a>
@@ -197,13 +246,13 @@
         <div class="cards cards-2">
           <article class="card audience-card">
             <span class="age-badge">5–7 классы</span>
-            <div class="ico">📘</div>
+            <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-book"></use></svg></div>
             <h3>Средняя школа</h3>
             <p>Закрываем пробелы по русскому и математике, учим разбирать темы по шагам и доводить задания до результата.</p>
           </article>
           <article class="card audience-card">
             <span class="age-badge">1–4 классы</span>
-            <div class="ico">🌱</div>
+            <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"></use></svg></div>
             <h3>Младшая школа</h3>
             <p>Укрепляем базу: чтение, письмо, счёт, внимание и мышление. Закрепляем ключевые темы по предметным урокам. Помогаем ребёнку учиться спокойнее и увереннее.</p>
           </article>
@@ -215,24 +264,27 @@
   <section class="section-alt is-collapsible" id="results">
     <div class="container">
       <h2 class="section-title">Что получит <span>ребёнок</span></h2>
-      <p class="section-sub">Цель занятий — не просто «позаниматься летом», а помочь ребёнку почувствовать прогресс.</p>
-      <div class="cards">
+      <p class="section-sub">Цель занятий — не просто «позаниматься», а помочь ребёнку почувствовать прогресс.</p>
+      <div class="cards" id="results-cards">
         <article class="card result-card">
-          <div class="ico">📌</div>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></div>
           <h3>Закроет пробелы</h3>
           <p>Разберёт темы, которые вызывали трудности в течение года.</p>
         </article>
         <article class="card result-card">
-          <div class="ico">🧠</div>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-brain"></use></svg></div>
           <h3>Станет внимательнее</h3>
           <p>Через нейротренировки прокачает память, концентрацию и скорость мышления.</p>
         </article>
-        <article class="card result-card">
-          <div class="ico">✅</div>
-          <h3>Появится уверенность на экзамене</h3>
-          <p>Перестанет бояться незнакомых формулировок и научится действовать по алгоритму.</p>
-        </article>
+        <div class="collapse-item" data-collapse-item>
+          <article class="card result-card">
+            <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-chart"></use></svg></div>
+            <h3>Появится уверенность на экзамене</h3>
+            <p>Перестанет бояться незнакомых формулировок и научится действовать по алгоритму.</p>
+          </article>
+        </div>
       </div>
+      <button class="btn btn-secondary collapse-toggle" type="button" data-collapse-toggle aria-expanded="false" aria-controls="results-cards">Показать ещё</button>
     </div>
   </section>
 
@@ -240,7 +292,7 @@
     <div class="container">
       <h2 class="section-title">Как проходят <span>занятия</span></h2>
       <p class="section-sub">Удобный онлайн-формат с живым преподавателем и понятной структурой урока.</p>
-      <div class="steps">
+      <div class="steps" id="format-steps">
         <article class="step">
           <span class="step-num">01</span>
           <h3>Онлайн в Zoom</h3>
@@ -251,17 +303,22 @@
           <h3>Мини-группы или индивидуально</h3>
           <p>Подбираем формат после диагностики: кому-то важна группа, кому-то нужен личный темп.</p>
         </article>
-        <article class="step">
-          <span class="step-num">03</span>
-          <h3>Урок 1 час</h3>
-          <p>Достаточно времени, чтобы разобрать тему, потренироваться и закрепить материал.</p>
-        </article>
-        <article class="step">
-          <span class="step-num">04</span>
-          <h3>Практика на каждом занятии</h3>
-          <p>Не только объясняем, но и сразу отрабатываем задания вместе с ребёнком.</p>
-        </article>
+        <div class="collapse-item" data-collapse-item>
+          <article class="step">
+            <span class="step-num">03</span>
+            <h3>Урок 1 час</h3>
+            <p>Достаточно времени, чтобы разобрать тему, потренироваться и закрепить материал.</p>
+          </article>
+        </div>
+        <div class="collapse-item" data-collapse-item>
+          <article class="step">
+            <span class="step-num">04</span>
+            <h3>Практика на каждом занятии</h3>
+            <p>Не только объясняем, но и сразу отрабатываем задания вместе с ребёнком.</p>
+          </article>
+        </div>
       </div>
+      <button class="btn btn-secondary collapse-toggle" type="button" data-collapse-toggle aria-expanded="false" aria-controls="format-steps">Показать ещё</button>
     </div>
   </section>
 
@@ -304,7 +361,7 @@
         </article>
         <article class="trust-card">
           <span>02</span>
-          <h3>Возвращаем желание учиться и помогаем понять материал</h3>
+          <h3>Объясняем по-человечески, без давления</h3>
           <p>Объясняем спокойно, поддерживаем ребёнка и помогаем увидеть собственный прогресс.</p>
         </article>
         <article class="trust-card">
@@ -322,17 +379,17 @@
       <p class="section-sub">Стоимость указана за одно занятие продолжительностью 1 час.</p>
 
       <div class="prices prices--3">
-        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-individual">
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-individual" target="_blank" rel="noopener">
           <h4>Индивидуальное занятие</h4>
           <div class="amount">1 500 <small>₽</small></div>
           <p>Занятие один на один с педагогом: разбираем темы ОГЭ и ВПР в комфортном темпе.</p>
         </a>
-        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-vip">
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-vip" target="_blank" rel="noopener">
           <h4>VIP-группа (2–3 человека)</h4>
           <div class="amount">1 000 <small>₽</small></div>
           <p>Небольшая группа: педагог успевает поработать с каждым, а заниматься интереснее вместе.</p>
         </a>
-        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-group">
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-group" target="_blank" rel="noopener">
           <h4>Групповое занятие (от 4 человек)</h4>
           <div class="amount">500 <small>₽</small></div>
           <p>Разбираем задания ОГЭ и ВПР и сразу отрабатываем их на практике в группе.</p>
@@ -458,6 +515,10 @@
   <span class="floating-widget-title">Связаться</span>
   <div class="floating-widget-links" data-contact-list="widget"></div>
 </aside>
+
+<div class="copy-toast" id="copyToast" role="status" aria-live="polite">
+  Сообщение скопировано — вставьте его в чат MAX
+</div>
 
 <nav class="mobile-sticky-bar" aria-label="Быстрая связь на мобильном" data-contact-list="mobile"></nav>
 
