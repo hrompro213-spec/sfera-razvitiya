@@ -135,13 +135,13 @@
   </script>
 </head>
 <body data-theme="light">
+<div class="top-cta top-cta--alt">
+  <p class="top-cta-text">Курс ОГЭ по математике с нуля — для 8 классов. К экзамену нужно готовиться заранее.</p>
+  <a class="top-cta-link" data-contact-link="max">Записаться в MAX →</a>
+</div>
 <!-- Yandex.Metrika counter -->
 <!-- TODO: вставьте сюда реальный код счётчика Яндекс.Метрики после создания счётчика. -->
 <!-- /Yandex.Metrika counter -->
-
-<div class="top-cta">
-  <a data-contact-link="max">СТАРТ ЛЕТНЕГО ИНТЕНСИВА с 15 июня · записаться в MAX →</a>
-</div>
 
 <header>
   <div class="nav">
@@ -166,7 +166,7 @@
 <main>
   <section class="hero" id="hero">
     <div class="container">
-      <span class="badge">СТАРТ ЛЕТНЕГО ИНТЕНСИВА с 15 июня</span>
+      <a class="badge badge--link" data-contact-link="max">Предварительная запись на летний интенсив · места ограничены</a>
       <h1>Поможем ребёнку подтянуть знания и увереннее начать новый учебный год</h1>
       <p>РУССКИЙ ЯЗЫК И МАТЕМАТИКА. Развитие внимания, памяти и мышления в тёплом онлайн-формате с педагогом.</p>
       <div class="hero-actions">
@@ -174,16 +174,10 @@
         <a class="btn btn-lg btn-secondary" data-contact-link="phone" data-analytics-goal="hero_cta_click" data-analytics-label="hero_phone">Позвонить</a>
       </div>
       <p class="hero-note">На вводном занятии определим уровень ребёнка, подберём формат и ответим на вопросы родителей.</p>
-      <div class="timer" id="timer">
-        <div class="unit"><span class="num" id="d">00</span><span class="lbl">дней</span></div>
-        <div class="unit"><span class="num" id="h">00</span><span class="lbl">часов</span></div>
-        <div class="unit"><span class="num" id="m">00</span><span class="lbl">минут</span></div>
-        <div class="unit"><span class="num" id="s">00</span><span class="lbl">секунд</span></div>
-      </div>
       <div class="infobar">
-        <div class="chip"><b>Формат</b>Мини-группа / индивидуально</div>
-        <div class="chip"><b>Где</b>Онлайн · Zoom</div>
         <div class="chip"><b>Первый шаг</b>Бесплатная диагностика</div>
+        <div class="chip"><b>Где</b>Онлайн · Zoom</div>
+        <div class="chip"><b>Формат</b>Мини-группа / индивидуально</div>
       </div>
     </div>
   </section>
@@ -192,30 +186,33 @@
     <div class="container">
       <h2 class="section-title">Кому подойдёт <span>интенсив</span></h2>
       <p class="section-sub">Мы подбираем программу под возраст, уровень и учебные задачи ребёнка.</p>
-      <div class="cards cards-3">
-        <article class="card audience-card">
-          <span class="age-badge">1–4 классы</span>
-          <div class="ico">🌱</div>
-          <h3>Младшая школа</h3>
-          <p>Укрепляем базу: чтение, письмо, счёт, внимание и мышление. Закрепляем ключевые темы по предметным урокам. Помогаем ребёнку учиться спокойнее и увереннее.</p>
-        </article>
-        <article class="card audience-card">
-          <span class="age-badge">5–7 классы</span>
-          <div class="ico">📘</div>
-          <h3>Средняя школа</h3>
-          <p>Закрываем пробелы по русскому и математике, учим разбирать темы по шагам и доводить задания до результата.</p>
-        </article>
-        <article class="card audience-card">
+      <div class="audience-stack">
+        <article class="card audience-card audience-card--primary">
           <span class="age-badge">8–9 классы</span>
           <div class="ico">🎯</div>
           <h3>Подготовка к ОГЭ</h3>
           <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения, разбор "ловушек" ОГЭ.</p>
+          <a class="btn audience-card-cta" data-contact-link="max">Записаться в MAX →</a>
         </article>
+        <div class="cards cards-2">
+          <article class="card audience-card">
+            <span class="age-badge">5–7 классы</span>
+            <div class="ico">📘</div>
+            <h3>Средняя школа</h3>
+            <p>Закрываем пробелы по русскому и математике, учим разбирать темы по шагам и доводить задания до результата.</p>
+          </article>
+          <article class="card audience-card">
+            <span class="age-badge">1–4 классы</span>
+            <div class="ico">🌱</div>
+            <h3>Младшая школа</h3>
+            <p>Укрепляем базу: чтение, письмо, счёт, внимание и мышление. Закрепляем ключевые темы по предметным урокам. Помогаем ребёнку учиться спокойнее и увереннее.</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section-alt" id="results">
+  <section class="section-alt is-collapsible" id="results">
     <div class="container">
       <h2 class="section-title">Что получит <span>ребёнок</span></h2>
       <p class="section-sub">Цель занятий — не просто «позаниматься летом», а помочь ребёнку почувствовать прогресс.</p>
@@ -232,19 +229,14 @@
         </article>
         <article class="card result-card">
           <div class="ico">✅</div>
-          <h3>Увереннее решает задания</h3>
-          <p>Научится понимать условие, действовать по алгоритму и проверять себя.</p>
-        </article>
-        <article class="card result-card">
-          <div class="ico">☀️</div>
-          <h3>Спокойнее войдёт в учебный год</h3>
-          <p>Вернётся к школьному режиму без резкого стресса после каникул.</p>
+          <h3>Появится уверенность на экзамене</h3>
+          <p>Перестанет бояться незнакомых формулировок и научится действовать по алгоритму.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <section id="format">
+  <section class="is-collapsible" id="format">
     <div class="container">
       <h2 class="section-title">Как проходят <span>занятия</span></h2>
       <p class="section-sub">Удобный онлайн-формат с живым преподавателем и понятной структурой урока.</p>
@@ -261,37 +253,13 @@
         </article>
         <article class="step">
           <span class="step-num">03</span>
-          <h3>Урок 1 час 20 минут</h3>
+          <h3>Урок 1 час</h3>
           <p>Достаточно времени, чтобы разобрать тему, потренироваться и закрепить материал.</p>
         </article>
         <article class="step">
           <span class="step-num">04</span>
           <h3>Практика на каждом занятии</h3>
           <p>Не только объясняем, но и сразу отрабатываем задания вместе с ребёнком.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-alt" id="program">
-    <div class="container">
-      <h2 class="section-title">Программа <span>по возрастам</span></h2>
-      <p class="section-sub">На диагностике уточняем уровень и собираем маршрут: база, предметы, нейротренировки или подготовка к ОГЭ.</p>
-      <div class="program-grid">
-        <article class="program-card">
-          <span>1–4 классы</span>
-          <h3>База младшей школы</h3>
-          <p>Математика и русский язык - закрепление ключевых тем. Чтение, письмо, устный счёт, развитие внимания, памяти, речи и логики.</p>
-        </article>
-        <article class="program-card">
-          <span>5–7 классы</span>
-          <h3>Предметы и самостоятельность</h3>
-          <p>Русский язык, математика, работа с пробелами, развитие учебных навыков.</p>
-        </article>
-        <article class="program-card">
-          <span>8–9 классы</span>
-          <h3>Подготовка к ОГЭ</h3>
-          <p>Разбор типовых заданий, повторение ключевых тем, стратегии решения, разбор "ловушек" ОГЭ.</p>
         </article>
       </div>
     </div>
@@ -336,12 +304,12 @@
         </article>
         <article class="trust-card">
           <span>02</span>
-          <h3>Работаем без давления</h3>
+          <h3>Возвращаем желание учиться и помогаем понять материал</h3>
           <p>Объясняем спокойно, поддерживаем ребёнка и помогаем увидеть собственный прогресс.</p>
         </article>
         <article class="trust-card">
           <span>03</span>
-          <h3>Соединяем предметы и мышление</h3>
+          <h3>Тренируем мышление и учим планировать</h3>
           <p>Развиваем не только знания, но и внимание, память, речь, логику и учебную самостоятельность.</p>
         </article>
       </div>
@@ -351,29 +319,24 @@
   <section id="pricing">
     <div class="container">
       <h2 class="section-title">Выберите удобный <span>формат занятий</span></h2>
-      <p class="section-sub">Перед оплатой приглашаем на бесплатную диагностику, чтобы подобрать подходящий вариант.</p>
-      <div class="prices">
-        <article class="price">
-          <h3>Стандарт</h3>
-          <span class="old">9 600 ₽</span>
-          <div class="amount">7 500 <small>₽</small></div>
-          <p>12 занятий · 3 раза в неделю<br>Для тех, кому важно подтянуть основные темы и поддерживать учебный ритм.</p>
-          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="standard">Подобрать формат в MAX</a>
-        </article>
-        <article class="price featured">
-          <span class="tag">ХИТ · Максимальный результат</span>
-          <h3>Полный интенсив</h3>
-          <span class="old">12 800 ₽</span>
-          <div class="amount">9 600 <small>₽</small></div>
-          <p>16 занятий · 4 раза в неделю<br>Предметы, практика, нейротренировки и развитие базовых навыков.</p>
-          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="full-intensive">Записаться в MAX</a>
-        </article>
-        <article class="price">
-          <h3>Индивидуально</h3>
-          <div class="amount">1 800 <small>₽</small></div>
-          <p>Персональный формат<br>Для точечной работы со сложными темами, ОГЭ или базовыми навыками.</p>
-          <a class="btn" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="individual">Подобрать формат в MAX</a>
-        </article>
+      <p class="section-sub">Стоимость указана за одно занятие продолжительностью 1 час.</p>
+
+      <div class="prices prices--3">
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-individual">
+          <h4>Индивидуальное занятие</h4>
+          <div class="amount">1 500 <small>₽</small></div>
+          <p>Занятие один на один с педагогом: разбираем темы ОГЭ и ВПР в комфортном темпе.</p>
+        </a>
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-vip">
+          <h4>VIP-группа (2–3 человека)</h4>
+          <div class="amount">1 000 <small>₽</small></div>
+          <p>Небольшая группа: педагог успевает поработать с каждым, а заниматься интереснее вместе.</p>
+        </a>
+        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-group">
+          <h4>Групповое занятие (от 4 человек)</h4>
+          <div class="amount">500 <small>₽</small></div>
+          <p>Разбираем задания ОГЭ и ВПР и сразу отрабатываем их на практике в группе.</p>
+        </a>
       </div>
     </div>
   </section>
@@ -473,11 +436,6 @@
         </form>
 
         <div class="contact-side" aria-label="Контакты">
-          <article class="contact-card">
-            <h3>Быстрая связь</h3>
-            <p>Основной канал связи — MAX. Также можно позвонить, написать в WhatsApp, Telegram, VK, Email или SMS.</p>
-            <div class="contact-links" data-contact-list="contact"></div>
-          </article>
           <article class="contact-card max-card">
             <div>
               <h3>MAX</h3>
@@ -502,6 +460,17 @@
 </aside>
 
 <nav class="mobile-sticky-bar" aria-label="Быстрая связь на мобильном" data-contact-list="mobile"></nav>
+
+<div class="top-cta top-cta--bottom">
+  <a data-contact-link="max">Предварительная запись на летний интенсив 2027 · места ограничены · с 1 июня и с 1 июля</a>
+</div>
+
+<section class="quick-contact" aria-label="Быстрая связь">
+  <div class="container quick-contact-inner">
+    <span class="quick-contact-title">Быстрая связь</span>
+    <div class="contact-links" data-contact-list="contact"></div>
+  </div>
+</section>
 
 <footer class="footer">
   <p>© 2026 «Сфера Развития» · Летний интенсив · Онлайн (Zoom)</p>

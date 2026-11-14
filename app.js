@@ -1,5 +1,4 @@
 const THEME_STORAGE_KEY = "sfera-theme";
-const START_DATE = new Date("2026-06-15T00:00:00+03:00").getTime();
 // TODO: вставить URL веб-приложения Google Apps Script после деплоя формы.
 const FORM_ENDPOINT = "";
 // TODO: после создания счётчика Яндекс.Метрики указать его ID.
@@ -302,44 +301,6 @@ function initTheme() {
   });
 }
 
-function updateTimer() {
-  const timer = getElement("timer");
-  const days = getElement("d");
-  const hours = getElement("h");
-  const minutes = getElement("m");
-  const seconds = getElement("s");
-
-  if (!timer || !days || !hours || !minutes || !seconds) {
-    return false;
-  }
-
-  const diff = START_DATE - Date.now();
-
-  if (diff <= 0) {
-    timer.innerHTML = '<div class="unit"><span class="num">Старт!</span></div>';
-    return false;
-  }
-
-  days.textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
-  hours.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0");
-  minutes.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
-  seconds.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
-
-  return true;
-}
-
-function initTimer() {
-  if (!updateTimer()) {
-    return;
-  }
-
-  const timerId = setInterval(() => {
-    if (!updateTimer()) {
-      clearInterval(timerId);
-    }
-  }, 1000);
-}
-
 function createFaqItem({ question, answer }, index) {
   const item = document.createElement("article");
   const questionId = `faq-question-${index}`;
@@ -602,7 +563,6 @@ function initApplicationForm() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
-  initTimer();
   initFaq();
   initConfiguredContactLinks();
   initContactLists();
