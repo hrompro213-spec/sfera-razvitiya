@@ -292,10 +292,45 @@ header {
 
 .hero {
   position: relative;
+  overflow: hidden;
   padding: 90px 20px 70px;
-  background: linear-gradient(rgba(40, 30, 10, .55), rgba(40, 30, 10, .55)), url("images/hero.jpg") center/cover no-repeat;
+  background: #2a2010;
   color: #fff;
   text-align: center;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #2a2010;
+}
+
+.hero-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(40, 30, 10, .55), rgba(40, 30, 10, .55));
+  transition: background .3s;
+}
+
+[data-theme="dark"] .hero-media::after {
+  background: linear-gradient(rgba(8, 7, 5, .6), rgba(8, 7, 5, .72));
+}
+
+.hero > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .hero .badge {
@@ -436,12 +471,22 @@ section {
 }
 
 /* #format и #teacher идут с одинаковым фоном: убираем двойной отступ между ними. */
-#format {
+#format.is-open {
   padding-bottom: 30px;
 }
 
 #teacher {
   padding-top: 30px;
+}
+
+/* Свёрнутая секция — только заголовок и подзаголовок, без двойных вертикальных отступов. */
+.is-collapsible:not(.is-open) {
+  padding-top: 36px;
+  padding-bottom: 36px;
+}
+
+.is-collapsible:not(.is-open) .section-sub {
+  margin-bottom: 0;
 }
 
 .section-alt {
@@ -613,52 +658,88 @@ section {
   font-size: var(--fs-body);
 }
 
-/* Аккордеон секций #results и #format */
-.collapse-item {
-  display: none;
-  overflow: hidden;
-  transition: max-height .45s ease, opacity .3s ease;
+/* Аккордеон секций #results, #format, #trust */
+.section-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: center;
 }
 
-.collapse-item.is-open {
+.section-toggle:hover,
+.section-toggle:focus-visible {
+  color: var(--gold2);
+}
+
+.section-chevron {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--gold2);
+  transition: transform .3s ease;
+}
+
+.section-toggle.is-open .section-chevron {
+  transform: rotate(180deg);
+}
+
+.section-more {
   display: block;
-}
-
-.collapse-item > .card,
-.collapse-item > .step {
-  height: 100%;
-}
-
-.collapse-toggle {
-  display: block;
-  margin: 26px auto 0;
-  border-color: var(--line);
+  width: fit-content;
+  margin: 22px auto 0;
+  border: 1px solid var(--line);
+  border-radius: 30px;
   background: var(--card);
-  box-shadow: none;
   color: var(--gold2);
-  font-size: 16px;
-  padding: 12px 30px;
-  backdrop-filter: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 800;
+  padding: 9px 20px;
+  transition: border-color .2s, background .2s, color .2s;
 }
 
-.collapse-toggle:hover {
+.section-more:hover {
   border-color: var(--gold);
-  box-shadow: 0 10px 24px rgba(160, 120, 40, .16);
-  color: var(--gold2);
-  transform: none;
+  background: rgba(200, 150, 47, .1);
 }
 
-.no-js .collapse-item {
-  display: block;
+.no-js .section-more {
+  display: none;
+}
+
+.section-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .45s ease, opacity .35s ease;
+}
+
+.no-js .section-body {
+  max-height: none;
   overflow: visible;
+  opacity: 1;
 }
 
-.no-js .collapse-toggle {
+.no-js .section-toggle {
+  cursor: default;
+  pointer-events: none;
+}
+
+.no-js .section-chevron {
   display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .collapse-item,
+  .section-body,
+  .section-chevron,
   .copy-toast {
     transition: none;
   }

@@ -108,8 +108,31 @@ const TARIFF_MESSAGES = {
 };
 
 const COPY_TOAST_TIMEOUT = 5000;
-const COLLAPSE_ANIMATION_MS = 500;
+const SECTION_ANIMATION_MS = 450;
 let copyToastTimer = null;
+
+const HERO_STORAGE_KEY = "sfera-hero-image";
+const HERO_FALLBACK_IMAGE = "images/hero.jpg";
+
+// Доступные кадры шапки: изображения подготовлены из images/BRAND в images/hero/.
+const HERO_IMAGES = {
+  winter: {
+    day: "images/hero/hero-winter-day.webp",
+    evening: "images/hero/hero-winter-evening.webp"
+  },
+  spring: {
+    day: "images/hero/hero-spring-day.webp",
+    evening: "images/hero/hero-spring-evening.webp"
+  },
+  summer: {
+    day: "images/hero/hero-summer-day.webp",
+    evening: "images/hero/hero-summer-evening.webp"
+  },
+  autumn: {
+    day: "images/hero/hero-autumn-day.webp",
+    evening: "images/hero/hero-autumn-evening.webp"
+  }
+};
 
 const faqs = [
   {
@@ -287,6 +310,71 @@ function initMaxContact() {
   }
 }
 
+function getSeason(month) {
+  if (month === 11 || month <= 1) {
+    return "winter";
+  }
+
+  if (month <= 4) {
+    return "spring";
+  }
+
+  if (month <= 7) {
+    return "summer";
+  }
+
+  return "autumn";
+}
+
+function getHeroImage(now = new Date()) {
+  const seasonImages = HERO_IMAGES[getSeason(now.getMonth())];
+
+  if (!seasonImages) {
+    return HERO_FALLBACK_IMAGE;
+  }
+
+  const hour = now.getHours();
+  const partOfDay = hour >= 18 || hour < 6 ? "evening" : "day";
+
+  return seasonImages[partOfDay] || seasonImages.day || HERO_FALLBACK_IMAGE;
+}
+
+function initHeroImage() {
+  const image = document.querySelector("[data-hero-image]");
+
+  if (!image) {
+    return;
+  }
+
+  let source = "";
+
+  try {
+    source = sessionStorage.getItem(HERO_STORAGE_KEY) || "";
+  } catch {
+    source = "";
+  }
+
+  if (!source) {
+    source = getHeroImage();
+
+    try {
+      sessionStorage.setItem(HERO_STORAGE_KEY, source);
+    } catch {
+      // sessionStorage недоступен — работаем без кэша на сессию.
+    }
+  }
+
+  image.addEventListener("error", () => {
+    if (image.getAttribute("src") !== HERO_FALLBACK_IMAGE) {
+      image.src = HERO_FALLBACK_IMAGE;
+    }
+  });
+
+  if (source && image.getAttribute("src") !== source) {
+    image.src = source;
+  }
+}
+
 function setTheme(theme) {
   const themeBtn = getElement("themeBtn");
   const themeLabel = theme === "dark" ? "Светлая" : "Тёмная";
@@ -365,107 +453,118 @@ function initFaq() {
   faqRoot.replaceChildren(list);
 }
 
-function updateCollapseToggle(root, expanded) {
-  const toggle = root.querySelector("[data-collapse-toggle]");
-
-  if (!toggle) {
-    return;
-  }
-
-  toggle.setAttribute("aria-expanded", String(expanded));
-  toggle.textContent = expanded ? "Свернуть" : "Показать ещё";
-}
-
-function expandCollapseItem(item) {
-  item.dataset.collapseState = "open";
-  item.classList.add("is-open");
-  item.style.overflow = "hidden";
-  item.style.maxHeight = "0px";
-  item.style.opacity = "0";
+function expandSectionBody(body) {
+  body.dataset.sectionState = "open";
+  body.style.overflow = "hidden";
+  body.style.maxHeight = "0px";
+  body.style.opacity = "0";
 
   // Принудительный reflow, чтобы transition начался именно с нулевой высоты.
-  void item.offsetHeight;
+  void body.offsetHeight;
 
-  item.style.maxHeight = `${item.scrollHeight}px`;
-  item.style.opacity = "1";
+  body.style.maxHeight = `${body.scrollHeight}px`;
+  body.style.opacity = "1";
 
-  // Страховка: даже если transitionend не придёт, карточка раскроется полностью.
+  // Страховка: даже если transitionend не придёт, секция раскроется полностью.
   window.setTimeout(() => {
-    if (item.dataset.collapseState === "open") {
-      item.style.maxHeight = "none";
-      item.style.overflow = "visible";
+    if (body.dataset.sectionState === "open") {
+      body.style.maxHeight = "none";
+      body.style.overflow = "visible";
     }
-  }, COLLAPSE_ANIMATION_MS);
+  }, SECTION_ANIMATION_MS);
 }
 
-function collapseCollapseItem(item) {
-  if (!item.classList.contains("is-open")) {
+function collapseSectionBody(body) {
+  if (body.dataset.sectionState === "closed") {
     return;
   }
 
-  item.dataset.collapseState = "closed";
-  item.style.overflow = "hidden";
-  item.style.maxHeight = `${item.scrollHeight}px`;
-  item.style.opacity = "1";
+  body.dataset.sectionState = "closed";
+  body.style.overflow = "hidden";
+  body.style.maxHeight = `${body.scrollHeight}px`;
+  body.style.opacity = "1";
 
-  void item.offsetHeight;
+  void body.offsetHeight;
 
-  item.style.maxHeight = "0px";
-  item.style.opacity = "0";
-
-  // Страховка, если transitionend не придёт (например, анимации отключены).
-  window.setTimeout(() => {
-    if (item.dataset.collapseState === "closed" && item.classList.contains("is-open")) {
-      item.classList.remove("is-open");
-      item.removeAttribute("style");
-    }
-  }, COLLAPSE_ANIMATION_MS);
+  body.style.maxHeight = "0px";
+  body.style.opacity = "0";
 }
 
-function initCollapseItem(item) {
-  item.addEventListener("transitionend", (event) => {
+function initSectionBody(body) {
+  body.addEventListener("transitionend", (event) => {
     if (event.propertyName !== "max-height") {
       return;
     }
 
-    if (item.dataset.collapseState === "open") {
-      item.style.maxHeight = "none";
-      item.style.overflow = "visible";
+    if (body.dataset.sectionState === "open") {
+      body.style.maxHeight = "none";
+      body.style.overflow = "visible";
       return;
     }
 
-    item.classList.remove("is-open");
-    item.removeAttribute("style");
+    body.style.maxHeight = "";
+    body.style.opacity = "";
+    body.style.overflow = "";
   });
 }
 
-function setCollapsibleState(root, expanded) {
-  root.querySelectorAll("[data-collapse-item]").forEach((item) => {
-    if (expanded) {
-      expandCollapseItem(item);
-    } else {
-      collapseCollapseItem(item);
+function setSectionState(section, expanded) {
+  const toggles = [...section.querySelectorAll("[data-section-toggle]")];
+  const body = section.querySelector("[data-section-body]");
+
+  if (!toggles.length || !body) {
+    return;
+  }
+
+  section.classList.toggle("is-open", expanded);
+
+  toggles.forEach((toggle) => {
+    toggle.setAttribute("aria-expanded", String(expanded));
+    toggle.classList.toggle("is-open", expanded);
+
+    if (toggle.classList.contains("section-more")) {
+      toggle.textContent = expanded ? "Свернуть" : "Показать подробнее";
     }
   });
 
-  updateCollapseToggle(root, expanded);
+  if (expanded) {
+    expandSectionBody(body);
+  } else {
+    collapseSectionBody(body);
+  }
 }
 
 function initCollapsibleSections() {
-  document.querySelectorAll(".is-collapsible").forEach((root) => {
-    const toggle = root.querySelector("[data-collapse-toggle]");
+  document.querySelectorAll(".is-collapsible").forEach((section) => {
+    const toggles = [...section.querySelectorAll("[data-section-toggle]")];
+    const body = section.querySelector("[data-section-body]");
 
-    if (!toggle) {
+    if (!toggles.length || !body) {
       return;
     }
 
-    root.querySelectorAll("[data-collapse-item]").forEach(initCollapseItem);
+    initSectionBody(body);
 
-    updateCollapseToggle(root, toggle.getAttribute("aria-expanded") === "true");
+    const expanded = toggles[0].getAttribute("aria-expanded") === "true";
 
-    toggle.addEventListener("click", () => {
-      setCollapsibleState(root, toggle.getAttribute("aria-expanded") !== "true");
+    section.classList.toggle("is-open", expanded);
+
+    toggles.forEach((toggle) => {
+      toggle.classList.toggle("is-open", expanded);
+
+      toggle.addEventListener("click", () => {
+        setSectionState(section, toggle.getAttribute("aria-expanded") !== "true");
+      });
     });
+
+    if (expanded) {
+      body.dataset.sectionState = "open";
+      body.style.maxHeight = "none";
+      body.style.overflow = "visible";
+      body.style.opacity = "1";
+    } else {
+      body.dataset.sectionState = "closed";
+    }
   });
 }
 
@@ -482,13 +581,13 @@ function expandCollapsibleFromHash() {
     return;
   }
 
-  const toggle = target.querySelector("[data-collapse-toggle]");
+  const toggle = target.querySelector("[data-section-toggle]");
 
   if (!toggle || toggle.getAttribute("aria-expanded") === "true") {
     return;
   }
 
-  setCollapsibleState(target, true);
+  setSectionState(target, true);
   window.setTimeout(() => target.scrollIntoView({ block: "start" }), 80);
 }
 
@@ -751,6 +850,7 @@ function initApplicationForm() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initHeroImage();
   initFaq();
   initCollapsibleSections();
   initConfiguredContactLinks();
