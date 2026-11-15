@@ -114,7 +114,7 @@ let copyToastTimer = null;
 const HERO_STORAGE_KEY = "sfera-hero-image";
 const HERO_FALLBACK_IMAGE = "images/hero.jpg";
 
-// Доступные кадры шапки: изображения подготовлены из images/BRAND в images/hero/.
+// Доступные кадры шапки: изображения подготовлены из исходников бренда в images/hero/.
 const HERO_IMAGES = {
   winter: {
     day: "images/hero/hero-winter-day.webp",

@@ -5,3 +5,7 @@ desktop.ini
 *.pdf
 Thumbs.db
 .DS_Store
+images/BRAND/
+images/source/
+*.psd
+*.ai

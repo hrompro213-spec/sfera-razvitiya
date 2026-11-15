@@ -991,8 +991,16 @@ a.price:focus-visible {
 .cta-section {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: var(--bg2);
+  background:
+    linear-gradient(rgba(244, 236, 220, .93), rgba(244, 236, 220, .93)),
+    url("images/bg-cta.webp") center / cover no-repeat;
   text-align: center;
+}
+
+[data-theme="dark"] .cta-section {
+  background:
+    linear-gradient(rgba(24, 24, 32, .91), rgba(24, 24, 32, .91)),
+    url("images/bg-cta.webp") center / cover no-repeat;
 }
 
 .cta-phone {
