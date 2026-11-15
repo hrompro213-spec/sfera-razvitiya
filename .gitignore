@@ -9,3 +9,5 @@ images/BRAND/
 images/source/
 *.psd
 *.ai
+.clasp.json
+.clasprc.json

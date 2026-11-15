@@ -70,7 +70,7 @@
 | 4 | Сжать `logo_*.png` (1.4 и 2.9 МБ) или заменить вектором | P1 |
 | 5 | Добавить `loading="lazy"` к `teacher.jpg` и QR-коду | P1 |
 | 6 | Реквизиты оператора ПД в `privacy.html`, `consent.html`, футере | P1 (после Тани) |
-| 7 | Подключить `FORM_ENDPOINT` (Apps Script) и показать реальную отправку формы | P1 |
+| 7 | Подключить `FORM_ENDPOINT` (Apps Script) и показать реальную отправку формы | сделано 15.11.2026 |
 | 8 | Подключить счётчик Метрики (`METRIKA_COUNTER_ID` + код в `index.html`) | P1 |
 | 9 | Поднять до 44 px: `.theme-btn` (34), `.section-more` (42), `.mobile-sticky-bar a` (42) | P2 |
 | 10 | Добавить `:focus-visible` для `.btn`, `.theme-btn`, `.copy-btn`, `.section-more` | P2 |

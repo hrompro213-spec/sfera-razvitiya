@@ -1,6 +1,6 @@
 const THEME_STORAGE_KEY = "sfera-theme";
-// TODO: вставить URL веб-приложения Google Apps Script после деплоя формы.
-const FORM_ENDPOINT = "";
+// URL веб-приложения Google Apps Script (google-apps-script/Code.gs), оканчивается на /exec.
+const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwUFxH2SjkC3WX0CpgTNHn3ZJ1AIpJXE6Kx_NKgGCpYQZ3ESEYAc9iE-ijVazIb5Pau/exec";
 // TODO: после создания счётчика Яндекс.Метрики указать его ID.
 const METRIKA_COUNTER_ID = "";
 const UTM_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
