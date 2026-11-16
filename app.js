@@ -103,6 +103,11 @@ const CONTACT_CONFIG = {
 
 window.SFERA_CONTACTS = CONTACT_CONFIG;
 
+// Липкая мобильная панель держит ровно три канала: четвёртый уводил её
+// во второй ряд (114 px вместо 64). E-mail из панели убран, но остаётся
+// в блоке контактов, в панели «Сферы» и на thank-you.html.
+const MOBILE_BAR_CHANNELS = ["max", "phone", "whatsapp"];
+
 const TARIFF_MESSAGES = {
   "oge-individual": "Здравствуйте! Интересует индивидуальная подготовка к ОГЭ, 1 500 ₽ за час.",
   "oge-vip": "Здравствуйте! Интересует VIP-группа (2–3 человека) по подготовке к ОГЭ, 1 000 ₽ за час.",
@@ -306,10 +311,22 @@ function initAnalyticsEvents() {
   });
 }
 
+// Набор каналов для конкретного списка. Размещения (`placements`) не трогаем:
+// единственное ограничение — липкая мобильная панель держит три канала и один ряд.
+function getChannelsForList(placement) {
+  const channels = getChannelsForPlacement(placement);
+
+  if (placement !== "mobile") {
+    return channels;
+  }
+
+  return channels.filter((channel) => MOBILE_BAR_CHANNELS.includes(getChannelKey(channel)));
+}
+
 function initContactLists() {
   document.querySelectorAll("[data-contact-list]").forEach((root) => {
     const placement = root.dataset.contactList;
-    const channels = getChannelsForPlacement(placement);
+    const channels = getChannelsForList(placement);
 
     if (!channels.length) {
       root.closest(".sfera-panel-contacts, .mobile-sticky-bar, .contact-card")?.classList.add("is-hidden");

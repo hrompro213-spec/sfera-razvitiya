@@ -2008,6 +2008,8 @@ body:not(.simple-page) .footer {
     left: 10px;
     z-index: 95;
     display: grid;
+    /* Ровно три канала (MOBILE_BAR_CHANNELS в app.js) — одна строка по 64 px.
+       Если каналов станет больше, сетка снова уйдёт во второй ряд. */
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     border: 1px solid var(--line);
@@ -2021,6 +2023,8 @@ body:not(.simple-page) .footer {
   .mobile-sticky-bar a {
     display: grid;
     place-items: center;
+    /* Мин. высота кнопки — тач-таргет, а не подгонка под количество каналов:
+       10 + 42 + 10 + 2 = 64 px, от низа окна до верха панели 74 px. */
     min-height: 42px;
     padding: 8px 6px;
     font-size: 13px;
