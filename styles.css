@@ -105,6 +105,12 @@ h3 {
   display: none !important;
 }
 
+/* Пиксель Яндекс.Метрики для посетителей без JS (вместо inline-стиля из кода счётчика). */
+.metrika-pixel {
+  position: absolute;
+  left: -9999px;
+}
+
 .logo-light {
   display: inline;
 }

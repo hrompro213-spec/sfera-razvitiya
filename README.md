@@ -112,17 +112,18 @@ git push gitlab main      # зеркало (по желанию)
 | [docs/ASSETS.md](docs/ASSETS.md) | все изображения: размеры, вес, назначение, дубликаты, схема переименования |
 | [docs/BACKLOG.md](docs/BACKLOG.md) | план работ по этапам, запросы к Тане, технический бэклог |
 
-## Форма заявок и что ещё не подключено
+## Заявки и аналитика
 
-Заявки с формы уходят в Google Таблицу через веб-приложение Google Apps Script:
-код лежит в [google-apps-script/](google-apps-script/Code.gs), URL веб-приложения —
-в константе `FORM_ENDPOINT` в `app.js`. Деплой и обновление описаны в
+Заявки с формы уходят в Google Таблицу через веб-приложение Google Apps Script, и на
+каждую заявку приходит письмо (см. `NOTIFY_EMAILS`): код лежит в
+[google-apps-script/](google-apps-script/Code.gs), URL веб-приложения — в константе
+`FORM_ENDPOINT` в `app.js`. Деплой и обновление описаны в
 [google-apps-script/README.md](google-apps-script/README.md).
 
-Осталась одна заглушка:
-
-- `METRIKA_COUNTER_ID` — номер счётчика Яндекс.Метрики, и код счётчика в
-  `index.html` (сейчас там комментарий-заглушка).
+На сайте подключён счётчик Яндекс.Метрики **114274834** (Вебвизор, карта кликов,
+отслеживание внешних ссылок): код — в `<head>` у `index.html` и `thank-you.html`,
+номер — в `METRIKA_COUNTER_ID` в `app.js`. Цели отправляются через
+`reachAnalyticsGoal()`; перечень — в `ANALYTICS_GOALS`.
 
 ## Требования к правкам
 

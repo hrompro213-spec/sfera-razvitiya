@@ -1,8 +1,8 @@
 const THEME_STORAGE_KEY = "sfera-theme";
 // URL веб-приложения Google Apps Script (google-apps-script/Code.gs), оканчивается на /exec.
 const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwUFxH2SjkC3WX0CpgTNHn3ZJ1AIpJXE6Kx_NKgGCpYQZ3ESEYAc9iE-ijVazIb5Pau/exec";
-// TODO: после создания счётчика Яндекс.Метрики указать его ID.
-const METRIKA_COUNTER_ID = "";
+// Номер счётчика Яндекс.Метрики. Должен совпадать с ym(...) в index.html и thank-you.html.
+const METRIKA_COUNTER_ID = "114274834";
 const UTM_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const ANALYTICS_GOALS = {
   maxClick: "click_max",
@@ -14,6 +14,7 @@ const ANALYTICS_GOALS = {
   emailClick: "click_email",
   formSubmit: "form_submit",
   thankYouRedirect: "thank_you_page_redirect",
+  thankYouView: "thank_you_view",
   heroCtaClick: "hero_cta_click",
   pricingClick: "pricing_click"
 };
@@ -77,11 +78,11 @@ const CONTACT_CONFIG = {
     email: {
       label: "Email",
       shortLabel: "Email",
-      displayValue: "zadonskayamarta@gmail.com",
-      href: "mailto:zadonskayamarta@gmail.com",
+      displayValue: "zadonskaya.tanja@yandex.ru",
+      href: "mailto:zadonskaya.tanja@yandex.ru",
       active: true,
       visible: true,
-      placements: ["contact"]
+      placements: ["contact", "widget", "mobile", "thankyou"]
     },
     sms: {
       label: "SMS",
@@ -109,6 +110,8 @@ const TARIFF_MESSAGES = {
 
 const COPY_TOAST_TIMEOUT = 5000;
 const SECTION_ANIMATION_MS = 450;
+// Сколько ждём колбэк Метрики перед переходом на thank-you.html (страховка от блокировщиков).
+const FORM_REDIRECT_TIMEOUT_MS = 300;
 let copyToastTimer = null;
 
 const HERO_STORAGE_KEY = "sfera-hero-image";
@@ -165,15 +168,26 @@ function getElement(id) {
   return document.getElementById(id);
 }
 
-function reachAnalyticsGoal(goalName, params = {}) {
+function getMetrikaCounterId() {
+  return window.SFERA_METRIKA_COUNTER_ID || METRIKA_COUNTER_ID;
+}
+
+// onSent — необязательный колбэк Метрики: срабатывает, когда цель отправлена.
+// Возвращает true, если цель реально передана в ym().
+function reachAnalyticsGoal(goalName, params = {}, onSent) {
   if (!goalName) {
-    return;
+    return false;
   }
 
-  const counterId = window.SFERA_METRIKA_COUNTER_ID || METRIKA_COUNTER_ID;
+  const counterId = getMetrikaCounterId();
+  const canSendToMetrika = typeof window.ym === "function" && Boolean(counterId);
 
-  if (typeof window.ym === "function" && counterId) {
-    window.ym(counterId, "reachGoal", goalName, params);
+  if (canSendToMetrika) {
+    if (typeof onSent === "function") {
+      window.ym(counterId, "reachGoal", goalName, params, onSent);
+    } else {
+      window.ym(counterId, "reachGoal", goalName, params);
+    }
   }
 
   window.dispatchEvent(new CustomEvent("sfera:analyticsGoal", {
@@ -182,6 +196,8 @@ function reachAnalyticsGoal(goalName, params = {}) {
       params
     }
   }));
+
+  return canSendToMetrika;
 }
 
 window.SFERA_ANALYTICS = {
@@ -792,6 +808,28 @@ async function submitApplicationForm(form) {
   });
 }
 
+// Переход на thank-you.html: ждём, пока Метрика отправит form_submit,
+// но не дольше FORM_REDIRECT_TIMEOUT_MS — иначе посетитель «залипнет» с блокировщиком.
+function redirectToThankYouPage(goalName, params = {}) {
+  let isRedirected = false;
+
+  const goToThankYou = () => {
+    if (isRedirected) {
+      return;
+    }
+
+    isRedirected = true;
+    window.location.href = "thank-you.html";
+  };
+
+  window.setTimeout(goToThankYou, FORM_REDIRECT_TIMEOUT_MS);
+
+  if (!reachAnalyticsGoal(goalName, params, goToThankYou)) {
+    // Метрики нет или счётчик не загрузился — не ждём таймаут.
+    goToThankYou();
+  }
+}
+
 function initApplicationForm() {
   const form = getElement("application-form");
 
@@ -832,19 +870,28 @@ function initApplicationForm() {
 
     try {
       await submitApplicationForm(form);
-      reachAnalyticsGoal(ANALYTICS_GOALS.formSubmit, {
-        preferredContact: form.elements.preferred_contact?.value || "",
-        childGrade: form.elements.child_grade?.value || ""
-      });
       reachAnalyticsGoal(ANALYTICS_GOALS.thankYouRedirect, {
         url: "thank-you.html"
       });
-      window.location.href = "thank-you.html";
+      redirectToThankYouPage(ANALYTICS_GOALS.formSubmit, {
+        preferredContact: form.elements.preferred_contact?.value || "",
+        childGrade: form.elements.child_grade?.value || ""
+      });
     } catch {
       setFormMessage(messageEl, "Не получилось отправить заявку. Пожалуйста, попробуйте ещё раз или свяжитесь с нами напрямую.");
       renderFormErrorContacts(errorContacts);
       setSubmitState(submitButton, false);
     }
+  });
+}
+
+function initThankYouGoal() {
+  if (document.body.dataset.page !== "thank-you") {
+    return;
+  }
+
+  reachAnalyticsGoal(ANALYTICS_GOALS.thankYouView, {
+    path: window.location.pathname
   });
 }
 
@@ -859,6 +906,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMaxCopy();
   initTariffClicks();
   initAnalyticsEvents();
+  initThankYouGoal();
   initApplicationForm();
   expandCollapsibleFromHash();
   window.addEventListener("hashchange", expandCollapsibleFromHash);

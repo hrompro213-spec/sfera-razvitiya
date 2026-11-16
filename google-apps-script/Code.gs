@@ -43,8 +43,23 @@ const REQUIRED_FIELDS = ['parent_name', 'phone'];
 /** Поля-приманки для ботов. Если заполнено любое — заявка не сохраняется. */
 const HONEYPOT_FIELDS = ['website', 'company'];
 
+/**
+ * Символы, с которых Google Таблицы начинают разбор значения как формулы.
+ * Именно из-за них телефон «+7…» превращался в #ERROR!, а «=тест» — в #NAME?.
+ */
+const FORMULA_START_PATTERN = /^[=+\-@\t\r]/;
+
 /** Первая колонка — время получения заявки на сервере. */
 const RECEIVED_AT_TITLE = 'Получено';
+
+/** Имя служебного листа, куда пишутся ошибки (почта, запись в таблицу). */
+const ERRORS_SHEET_NAME = 'Errors';
+
+/** Заголовки служебного листа ошибок. */
+const ERRORS_HEADERS = ['Время', 'Функция', 'Сообщение'];
+
+/** Кому приходят письма-уведомления о новых заявках (получатели через запятую). */
+const NOTIFY_EMAILS = ['zadonskayamarta@gmail.com', 'zadonskaya.tanja@yandex.ru'];
 
 /**
  * Создаёт (или обновляет) лист "Leads": заголовки, оформление, ширины колонок.
@@ -85,7 +100,11 @@ function setupSheet() {
   sheet.setColumnWidth(5, 160);
   sheet.setColumnWidth(6, 320);
 
-  return 'Лист «' + SHEET_NAME + '» готов. Колонок: ' + headers.length + '.';
+  // Служебный лист для ошибок создаём сразу: он нужен, даже если писем пока нет.
+  ensureErrorsSheet_();
+
+  return 'Лист «' + SHEET_NAME + '» готов. Колонок: ' + headers.length +
+    '. Лист «' + ERRORS_SHEET_NAME + '» готов.';
 }
 
 /**
@@ -110,18 +129,27 @@ function doPost(e) {
       return jsonResponse_({ ok: false, error: 'Заполните обязательные поля: ' + missing.join(', ') });
     }
 
+    const row = buildRow_(params);
     const lock = LockService.getScriptLock();
     lock.waitLock(30000);
 
     try {
-      getLeadsSheet_().appendRow(buildRow_(params));
+      appendLeadRow_(row);
     } finally {
       lock.releaseLock();
     }
 
+    // Письмо уходит после releaseLock и в try/catch: сбой почты
+    // не должен отменять сохранённую заявку и портить ответ сайту.
+    try {
+      sendLeadNotification(row);
+    } catch (error) {
+      logError_('sendLeadNotification', error);
+    }
+
     return jsonResponse_({ ok: true });
   } catch (error) {
-    console.error('doPost failed: ' + (error && error.stack ? error.stack : error));
+    logError_('doPost', error);
     return jsonResponse_({ ok: false, error: 'Внутренняя ошибка сервера' });
   }
 }
@@ -139,6 +167,217 @@ function doGet() {
   });
 }
 
+/**
+ * Письмо-уведомление о новой заявке: обычный текст, поля «Название: значение».
+ * @param {Array} row Строка в формате buildRow_(): [время получения, ...значения FORM_FIELDS].
+ */
+function sendLeadNotification(row) {
+  const values = row || [];
+  const lead = {};
+
+  FORM_FIELDS.forEach(function (field, index) {
+    lead[field.key] = stripCellEscape_(values[index + 1]).trim();
+  });
+
+  const subject = 'Новая заявка — ' + (lead.parent_name || 'без имени') + ', ' + (lead.child_grade || 'класс не указан');
+  const lines = ['Дата: ' + (values[0] || ''), ''];
+
+  FORM_FIELDS.forEach(function (field) {
+    lines.push(field.title + ': ' + (lead[field.key] || '—'));
+  });
+
+  lines.push('');
+  lines.push('Все заявки: https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/edit');
+
+  MailApp.sendEmail({
+    to: NOTIFY_EMAILS.join(','),
+    subject: subject,
+    body: lines.join('\n'),
+    name: 'Сфера Развития — заявки'
+  });
+}
+
+/**
+ * Тестовая отправка письма. Запустить из редактора Apps Script один раз после
+ * деплоя — так скрипт получает разрешение «Отправка почты от вашего имени».
+ */
+function sendTestNotification() {
+  const testRow = buildRow_({
+    parent_name: 'Тестовая заявка',
+    phone: '+7 900 000-00-00',
+    child_grade: '5 класс',
+    preferred_contact: 'phone',
+    study_goal: 'Проверка уведомлений после деплоя',
+    selected_plan: 'oge-individual',
+    utm_source: 'test'
+  });
+
+  sendLeadNotification(testRow);
+
+  return 'Письмо отправлено: ' + NOTIFY_EMAILS.join(', ');
+}
+
+/**
+ * Диагностика почты: запускать вручную из редактора Apps Script.
+ * Показывает остаток дневной квоты и результат отправки тестового письма.
+ * @return {Object} { quota: number, sent: boolean, to: string[], error?: string }
+ */
+function diagnoseMail() {
+  const result = { quota: 0, sent: false, to: NOTIFY_EMAILS };
+
+  try {
+    result.quota = MailApp.getRemainingDailyQuota();
+  } catch (error) {
+    result.error = error && error.message ? error.message : String(error);
+    logError_('diagnoseMail / quota', error);
+    return result;
+  }
+
+  try {
+    MailApp.sendEmail({
+      to: NOTIFY_EMAILS.join(','),
+      subject: 'Диагностика почты — ' + Utilities.formatDate(
+        new Date(),
+        Session.getScriptTimeZone() || 'Europe/Moscow',
+        'dd.MM.yyyy HH:mm'
+      ),
+      body: 'Техническое письмо диагностики «Сфера Развития».\n' +
+        'Остаток квоты писем на сегодня: ' + result.quota + '.\n' +
+        'Получатели: ' + NOTIFY_EMAILS.join(', '),
+      name: 'Сфера Развития — заявки'
+    });
+    result.sent = true;
+  } catch (error) {
+    result.error = error && error.message ? error.message : String(error);
+    logError_('diagnoseMail / send', error);
+  }
+
+  return result;
+}
+
+/**
+ * Приводит значение к безопасной для таблицы строке.
+ * Google Таблицы трактуют как формулу значения, начинающиеся с = + - @ или с
+ * табуляции / перевода строки. Ведущий апостроф переводит ячейку в текст
+ * (в самой ячейке он не отображается) — защита от formula injection.
+ * @param {*} value Значение из формы (может быть null или undefined).
+ * @return {string} Безопасная строка.
+ */
+function sanitizeCellValue_(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  const text = String(value);
+
+  if (!text) {
+    return text;
+  }
+
+  return FORMULA_START_PATTERN.test(text) ? "'" + text : text;
+}
+
+/** true, если значение уже помечено апострофом в sanitizeCellValue_. */
+function isEscapedCellValue_(value) {
+  const text = String(value === null || value === undefined ? '' : value);
+
+  return text.charAt(0) === "'" && FORMULA_START_PATTERN.test(text.slice(1));
+}
+
+/** Снимает апостроф, добавленный sanitizeCellValue_ (для письма и rich text). */
+function stripCellEscape_(value) {
+  const text = String(value === null || value === undefined ? '' : value);
+
+  return isEscapedCellValue_(text) ? text.slice(1) : text;
+}
+
+/**
+ * Добавляет строку заявки в лист Leads.
+ * Значения с апострофом (после sanitizeCellValue_) перезаписываются как rich text:
+ * Google при USER_ENTERED разбирает «=…» и «+…» как формулы даже с апострофом
+ * впереди, а rich text — это гарантированно текст (апостроф в ячейке не остаётся).
+ * @param {Array} values Строка в формате buildRow_().
+ * @return {number} Номер добавленной строки.
+ */
+function appendLeadRow_(values) {
+  const sheet = getLeadsSheet_();
+  const rowIndex = sheet.getLastRow() + 1;
+  const rowRange = sheet.getRange(rowIndex, 1, 1, values.length);
+
+  rowRange.setValues([values]);
+
+  values.forEach(function (value, index) {
+    if (!isEscapedCellValue_(value)) {
+      return;
+    }
+
+    const cell = sheet.getRange(rowIndex, index + 1);
+    const text = String(value).slice(1);
+
+    try {
+      cell.setRichTextValue(SpreadsheetApp.newRichTextValue().setText(text).build());
+
+      if (cell.getFormula()) {
+        logError_('appendLeadRow_', new Error('rich text не сработал, оставлен апостроф: ' + text));
+      }
+    } catch (error) {
+      logError_('appendLeadRow_', error);
+    }
+  });
+
+  return rowIndex;
+}
+
+/** Создаёт (или обновляет) служебный лист ошибок. */
+function ensureErrorsSheet_() {
+  const spreadsheet = getSpreadsheet_();
+  let sheet = spreadsheet.getSheetByName(ERRORS_SHEET_NAME);
+
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(ERRORS_SHEET_NAME);
+  }
+
+  const headerRange = sheet.getRange(1, 1, 1, ERRORS_HEADERS.length);
+  headerRange.setValues([ERRORS_HEADERS]);
+  headerRange.setFontWeight('bold');
+  headerRange.setBackground('#7f1d1d');
+  headerRange.setFontColor('#ffffff');
+  sheet.setFrozenRows(1);
+  sheet.setColumnWidth(1, 150);
+  sheet.setColumnWidth(2, 190);
+  sheet.setColumnWidth(3, 700);
+
+  return sheet;
+}
+
+/** Лист ошибок; создаёт его, если ещё нет. */
+function getErrorsSheet_() {
+  const spreadsheet = getSpreadsheet_();
+  const sheet = spreadsheet.getSheetByName(ERRORS_SHEET_NAME);
+
+  return sheet || ensureErrorsSheet_();
+}
+
+/**
+ * Пишет строку в лист Errors: время, функция, сообщение и первые 500 символов stack.
+ * Никогда не бросает исключение наружу — сбой логирования не должен ронять заявку.
+ * @param {string} functionName Имя функции, где произошла ошибка.
+ * @param {*} error Объект ошибки.
+ */
+function logError_(functionName, error) {
+  try {
+    const timeZone = Session.getScriptTimeZone() || 'Europe/Moscow';
+    const time = Utilities.formatDate(new Date(), timeZone, 'dd.MM.yyyy HH:mm:ss');
+    const message = error && error.message ? String(error.message) : String(error);
+    const stack = error && error.stack ? String(error.stack).slice(0, 500) : '';
+    const details = stack ? message + '\n' + stack : message;
+
+    getErrorsSheet_().appendRow([time, String(functionName), sanitizeCellValue_(details)]);
+  } catch (logError) {
+    console.error('Не удалось записать ошибку в лист ' + ERRORS_SHEET_NAME + ': ' + logError);
+  }
+}
+
 /** Заголовки листа: время получения + поля формы. */
 function getHeaders_() {
   return [RECEIVED_AT_TITLE].concat(
@@ -148,14 +387,15 @@ function getHeaders_() {
   );
 }
 
-/** Строка заявки в порядке заголовков. */
+/** Строка заявки в порядке заголовков. Значения защищены от формул. */
 function buildRow_(params) {
   const timeZone = Session.getScriptTimeZone() || 'Europe/Moscow';
   const receivedAt = Utilities.formatDate(new Date(), timeZone, 'dd.MM.yyyy HH:mm:ss');
 
+  // Первая колонка — серверное время, а не пользовательский ввод: её не экранируем.
   return [receivedAt].concat(
     FORM_FIELDS.map(function (field) {
-      return String(params[field.key] || '').trim();
+      return sanitizeCellValue_(String(params[field.key] || '').trim());
     })
   );
 }

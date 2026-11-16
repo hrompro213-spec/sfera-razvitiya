@@ -71,7 +71,7 @@
 | 5 | Добавить `loading="lazy"` к `teacher.jpg` и QR-коду | P1 |
 | 6 | Реквизиты оператора ПД в `privacy.html`, `consent.html`, футере | P1 (после Тани) |
 | 7 | Подключить `FORM_ENDPOINT` (Apps Script) и показать реальную отправку формы | сделано 15.11.2026 |
-| 8 | Подключить счётчик Метрики (`METRIKA_COUNTER_ID` + код в `index.html`) | P1 |
+| 8 | Подключить счётчик Метрики (`METRIKA_COUNTER_ID` + код в `index.html`) | сделано 15.11.2026 |
 | 9 | Поднять до 44 px: `.theme-btn` (34), `.section-more` (42), `.mobile-sticky-bar a` (42) | P2 |
 | 10 | Добавить `:focus-visible` для `.btn`, `.theme-btn`, `.copy-btn`, `.section-more` | P2 |
 | 11 | Удалить мёртвый CSS: `.schedule`, `.day*`, `.max-details*`, `.price .old`, `.hero h1 span` | P2 |
