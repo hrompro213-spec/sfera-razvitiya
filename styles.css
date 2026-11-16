@@ -81,6 +81,14 @@ h3 {
   text-wrap: balance;
 }
 
+/* Длинные слова в заголовках («конфиденциальности» на 390 px) не должны
+   давать горизонтальную прокрутку: переносим слово, если оно не влезает. */
+h1,
+h2 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 .icon-sprite {
   position: absolute;
   width: 0;
@@ -231,7 +239,7 @@ header {
 
 .logo img {
   width: auto;
-  height: 42px;
+  height: 64px;
 }
 
 .nav-right {
@@ -863,12 +871,14 @@ a.price:focus-visible {
 }
 
 .teacher-photo {
-  width: 170px;
-  height: 215px;
+  width: 380px;
+  height: auto;
+  aspect-ratio: 4 / 5;
   border: 2px solid var(--gold);
-  border-radius: 16px;
+  border-radius: 18px;
   flex-shrink: 0;
   object-fit: cover;
+  object-position: center;
 }
 
 .teacher-content {
@@ -1598,8 +1608,7 @@ body:not(.simple-page) .footer {
 
   .teacher-photo {
     width: 100%;
-    height: auto;
-    max-height: 360px;
+    max-width: none;
   }
 
   .form-grid {

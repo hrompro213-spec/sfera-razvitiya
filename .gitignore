@@ -11,3 +11,5 @@ images/source/
 *.ai
 .clasp.json
 .clasprc.json
+
+images/*-source.jpg

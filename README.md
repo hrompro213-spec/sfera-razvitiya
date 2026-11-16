@@ -57,9 +57,12 @@ sfera-razvitiya/
 │   ├── og-cover.jpg    # обложка для соцсетей 1200×630
 │   ├── bg-cta.webp     # фон блока #contact
 │   ├── bg.jpg          # мастер-файл под bg-cta.webp
-│   ├── logo_white.png  # логотип для светлой темы
-│   ├── logo_black.png  # логотип для тёмной темы
-│   ├── teacher.jpg     # фото педагога
+│   ├── logo-light.png  # знак для шапки, светлая тема (PNG с прозрачностью)
+│   ├── logo-dark.png   # знак для шапки, тёмная тема
+│   ├── logo-lockup-light.png / logo-lockup-dark.png  # полный логотип с надписями (og, письма)
+│   ├── logo-source.png # исходник логотипа 2048×2048, RGBA
+│   ├── teacher.jpg     # фото педагога 4:5 (1229×1536)
+│   ├── teacher-source.jpg # исходник фото преподавателя (на сайте не используется)
 │   ├── max-qr.jpg      # QR-код MAX
 │   └── hero/           # 8 сезонных кадров шапки (WebP)
 ├── docs/
