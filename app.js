@@ -118,10 +118,15 @@ const COPY_TOAST_TIMEOUT = 5000;
 const SECTION_ANIMATION_MS = 450;
 // Длительность появления панели «Сферы» — совпадает с transition в styles.css.
 const SFERA_PANEL_ANIMATION_MS = 220;
+// Шапка получает фон после этой прокрутки (класс .is-scrolled).
+const HEADER_SCROLL_THRESHOLD = 24;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 // Сколько ждём колбэк Метрики перед переходом на thank-you.html (страховка от блокировщиков).
 const FORM_REDIRECT_TIMEOUT_MS = 300;
 let copyToastTimer = null;
+// Закрыватели модальных слоёв: меню и панель «Сферы» не открываются одновременно.
+let closeSferaPanel = null;
+let closeSiteMenu = null;
 
 const HERO_STORAGE_KEY = "sfera-hero-image";
 const HERO_FALLBACK_IMAGE = "images/hero.jpg";
@@ -271,7 +276,15 @@ function initConfiguredContactLinks() {
     link.href = channel.href;
 
     if (link.hasAttribute("data-contact-phone") && channel.displayValue) {
-      link.textContent = channel.displayValue;
+      // В шапке рядом с номером стоит иконка трубки — меняем только текст,
+      // остальные ссылки (футер, меню, липкая панель) переписываем целиком.
+      const label = link.querySelector("[data-phone-text]");
+
+      if (label) {
+        label.textContent = channel.displayValue;
+      } else {
+        link.textContent = channel.displayValue;
+      }
     }
   });
 }
@@ -379,6 +392,8 @@ function initSferaWidget() {
 
   function openPanel() {
     window.clearTimeout(hideTimer);
+    // Меню и панель «Сферы» — два модальных слоя, одновременно не открываются.
+    closeSiteMenu?.();
     panel.hidden = false;
 
     if (overlay) {
@@ -422,6 +437,9 @@ function initSferaWidget() {
       launcher.focus({ preventScroll: true });
     }
   }
+
+  // Меню вызывает этот закрыватель, когда открывается поверх «Сферы».
+  closeSferaPanel = () => closePanel();
 
   function scrollToQuestionAnchor(target, hash) {
     // #format — аккордеон: раскрываем так же, как при переходе по якорю.
@@ -573,6 +591,111 @@ function initHeroImage() {
   if (source && image.getAttribute("src") !== source) {
     image.src = source;
   }
+}
+
+// Шапка: после 24 px прокрутки — фон, линия и тень. Класс переключаем
+// в rAF, чтобы обработчик оставался дешёвым.
+function initHeaderScroll() {
+  const header = document.querySelector(".site-header");
+
+  if (!header) {
+    return;
+  }
+
+  let frame = 0;
+
+  const sync = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > HEADER_SCROLL_THRESHOLD);
+    frame = 0;
+  };
+
+  sync();
+
+  window.addEventListener("scroll", () => {
+    if (!frame) {
+      frame = window.requestAnimationFrame(sync);
+    }
+  }, { passive: true });
+}
+
+// Мобильное меню: выезжает панелью справа. Закрывается по Esc, клику вне,
+// кнопке «Закрыть» и переходу по ссылке; пока открыто — фон не скроллится.
+function initSiteMenu() {
+  const menu = document.querySelector("[data-mobile-menu]");
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const closeButton = document.querySelector("[data-menu-close]");
+  const scrim = document.querySelector("[data-menu-scrim]");
+
+  if (!menu || !toggle) {
+    return;
+  }
+
+  const mobileQuery = window.matchMedia("(max-width: 900px)");
+  const isOpen = () => document.body.classList.contains("is-menu-open");
+
+  function openMenu() {
+    if (isOpen()) {
+      return;
+    }
+
+    // Панель «Сферы» и меню не должны быть открыты одновременно.
+    closeSferaPanel?.();
+    document.body.classList.add("is-menu-open");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Закрыть меню");
+    closeButton?.focus({ preventScroll: true });
+  }
+
+  function closeMenu({ returnFocus = false } = {}) {
+    if (!isOpen()) {
+      return;
+    }
+
+    document.body.classList.remove("is-menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Открыть меню");
+
+    if (returnFocus) {
+      toggle.focus({ preventScroll: true });
+    }
+  }
+
+  closeSiteMenu = () => closeMenu();
+
+  toggle.addEventListener("click", () => {
+    if (isOpen()) {
+      closeMenu({ returnFocus: true });
+      return;
+    }
+
+    openMenu();
+  });
+
+  closeButton?.addEventListener("click", () => closeMenu({ returnFocus: true }));
+  scrim?.addEventListener("click", () => closeMenu({ returnFocus: true }));
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => closeMenu());
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isOpen()) {
+      closeMenu({ returnFocus: true });
+    }
+  });
+
+  // На десктопе панели нет — состояние сбрасываем, иначе фон останется заблокированным.
+  const handleBreakpoint = () => {
+    if (!mobileQuery.matches) {
+      closeMenu();
+    }
+  };
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", handleBreakpoint);
+  }
+
+  window.addEventListener("resize", handleBreakpoint);
 }
 
 function setTheme(theme) {
@@ -1081,6 +1204,8 @@ function initThankYouGoal() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initHeaderScroll();
+  initSiteMenu();
   initHeroImage();
   initFaq();
   initCollapsibleSections();

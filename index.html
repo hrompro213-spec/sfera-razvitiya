@@ -26,6 +26,8 @@
 
   <script>document.documentElement.classList.replace("no-js", "js");</script>
   <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="assets/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="images/hero.jpg" as="image" fetchpriority="high">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -211,54 +213,80 @@
     <path d="M6.8 6.8 17.2 17.2"/>
     <path d="M17.2 6.8 6.8 17.2"/>
   </symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h16"/>
+    <path d="M4 12h16"/>
+    <path d="M4 17h16"/>
+  </symbol>
+  <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.3 3.8h3l1.4 3.6-1.9 1.4a12.4 12.4 0 0 0 6.4 6.4l1.4-1.9 3.6 1.4v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.3 6a2 2 0 0 1 2-2.2Z"/>
+  </symbol>
 </svg>
-<div class="top-cta top-cta--alt">
-  <p class="top-cta-text">Курс ОГЭ по математике с нуля — для 8 классов. К экзамену нужно готовиться заранее.</p>
-  <a class="top-cta-link" data-contact-link="max">Записаться в MAX →</a>
-</div>
-
-<header>
+<header class="site-header">
   <div class="nav">
     <a href="#hero" class="logo" aria-label="Сфера Развития — к первому экрану">
-      <img src="images/logo-light.png" class="logo-light" alt="Сфера Развития" width="128" height="128">
-      <img src="images/logo-dark.png" class="logo-dark" alt="Сфера Развития" width="128" height="128">
-      Сфера Развития
+      <img src="images/logo-light.png" class="logo-light" alt="" width="128" height="128">
+      <img src="images/logo-dark.png" class="logo-dark" alt="" width="128" height="128">
+      <span class="logo-text">Сфера Развития</span>
     </a>
-    <nav class="nav-links" aria-label="Основная навигация">
-      <a href="#audience">Кому подходит</a>
-      <a href="#results">Что получит ребёнок</a>
-      <a href="#pricing">Цены</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <div class="nav-right">
-      <a class="nav-phone" data-contact-link="phone" data-contact-phone>Телефон</a>
-      <button class="theme-btn" type="button" id="themeBtn" aria-label="Переключить тему">
-        <svg class="theme-btn-icon theme-btn-icon--moon icon" aria-hidden="true"><use href="#icon-moon"></use></svg>
-        <svg class="theme-btn-icon theme-btn-icon--sun icon" aria-hidden="true"><use href="#icon-sun"></use></svg>
-        <span class="theme-btn-text">Тёмная</span>
-      </button>
+
+    <div class="nav-menu" id="siteMenu" data-mobile-menu>
+      <div class="nav-menu-head">
+        <span class="nav-menu-title">Меню</span>
+        <button class="nav-menu-close" type="button" aria-label="Закрыть меню" data-menu-close>
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </div>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#audience">Кому подходит</a>
+        <a href="#results">Что получит ребёнок</a>
+        <a href="#pricing">Цены</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="nav-phone" data-contact-link="phone" data-contact-phone aria-label="Позвонить">
+        <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
+        <span class="nav-phone-text" data-phone-text>+7 987 261 77 79</span>
+      </a>
+      <div class="nav-right">
+        <button class="theme-btn" type="button" id="themeBtn" aria-label="Переключить тему">
+          <svg class="theme-btn-icon theme-btn-icon--moon icon" aria-hidden="true"><use href="#icon-moon"></use></svg>
+          <svg class="theme-btn-icon theme-btn-icon--sun icon" aria-hidden="true"><use href="#icon-sun"></use></svg>
+          <span class="theme-btn-text">Тёмная</span>
+        </button>
+      </div>
+      <a class="btn nav-menu-cta" data-contact-link="max">Записаться в MAX</a>
     </div>
+
+    <a class="nav-phone-compact" data-contact-link="phone" aria-label="Позвонить">
+      <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
+    </a>
+
+    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="siteMenu" aria-label="Открыть меню" data-menu-toggle>
+      <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+    </button>
   </div>
+
+  <div class="menu-scrim" data-menu-scrim></div>
 </header>
 
 <main>
   <section class="hero" id="hero">
-    <div class="hero-media" aria-hidden="true">
-      <img class="hero-image" src="images/hero.jpg" alt="" width="1600" height="894" loading="eager" fetchpriority="high" decoding="async" data-hero-image>
-    </div>
-    <div class="container">
-      <a class="badge badge--link" data-contact-link="max">Предварительная запись на летний интенсив · места ограничены</a>
-      <h1>Возвращаем желание учиться и помогаем понять материал</h1>
-      <p>Русский язык, математика и развитие внимания, памяти и мышления — в тёплом онлайн-формате с педагогом.</p>
-      <div class="hero-actions">
-        <a class="btn btn-lg" data-contact-link="max" data-analytics-goal="hero_cta_click" data-analytics-label="hero_max">Записаться в MAX</a>
-        <a class="btn btn-lg btn-secondary" data-contact-link="phone" data-analytics-goal="hero_cta_click" data-analytics-label="hero_phone">Позвонить</a>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <p class="hero-offer hero-reveal">
+          <svg class="icon" aria-hidden="true"><use href="#icon-target"></use></svg>
+          <span>Подготовка к ОГЭ по математике: разбираем типовые задания и ловушки экзамена</span>
+        </p>
+        <h1 class="hero-reveal">Помогаем понять материал и снова поверить в свои силы</h1>
+        <p class="hero-sub hero-reveal">Русский язык, математика, внимание и память — онлайн с педагогом.</p>
+        <div class="hero-actions hero-reveal">
+          <a class="btn" data-contact-link="max" data-analytics-goal="hero_cta_click" data-analytics-label="hero_max">Записаться в MAX</a>
+          <a class="btn btn-secondary" data-contact-link="phone" data-analytics-goal="hero_cta_click" data-analytics-label="hero_phone">Позвонить</a>
+        </div>
+        <p class="hero-facts">Онлайн · мини-группа до 4 человек · 1 час</p>
       </div>
-      <p class="hero-note">На вводном занятии определим уровень ребёнка, подберём формат и ответим на вопросы родителей.</p>
-      <div class="infobar">
-        <div class="chip"><b>Первый шаг</b>Бесплатная диагностика</div>
-        <div class="chip"><b>Где</b>Онлайн · Zoom</div>
-        <div class="chip"><b>Формат</b>Мини-группа / индивидуально</div>
+      <div class="hero-visual">
+        <img class="hero-image" src="images/hero.jpg" alt="" width="1200" height="671" loading="eager" fetchpriority="high" data-hero-image>
       </div>
     </div>
   </section>
@@ -616,7 +644,7 @@
 
 <nav class="mobile-sticky-bar" id="mobileStickyBar" aria-label="Быстрая связь на мобильном" data-contact-list="mobile"></nav>
 
-<div class="top-cta top-cta--bottom">
+<div class="top-cta--bottom">
   <a data-contact-link="max">Предварительная запись на летний интенсив 2027 · места ограничены · с 1 июня и с 1 июля</a>
 </div>
 
@@ -628,8 +656,37 @@
 </section>
 
 <footer class="footer">
-  <p>© 2026 «Сфера Развития» · Летний интенсив · Онлайн (Zoom)</p>
-  <p>Запись: <a class="footer-link" data-contact-link="max">MAX</a> · <a class="footer-link" data-contact-link="phone" data-contact-phone>телефон</a> · <a class="footer-link" data-contact-link="whatsapp">WhatsApp</a></p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="images/logo-light.png" class="logo-light" alt="" width="128" height="128" loading="lazy">
+      <img src="images/logo-dark.png" class="logo-dark" alt="" width="128" height="128" loading="lazy">
+      <div>
+        <p class="footer-brand-name">Сфера Развития</p>
+        <p class="footer-tagline">Возвращаем желание учиться</p>
+      </div>
+    </div>
+
+    <nav class="footer-nav" aria-label="Разделы сайта">
+      <p class="footer-title">Разделы</p>
+      <a href="#audience">Кому подходит</a>
+      <a href="#results">Что получит ребёнок</a>
+      <a href="#pricing">Цены</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="footer-contacts">
+      <p class="footer-title">Связаться</p>
+      <a data-contact-link="max">MAX</a>
+      <a data-contact-link="phone" data-contact-phone>Телефон</a>
+      <a data-contact-link="email">zadonskaya.tanja@yandex.ru</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 «Сфера Развития»</p>
+    <p><a href="privacy.html">Политика конфиденциальности</a> · <a href="consent.html">Согласие на обработку данных</a></p>
+    <p>Самозанятая Задонская Татьяна Викторовна</p>
+  </div>
 </footer>
 
 <script src="app.js" defer></script>

@@ -1,38 +1,102 @@
-:root {
-  --bg: #fbf7ef;
-  --bg2: #f4ecdc;
-  --card: #ffffff;
-  --gold: #c8962f;
-  --gold2: #a9791f;
-  --pink: #e8a9b8;
-  --text: #221f18;
-  --muted: #5c574c;
-  --line: rgba(200, 150, 47, .3);
-  --shadow: 0 10px 30px rgba(160, 120, 40, .12);
+/* Шрифт: Golos Text (Paratype, SIL OFL 1.1), самохостинг.
+   Файлы и лицензия — assets/fonts/, см. docs/BRAND.md § «Шрифт».
+   Переменный шрифт: один файл на подмножество, ось wght 400–900.
+   Подмножества только cyrillic + latin; U+20BD (₽) добавлен в latin. */
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("assets/fonts/golos-text-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116, U+20BD;
+}
 
-  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --fs-h1: clamp(32px, 6vw, 58px);
-  --fs-h2: clamp(26px, 4vw, 38px);
-  --fs-h3: 23px;
-  --fs-h3-lg: clamp(26px, 4vw, 34px);
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("assets/fonts/golos-text-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+20BD, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Цвет: 60 % бумага и текст, 30 % зелёный, 10 % золото */
+  --bg: #faf7f1;
+  --bg-2: #f2ece2;
+  --card: #ffffff;
+  --line: #e4dccc;
+  --text: #201a14;
+  --muted: #6b6252;
+  --gold: #c8962f;
+  --gold-2: #f5d287;
+  --accent: #1f6f5c;
+  --accent-soft: #e8f1ed;
+  --accent-hover: #17574a;
+  --focus: #2a8570;
+
+  /* Типографика: Golos Text выше по x-height — кегли заголовков на 1–2 px меньше */
+  --font-sans: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-h1: clamp(30px, 5.2vw, 52px);
+  --fs-h2: clamp(25px, 3.6vw, 36px);
+  --fs-h3: 22px;
+  --fs-h3-lg: clamp(25px, 3.4vw, 31px);
   --fs-body: 17px;
   --fs-small: 14px;
-  --lh-heading: 1.15;
-  --lh-body: 1.6;
+  --lh-heading: 1.14;
+  --lh-body: 1.62;
   --measure: 70ch;
+
+  /* Отступы: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  /* Радиусы */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* Тени */
+  --shadow-sm: 0 4px 16px rgba(74, 58, 32, .07);
+  --shadow-md: 0 16px 40px rgba(74, 58, 32, .14);
+
+  /* Переходы */
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --dur: 200ms;
+
+  /* Сетка */
+  --container: 1100px;
 }
 
 [data-theme="dark"] {
-  --bg: #0e0d10;
-  --bg2: #181820;
-  --card: #17161d;
-  --gold: #e0b15c;
-  --gold2: #f5d287;
-  --pink: #e8a9b8;
-  --text: #f3f0e9;
-  --muted: #b8b3a8;
-  --line: rgba(224, 177, 92, .25);
-  --shadow: 0 10px 30px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+
+  --bg: #12100e;
+  --bg-2: #1b1815;
+  --card: #22201c;
+  --line: #332f29;
+  --text: #f2ede4;
+  --muted: #a69c8c;
+  --gold: #d9a845;
+  --gold-2: #e8be6c;
+  --accent: #3e9b84;
+  --accent-soft: #1a2a26;
+  --accent-hover: #4fb39a;
+  --focus: #6fd0b4;
+
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, .42);
+  --shadow-md: 0 16px 40px rgba(0, 0, 0, .55);
 }
 
 * {
@@ -63,6 +127,17 @@ a:not([href]) {
   cursor: pointer;
 }
 
+/* Единое кольцо фокуса: видно на светлой и тёмной теме, включая ссылки,
+   кнопки и поля. У полей формы своё кольцо — см. .form-field … :focus. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
 button {
   font: inherit;
 }
@@ -76,7 +151,7 @@ button {
 h1,
 h2,
 h3 {
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--lh-heading);
   text-wrap: balance;
 }
@@ -135,64 +210,12 @@ h2 {
   display: inline;
 }
 
-.top-cta {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  padding: 12px 20px;
-  text-align: center;
-}
-
-.top-cta a {
-  color: #1a1306;
-  font-size: clamp(16px, 2.4vw, 22px);
-  font-weight: 800;
-}
-
-.top-cta--alt {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px 28px;
-  flex-wrap: wrap;
-  background: linear-gradient(135deg, #f5d287, var(--gold) 55%, var(--gold2));
-  padding: 20px;
-}
-
-.top-cta--alt .top-cta-text {
-  color: #201705;
-  font-size: clamp(17px, 1.35vw, 20px);
-  font-weight: 800;
-  line-height: 1.3;
-}
-
-.top-cta--alt .top-cta-link {
-  flex-shrink: 0;
-  border-radius: 30px;
-  background: #1a1306;
-  box-shadow: 0 10px 24px rgba(26, 19, 6, .28);
-  color: #f7e8c8;
-  font-size: 16px;
-  font-weight: 800;
-  padding: 13px 26px;
-  white-space: nowrap;
-  text-align: center;
-  transition: transform .2s, background .2s;
-}
-
-.top-cta--alt .top-cta-link:hover {
-  background: #33280f;
-  transform: translateY(-2px);
-}
-
-@media (min-width: 1280px) {
-  .top-cta--alt .top-cta-text {
-    white-space: nowrap;
-  }
-}
-
+/* Нижняя полоса-объявление. Полоса над шапкой убрана: её текст переехал
+   в hero бейджем-оффером (.hero-offer). */
 .top-cta--bottom {
   border-top: 1px solid var(--line);
-  background: var(--bg2);
-  padding: 12px 20px;
+  background: var(--bg-2);
+  padding: var(--s-3) var(--s-5);
   text-align: center;
 }
 
@@ -201,90 +224,140 @@ h2 {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.4;
-  transition: color .2s;
+  transition: color var(--dur) var(--ease);
 }
 
 .top-cta--bottom a:hover {
-  color: var(--gold2);
+  color: var(--accent);
 }
 
+/* Шапка: в покое прозрачная (под ней --bg), после 24 px прокрутки —
+   фон --bg, линия --line и мягкая тень. Класс .is-scrolled ставит app.js. */
 header {
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+header.is-scrolled {
+  border-bottom-color: var(--line);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Без JS состояние прокрутки не переключается — держим фон сразу,
+   иначе липкая шапка ляжет прозрачной поверх текста. */
+.no-js header {
+  border-bottom-color: var(--line);
+  background: var(--bg);
 }
 
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 12px 20px;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: var(--s-5);
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--s-3) var(--s-5);
+}
+
+/* На десктопе .nav-menu — не коробка: .nav-links и .nav-right становятся
+   прямыми элементами флекс-строки шапки. На ≤900 px этот же блок
+   превращается в выезжающую панель меню. */
+.nav-menu {
+  display: contents;
 }
 
 .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--gold2);
-  font-size: 18px;
-  font-weight: 800;
+  gap: var(--s-3);
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  white-space: nowrap;
 }
 
 .logo img {
   width: auto;
-  height: 64px;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  height: 56px;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
+  gap: var(--s-5);
+  margin-left: auto;
   color: var(--muted);
   font-size: var(--fs-small);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .nav-links a {
-  transition: color .2s;
+  padding: var(--s-2) 0;
+  transition: color var(--dur) var(--ease);
 }
 
 .nav-links a:hover {
-  color: var(--gold2);
+  color: var(--accent);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* Телефон в шапке: иконка трубки + номер. */
 .nav-phone {
-  color: var(--gold2);
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text);
+  font-size: var(--fs-small);
+  font-weight: 600;
   white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+
+.nav-phone .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.nav-phone:hover {
+  color: var(--accent);
 }
 
 .theme-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 40px;
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: none;
+  border-radius: var(--r-pill);
+  background: transparent;
   color: var(--text);
   cursor: pointer;
   font-size: var(--fs-small);
+  font-weight: 600;
   line-height: 1;
-  padding: 7px 14px;
+  padding: var(--s-2) var(--s-3);
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .theme-btn .icon {
@@ -304,180 +377,227 @@ header {
   display: inline-block;
 }
 
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 90px 20px 70px;
-  background: #2a2010;
-  color: #fff;
-  text-align: center;
+/* Бургер и панель меню: на десктопе их нет, включаются на ≤900 px.
+   Селекторы с .site-header, чтобы перебить display у .btn и не задеть
+   служебные страницы (там своего меню нет). */
+.site-header .nav-burger,
+.site-header .nav-phone-compact,
+.site-header .menu-scrim,
+.site-header .nav-menu-head,
+.site-header .nav-menu-cta {
+  display: none;
 }
 
-.hero-media {
+/* Первый экран: две колонки, текст на сплошном --bg, без оверлеев. */
+.hero {
+  padding: var(--s-7) var(--s-5) var(--s-8);
+}
+
+.hero-inner {
+  display: grid;
+  max-width: var(--container);
+  margin: 0 auto;
+  gap: var(--s-6);
+}
+
+@media (min-width: 1001px) {
+  .hero-inner {
+    grid-template-columns: 1.05fr .95fr;
+    gap: 56px;
+    align-items: center;
+  }
+}
+
+/* Бейдж-оффер про ОГЭ: текст бывшей полосы над шапкой. Мелкий, на --accent-soft,
+   кегль на 1 px меньше прежних 14 px у старого бейджа. */
+.hero-offer {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  max-width: 100%;
+  margin-bottom: var(--s-5);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  padding: var(--s-2) var(--s-4);
+}
+
+.hero-offer .icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.hero h1 {
+  max-width: 18ch;
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-h1);
+  /* Слова не рвём: перенос только по пробелам, без hyphens */
+  hyphens: manual;
+  overflow-wrap: normal;
+}
+
+.hero-sub {
+  max-width: 46ch;
+  margin-bottom: var(--s-6);
+  color: var(--muted);
+  font-size: clamp(17px, 1.4vw, 19px);
+}
+
+.hero-actions,
+.contact-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+/* Факты одной строкой — вместо прежних чипов-плашек. */
+.hero-facts {
+  margin-top: var(--s-5);
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+.hero-visual {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  aspect-ratio: 4 / 5;
+}
+
+/* Тонкая внутренняя линия по краю кадра: inset-тень на самом контейнере
+   не видна — картинка её перекрывает, поэтому рисуем псевдоэлементом. */
+.hero-visual::after {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  background: #2a2010;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(32, 26, 20, .1);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .hero-visual::after {
+  box-shadow: inset 0 0 0 1px rgba(242, 237, 228, .12);
 }
 
 .hero-image {
   display: block;
   width: 100%;
   height: 100%;
-  aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: center;
 }
 
-.hero-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(40, 30, 10, .55), rgba(40, 30, 10, .55));
-  transition: background .3s;
+/* Появление первого экрана: opacity + translateY(8px), 250 мс, шаг 60 мс. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-[data-theme="dark"] .hero-media::after {
-  background: linear-gradient(rgba(8, 7, 5, .6), rgba(8, 7, 5, .72));
+.hero-reveal {
+  animation: hero-in 250ms var(--ease) both;
 }
 
-.hero > .container {
-  position: relative;
-  z-index: 1;
+.hero-reveal:nth-child(2) {
+  animation-delay: 60ms;
 }
 
-.hero .badge {
-  display: inline-block;
-  margin-bottom: 22px;
-  border-radius: 30px;
-  background: var(--gold);
-  color: #1a1306;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 7px 20px;
+.hero-reveal:nth-child(3) {
+  animation-delay: 120ms;
 }
 
-.hero .badge--link {
+.hero-reveal:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal {
+    animation: none;
+  }
+}
+
+.cta-note {
+  max-width: 620px;
+  margin: var(--s-4) auto 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* Кнопки. Главное действие — --accent с белым текстом, золота на кнопках нет;
+   второстепенное — прозрачное с рамкой --line. */
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
-  min-height: 44px;
-  font-size: 15px;
-  line-height: 1.35;
-  padding: 10px 22px;
-  text-align: center;
-  transition: background .2s, box-shadow .2s, transform .2s;
-}
-
-.hero .badge--link:hover {
-  background: #f5d287;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .28);
-  transform: translateY(-2px);
-}
-
-.hero h1 {
-  margin-bottom: 18px;
-  font-size: var(--fs-h1);
-  text-shadow: 0 2px 14px rgba(0, 0, 0, .4);
-}
-
-.hero h1 span {
-  background: linear-gradient(135deg, #f5d287, #e8a9b8);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero p {
-  max-width: 680px;
-  margin: 0 auto 30px;
-  font-size: clamp(17px, 2.5vw, 21px);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, .4);
-}
-
-.hero-actions,
-.contact-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.hero .hero-note,
-.cta-note {
-  max-width: 620px;
-  margin: 18px auto 0;
-  color: rgba(255, 255, 255, .88);
-  font-size: 16px;
-}
-
-.btn {
-  display: inline-block;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  box-shadow: 0 8px 25px rgba(200, 150, 47, .4);
-  color: #1a1306;
+  min-height: 48px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: #fff;
   cursor: pointer;
-  font-size: 18px;
-  font-weight: 800;
-  padding: 16px 38px;
-  transition: transform .2s, box-shadow .2s;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: var(--s-3) var(--s-6);
+  text-align: center;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .btn:hover {
-  box-shadow: 0 12px 30px rgba(200, 150, 47, .55);
-  transform: translateY(-3px);
+  background: var(--accent-hover);
+}
+
+/* Тёмная тема: --accent светлее, белый текст на нём даёт 3.4:1 — заливки
+   используют цвет бумаги (5.7:1). Переопределяем только цвет. */
+[data-theme="dark"] .btn:not(.btn-secondary),
+[data-theme="dark"] .copy-btn.is-copied,
+[data-theme="dark"] .contact-links a[data-contact-link="max"],
+[data-theme="dark"] .thank-actions a[data-contact-link="max"],
+[data-theme="dark"] .form-error-contacts a[data-contact-link="max"],
+[data-theme="dark"] .sfera-channels a[data-contact-link="max"],
+[data-theme="dark"] .mobile-sticky-bar a[data-contact-link="max"],
+[data-theme="dark"] .contact-links a[data-contact-link="max"]:hover,
+[data-theme="dark"] .thank-actions a[data-contact-link="max"]:hover,
+[data-theme="dark"] .form-error-contacts a[data-contact-link="max"]:hover,
+[data-theme="dark"] .sfera-channels a[data-contact-link="max"]:hover,
+[data-theme="dark"] .mobile-sticky-bar a[data-contact-link="max"]:hover {
+  color: var(--bg);
+}
+
+[data-theme="dark"] .age-badge,
+[data-theme="dark"] .audience-card--primary .age-badge {
+  color: var(--accent-hover);
 }
 
 .btn-lg {
-  font-size: 20px;
-  padding: 18px 46px;
+  font-size: 18px;
+  padding: var(--s-3) var(--s-7);
 }
 
-.btn-secondary {
-  border: 1px solid rgba(255, 255, 255, .45);
-  background: rgba(255, 255, 255, .12);
-  color: #fff;
-  box-shadow: none;
-  backdrop-filter: blur(6px);
-}
-
-.btn-secondary:hover {
-  box-shadow: 0 12px 30px rgba(255, 255, 255, .16);
-}
-
+.btn-secondary,
 .cta-section .btn-secondary {
   border-color: var(--line);
-  color: var(--gold2);
+  background: transparent;
+  color: var(--text);
 }
 
-.infobar {
-  display: flex;
-  justify-content: center;
-  margin-top: 34px;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.infobar .chip {
-  border: 1px solid rgba(255, 255, 255, .3);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, .12);
-  backdrop-filter: blur(6px);
-  font-size: 16px;
-  padding: 12px 22px;
-}
-
-.infobar .chip b {
-  display: block;
-  color: #f5d287;
-  font-size: 13px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
+.btn-secondary:hover,
+.cta-section .btn-secondary:hover {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
 }
 
 section {
@@ -504,7 +624,7 @@ section {
 }
 
 .section-alt {
-  background: var(--bg2);
+  background: var(--bg-2);
 }
 
 .section-title {
@@ -514,7 +634,7 @@ section {
 }
 
 .section-title span {
-  color: var(--gold2);
+  color: var(--text);
 }
 
 .section-sub {
@@ -539,7 +659,7 @@ section {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 30px 26px;
   transition: transform .2s;
 }
@@ -552,7 +672,7 @@ section {
   display: flex;
   align-items: center;
   margin-bottom: 14px;
-  color: var(--gold2);
+  color: var(--gold);
 }
 
 .card .ico .icon {
@@ -566,7 +686,7 @@ section {
 
 .card h3 {
   margin-bottom: 10px;
-  color: var(--gold2);
+  color: var(--text);
   font-size: var(--fs-h3);
 }
 
@@ -591,10 +711,8 @@ section {
 
 .audience-card--primary {
   border: 2px solid var(--gold);
-  background:
-    linear-gradient(180deg, rgba(200, 150, 47, .1), rgba(200, 150, 47, 0) 70%),
-    var(--card);
-  box-shadow: 0 16px 40px rgba(160, 120, 40, .18);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
   padding: 34px 30px;
 }
 
@@ -608,8 +726,8 @@ section {
 }
 
 .audience-card--primary .age-badge {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .audience-card-cta {
@@ -625,11 +743,11 @@ section {
 .age-badge {
   display: inline-block;
   margin-bottom: 14px;
-  border-radius: 30px;
-  background: rgba(200, 150, 47, .12);
-  color: var(--gold2);
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   padding: 6px 14px;
 }
 
@@ -647,22 +765,22 @@ section {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 26px 24px;
 }
 
 .step-num {
   display: inline-block;
   margin-bottom: 16px;
-  color: var(--gold2);
+  color: var(--muted);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 1px;
 }
 
 .step h3 {
   margin-bottom: 10px;
-  color: var(--gold2);
+  color: var(--text);
   font-size: var(--fs-h3);
 }
 
@@ -689,14 +807,14 @@ section {
 
 .section-toggle:hover,
 .section-toggle:focus-visible {
-  color: var(--gold2);
+  color: var(--accent);
 }
 
 .section-chevron {
   width: 22px;
   height: 22px;
   flex-shrink: 0;
-  color: var(--gold2);
+  color: var(--muted);
   transition: transform .3s ease;
 }
 
@@ -709,20 +827,22 @@ section {
   width: fit-content;
   margin: 22px auto 0;
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: var(--card);
-  color: var(--gold2);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
   font: inherit;
   font-size: var(--fs-small);
-  font-weight: 800;
+  font-weight: 700;
   padding: 9px 20px;
-  transition: border-color .2s, background .2s, color .2s;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .section-more:hover {
-  border-color: var(--gold);
-  background: rgba(200, 150, 47, .1);
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
 }
 
 .no-js .section-more {
@@ -773,16 +893,16 @@ section {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 24px;
   text-align: center;
 }
 
 .day .d {
   margin-bottom: 8px;
-  color: var(--gold2);
+  color: var(--gold);
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .day p {
@@ -808,7 +928,7 @@ section {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 34px 26px;
   text-align: center;
 }
@@ -820,12 +940,12 @@ a.price {
 
 a.price:hover {
   border-color: var(--gold);
-  box-shadow: 0 18px 36px rgba(200, 150, 47, .28);
+  box-shadow: var(--shadow-md);
   transform: translateY(-5px);
 }
 
 a.price:focus-visible {
-  outline: 3px solid var(--gold);
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
@@ -833,7 +953,7 @@ a.price:focus-visible {
 .price h4 {
   margin-bottom: 12px;
   font-size: calc(var(--fs-h3) - 4px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--lh-heading);
 }
 
@@ -845,9 +965,9 @@ a.price:focus-visible {
 
 .price .amount {
   margin: 4px 0;
-  color: var(--gold2);
+  color: var(--gold);
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .price .amount small {
@@ -868,7 +988,7 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   gap: 30px;
   flex-wrap: wrap;
   padding: 34px;
@@ -891,7 +1011,7 @@ a.price:focus-visible {
 }
 
 .teacher-content h3 {
-  color: var(--gold2);
+  color: var(--text);
   font-size: var(--fs-h3);
 }
 
@@ -932,22 +1052,22 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 28px 24px;
 }
 
 .trust-card span {
   display: inline-block;
   margin-bottom: 14px;
-  color: var(--gold2);
+  color: var(--muted);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 1px;
 }
 
 .trust-card h3 {
   margin-bottom: 10px;
-  color: var(--gold2);
+  color: var(--text);
   font-size: var(--fs-h3);
 }
 
@@ -966,7 +1086,7 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
@@ -986,7 +1106,7 @@ a.price:focus-visible {
 }
 
 .faq-icon {
-  color: var(--gold2);
+  color: var(--gold);
   font-size: 24px;
   line-height: 1;
   transition: transform .3s;
@@ -1026,9 +1146,13 @@ a.price:focus-visible {
 .cta-phone {
   display: block;
   margin: 18px 0;
-  color: var(--gold2);
+  color: var(--accent);
   font-size: clamp(26px, 5vw, 40px);
-  font-weight: 800;
+  font-weight: 700;
+}
+
+.cta-phone:hover {
+  color: var(--accent-hover);
 }
 
 .cta-section .cta-note {
@@ -1048,14 +1172,14 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 26px 24px;
 }
 
 .application-form h3,
 .contact-card h3 {
   margin-bottom: 10px;
-  color: var(--gold2);
+  color: var(--text);
   font-size: var(--fs-h3);
 }
 
@@ -1077,7 +1201,7 @@ a.price:focus-visible {
   gap: 8px;
   margin-top: 16px;
   color: var(--text);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .form-grid .form-field {
@@ -1114,8 +1238,8 @@ a.price:focus-visible {
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px rgba(200, 150, 47, .16);
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px var(--accent-soft);
   outline: none;
 }
 
@@ -1137,13 +1261,19 @@ a.price:focus-visible {
   width: 18px;
   height: 18px;
   margin-top: 3px;
-  accent-color: var(--gold);
+  accent-color: var(--accent);
   flex-shrink: 0;
 }
 
+/* Ссылка в тексте: цвет --accent, подчёркивание только на ховере. */
 .checkbox-field a {
-  color: var(--gold2);
-  font-weight: 800;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.checkbox-field a:hover {
+  color: var(--accent-hover);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -1161,7 +1291,7 @@ a.price:focus-visible {
 }
 
 .form-message.is-success {
-  color: var(--gold2);
+  color: var(--accent);
 }
 
 .form-error-contacts {
@@ -1173,9 +1303,9 @@ a.price:focus-visible {
 
 .form-error-contacts a {
   border: 1px solid var(--line);
-  border-radius: 30px;
-  color: var(--gold2);
-  font-weight: 800;
+  border-radius: var(--r-pill);
+  color: var(--text);
+  font-weight: 600;
   padding: 8px 14px;
 }
 
@@ -1206,22 +1336,23 @@ a.price:focus-visible {
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: rgba(200, 150, 47, .08);
-  color: var(--gold2);
-  font-weight: 800;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
   min-height: 44px;
   padding: 9px 14px;
   text-align: center;
-  transition: background .2s, color .2s, transform .2s;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .contact-links a:hover,
 .thank-actions a:hover,
 .form-error-contacts a:hover {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
 }
 
 .contact-links a[data-contact-link="max"],
@@ -1229,9 +1360,20 @@ a.price:focus-visible {
 .form-error-contacts a[data-contact-link="max"],
 .sfera-channels a[data-contact-link="max"],
 .mobile-sticky-bar a[data-contact-link="max"] {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
-  box-shadow: 0 8px 20px rgba(200, 150, 47, .24);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: none;
+}
+
+.contact-links a[data-contact-link="max"]:hover,
+.thank-actions a[data-contact-link="max"]:hover,
+.form-error-contacts a[data-contact-link="max"]:hover,
+.sfera-channels a[data-contact-link="max"]:hover,
+.mobile-sticky-bar a[data-contact-link="max"]:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: #fff;
 }
 
 .quick-contact {
@@ -1249,7 +1391,7 @@ a.price:focus-visible {
 .quick-contact-title {
   color: var(--muted);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: .5px;
   text-transform: uppercase;
 }
@@ -1301,17 +1443,24 @@ a.price:focus-visible {
 
 .max-details dd {
   color: var(--text);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .copy-btn {
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: rgba(200, 150, 47, .12);
-  color: var(--gold2);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 600;
   padding: 10px 16px;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .max-copy-mobile {
@@ -1319,8 +1468,9 @@ a.price:focus-visible {
 }
 
 .copy-btn.is-copied {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
 }
 
 .max-qr {
@@ -1338,7 +1488,7 @@ a.price:focus-visible {
   height: 168px;
   border: 1px dashed var(--line);
   border-radius: 16px;
-  background: var(--bg2);
+  background: var(--bg-2);
   object-fit: cover;
 }
 
@@ -1355,7 +1505,7 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   color: var(--text);
   font-size: var(--fs-small);
   font-weight: 700;
@@ -1438,7 +1588,7 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   color: var(--text);
   font-size: 13px;
   font-weight: 700;
@@ -1536,12 +1686,8 @@ a.price:focus-visible {
   flex-shrink: 0;
   gap: 12px;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(135deg, rgba(245, 210, 135, .5), rgba(200, 150, 47, .16));
+  background: var(--bg-2);
   padding: 10px 12px 10px 16px;
-}
-
-[data-theme="dark"] .sfera-panel-header {
-  background: linear-gradient(135deg, rgba(224, 177, 92, .22), rgba(224, 177, 92, .06));
 }
 
 .sfera-panel-avatar {
@@ -1550,7 +1696,7 @@ a.price:focus-visible {
   flex-shrink: 0;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: var(--bg2);
+  background: var(--bg-2);
   object-fit: cover;
 }
 
@@ -1562,7 +1708,7 @@ a.price:focus-visible {
 .sfera-panel-name {
   color: var(--text);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -1589,7 +1735,7 @@ a.price:focus-visible {
 
 .sfera-close:hover {
   background: rgba(200, 150, 47, .16);
-  color: var(--gold2);
+  color: var(--gold);
 }
 
 .sfera-close:focus-visible {
@@ -1633,31 +1779,31 @@ a.price:focus-visible {
   gap: 10px;
   min-height: 44px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: rgba(200, 150, 47, .07);
+  border-radius: var(--r-md);
+  background: transparent;
   color: var(--text);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 10px 14px;
   text-align: left;
-  transition: background .2s, border-color .2s;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
 .sfera-question:hover {
-  border-color: var(--gold);
-  background: rgba(200, 150, 47, .16);
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .sfera-question:focus-visible,
 .sfera-channels a:focus-visible {
-  outline: 3px solid var(--gold);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
 .sfera-question-icon {
   width: 16px;
   height: 16px;
-  color: var(--gold2);
+  color: var(--gold);
   transform: rotate(-90deg);
   transition: transform .2s;
 }
@@ -1682,7 +1828,7 @@ a.price:focus-visible {
   margin-bottom: 8px;
   color: var(--muted);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: .5px;
   text-transform: uppercase;
 }
@@ -1701,36 +1847,37 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 30px;
   background: rgba(200, 150, 47, .1);
-  color: var(--gold2);
+  color: var(--gold);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   padding: 8px 12px;
   text-align: center;
   transition: background .2s, color .2s, transform .2s;
 }
 
 .sfera-channels a:hover {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
 }
 
 .mobile-sticky-bar a {
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: rgba(200, 150, 47, .1);
-  color: var(--gold2);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   padding: 9px 14px;
   text-align: center;
-  transition: background .2s, color .2s, transform .2s;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .mobile-sticky-bar a:hover {
-  background: linear-gradient(135deg, #f5d287, var(--gold));
-  color: #1a1306;
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
 }
 
 .mobile-sticky-bar {
@@ -1744,7 +1891,7 @@ a.price:focus-visible {
 
 .simple-header {
   border-bottom: 1px solid var(--line);
-  background: var(--bg2);
+  background: var(--bg-2);
   padding: 18px 0;
 }
 
@@ -1763,20 +1910,20 @@ a.price:focus-visible {
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: clamp(26px, 5vw, 46px);
 }
 
 .simple-card h1 {
   margin-bottom: 16px;
-  color: var(--gold2);
-  font-size: clamp(30px, 5vw, 44px);
+  color: var(--text);
+  font-size: clamp(28px, 4.4vw, 40px);
 }
 
 .simple-card h2 {
   margin: 28px 0 10px;
-  color: var(--gold2);
-  font-size: 24px;
+  color: var(--text);
+  font-size: 23px;
 }
 
 .simple-card p,
@@ -1808,35 +1955,126 @@ a.price:focus-visible {
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 30px;
-  background: rgba(200, 150, 47, .08);
-  color: var(--gold2);
-  font-weight: 800;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
   min-height: 44px;
   padding: 10px 16px;
   text-align: center;
-  transition: background .2s, color .2s, transform .2s;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
 .simple-back {
   display: inline-block;
   margin-top: 28px;
-  color: var(--gold2);
-  font-weight: 800;
+  color: var(--accent);
+  font-weight: 600;
 }
 
+.simple-back:hover {
+  color: var(--accent-hover);
+}
+
+/* Футер: три колонки (бренд / навигация / контакты) и служебная строка.
+   Логотип-локап при 64 px не читается, поэтому знак + название текстом. */
 .footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: var(--fs-small);
-  padding: 30px;
+  padding: var(--s-7) var(--s-5) var(--s-5);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr 1fr;
+  gap: var(--s-6);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.footer-brand img {
+  width: auto;
+  height: 64px;
+}
+
+.footer-brand-name {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.footer-tagline {
+  margin-top: var(--s-1);
+}
+
+.footer-title {
+  margin-bottom: var(--s-3);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.footer-nav {
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+}
+
+.footer-contacts {
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+}
+
+.footer a {
+  color: var(--muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.footer a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  max-width: var(--container);
+  margin: var(--s-6) auto 0;
+  border-top: 1px solid var(--line);
+  padding-top: var(--s-4);
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+/* Служебные страницы (privacy, consent, thank-you): футер — строкой по центру. */
+.simple-page .footer {
+  padding: var(--s-6) var(--s-5);
   text-align: center;
 }
 
-/* Лендинг: полоса интенсива → «Быстрая связь» → футер читаются как один нижний блок. */
-body:not(.simple-page) .footer {
-  border-top: 0;
-  padding: 8px 20px 26px;
+/* Футер в столбик на узких экранах: иначе адрес почты в третьей колонке
+   задаёт минимальную ширину и ломает 390 px. */
+@media (max-width: 700px) {
+  .footer-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .footer-brand img {
+    height: 56px;
+  }
 }
 
 .footer p + p {
@@ -1844,20 +2082,191 @@ body:not(.simple-page) .footer {
 }
 
 .footer-link {
-  color: var(--gold2);
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {
+  /* Шапка поднимается выше постоянных слоёв: меню и затемнение — её дети,
+     поэтому выше шапки им не подняться. Эффективный слой меню = 130 + local. */
+  header.site-header {
+    z-index: 130;
+  }
+
   .nav {
-    justify-content: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-4);
   }
 
-  .nav-links {
-    justify-content: center;
-    order: 3;
-    width: 100%;
+  .logo {
+    font-size: 17px;
   }
 
+  .logo img {
+    height: 44px;
+  }
+
+  /* Телефон в шапке на телефоне — только иконка, тач-таргет 44 px.
+     Полный номер с подписью живёт в панели меню (.nav-phone). */
+  .site-header .nav-phone-compact {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    color: var(--accent);
+  }
+
+  .site-header .nav-phone-compact .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .site-header .nav-phone {
+    margin-top: auto;
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  .site-header .nav-burger {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    order: 5;
+  }
+
+  .nav-burger .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Меню выезжает панелью справа. Пока открыто — фон не скроллится. */
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 132;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    width: min(340px, 86vw);
+    height: 100vh;
+    height: 100dvh;
+    border-left: 1px solid var(--line);
+    background: var(--bg);
+    box-shadow: var(--shadow-md);
+    padding: var(--s-4);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: transform var(--dur) var(--ease), visibility 0s linear var(--dur);
+  }
+
+  body.is-menu-open .nav-menu {
+    visibility: visible;
+    transform: none;
+    transition: transform var(--dur) var(--ease), visibility 0s linear 0s;
+  }
+
+  body.is-menu-open {
+    overflow: hidden;
+  }
+
+  .site-header .menu-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 131;
+    display: block;
+    background: rgba(18, 16, 14, .38);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur) var(--ease), visibility 0s linear var(--dur);
+  }
+
+  body.is-menu-open .menu-scrim {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--dur) var(--ease), visibility 0s linear 0s;
+  }
+
+  /* Кнопка «Сферы» скрыта, пока открыто меню: два плавающих элемента
+     не должны перекрываться. */
+  body.is-menu-open .sfera-launcher {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .site-header .nav-menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .nav-menu-title {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .nav-menu-close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .nav-menu-close .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .site-header .nav-links {
+    display: grid;
+    gap: 0;
+    margin-left: 0;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .site-header .nav-links a {
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header .nav-right {
+    align-items: stretch;
+    gap: var(--s-3);
+  }
+
+  .site-header .nav-right .theme-btn {
+    justify-content: flex-start;
+    min-height: 44px;
+  }
+
+  .site-header .nav-menu-cta {
+    display: inline-flex;
+    justify-content: center;
+    min-height: 48px;
+    order: 5;
+  }
   .cards-3,
   .cards-2 {
     grid-template-columns: 1fr;
@@ -1870,6 +2279,41 @@ body:not(.simple-page) .footer {
   .contact-layout {
     grid-template-columns: 1fr;
   }
+
+  /* Без JS панель-меню не открыть: показываем ссылки прямо в шапке,
+     иначе на телефоне навигация недоступна. */
+  .no-js .site-header .nav-menu {
+    position: static;
+    display: flex;
+    width: 100%;
+    height: auto;
+    visibility: visible;
+    transform: none;
+    border-left: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .no-js .site-header .nav-burger,
+  .no-js .site-header .nav-menu-head,
+  .no-js .site-header .nav-menu-cta {
+    display: none;
+  }
+
+  .no-js .site-header .nav-phone {
+    margin-top: 0;
+  }
+
+  /* Липкая панель собирается из CONTACT_CONFIG в JS — без JS она пустая. */
+  .no-js .mobile-sticky-bar {
+    display: none;
+  }
+
+  .no-js body {
+    padding-bottom: 0;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1877,32 +2321,17 @@ body:not(.simple-page) .footer {
     padding-bottom: 78px;
   }
 
-  .top-cta--alt {
+  .hero {
+    padding: var(--s-6) var(--s-4) var(--s-7);
+  }
+
+  .hero-actions {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
-    padding: 16px;
-    text-align: center;
   }
 
-  .top-cta--alt .top-cta-text {
-    font-size: 17px;
-  }
-
-  .top-cta--alt .top-cta-link {
-    font-size: 15px;
-    padding: 12px 18px;
-  }
-
-  .hero {
-    padding: 70px 18px 54px;
-  }
-
-  /* Сфера в кадре — по центру по X и чуть выше середины по Y. На телефоне cover
-     режет бока, поэтому по X оставляем center; 40% по Y страхует низкие и
-     альбомные окна, где кадр обрезается ещё и сверху/снизу. */
-  .hero-image {
-    object-position: center 40%;
+  .hero h1 {
+    max-width: none;
   }
 
   .btn,
@@ -2015,7 +2444,7 @@ body:not(.simple-page) .footer {
     border: 1px solid var(--line);
     border-radius: 22px;
     background: color-mix(in srgb, var(--card) 94%, transparent);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-sm);
     padding: 10px;
     backdrop-filter: blur(10px);
   }
@@ -2034,6 +2463,15 @@ body:not(.simple-page) .footer {
 /* «Сфера» без анимаций: блок идёт последним, иначе правила компонента
    перебивают отключение по порядку в файле. */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .nav-menu,
+  .menu-scrim {
+    transition: none;
+  }
+
   .sfera-launcher {
     animation: none;
     scale: 1;
