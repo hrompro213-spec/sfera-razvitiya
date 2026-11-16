@@ -16,7 +16,8 @@ const ANALYTICS_GOALS = {
   thankYouRedirect: "thank_you_page_redirect",
   thankYouView: "thank_you_view",
   heroCtaClick: "hero_cta_click",
-  pricingClick: "pricing_click"
+  pricingClick: "pricing_click",
+  sferaQuestion: "sfera_question"
 };
 
 const CONTACT_ANALYTICS_GOALS = {
@@ -110,6 +111,9 @@ const TARIFF_MESSAGES = {
 
 const COPY_TOAST_TIMEOUT = 5000;
 const SECTION_ANIMATION_MS = 450;
+// Длительность появления панели «Сферы» — совпадает с transition в styles.css.
+const SFERA_PANEL_ANIMATION_MS = 220;
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 // Сколько ждём колбэк Метрики перед переходом на thank-you.html (страховка от блокировщиков).
 const FORM_REDIRECT_TIMEOUT_MS = 300;
 let copyToastTimer = null;
@@ -271,6 +275,10 @@ function getContactGoal(channelKey) {
   return CONTACT_ANALYTICS_GOALS[channelKey];
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia?.(REDUCED_MOTION_QUERY).matches === true;
+}
+
 function initAnalyticsEvents() {
   document.addEventListener("click", (event) => {
     const target = event.target.closest("[data-contact-link], [data-analytics-goal]");
@@ -304,11 +312,170 @@ function initContactLists() {
     const channels = getChannelsForPlacement(placement);
 
     if (!channels.length) {
-      root.closest(".floating-widget, .mobile-sticky-bar, .contact-card")?.classList.add("is-hidden");
+      root.closest(".sfera-panel-contacts, .mobile-sticky-bar, .contact-card")?.classList.add("is-hidden");
       return;
     }
 
     root.replaceChildren(...channels.map((channel) => createContactAnchor(channel, placement)));
+  });
+}
+
+// «Сфера»: кнопка-персонаж и панель связи. Состояние не сохраняется —
+// после перезагрузки панель всегда закрыта (в разметке атрибут hidden и aria-expanded="false").
+function initSferaWidget() {
+  const launcher = document.querySelector("[data-sfera-launcher]");
+  const panel = getElement("sferaPanel");
+
+  if (!launcher || !panel) {
+    return;
+  }
+
+  const overlay = document.querySelector("[data-sfera-overlay]");
+  const closeButton = panel.querySelector("[data-sfera-close]");
+  const questionLinks = [...panel.querySelectorAll("[data-sfera-anchor]")];
+  let hideTimer = null;
+
+  const isOpen = () => launcher.getAttribute("aria-expanded") === "true";
+
+  // Липкая панель на телефоне бывает выше одного ряда кнопок, поэтому её высоту
+  // меряем по факту: кнопка и панель «Сферы» должны стоять строго над ней.
+  function syncBarOffset() {
+    const bar = document.querySelector(".mobile-sticky-bar");
+    const root = document.documentElement;
+
+    if (!bar || getComputedStyle(bar).display === "none") {
+      root.style.removeProperty("--sfera-bar-height");
+      return;
+    }
+
+    const height = Math.round(window.innerHeight - bar.getBoundingClientRect().top);
+    root.style.setProperty("--sfera-bar-height", `${height}px`);
+  }
+
+  syncBarOffset();
+
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    window.cancelAnimationFrame(resizeFrame);
+    resizeFrame = window.requestAnimationFrame(syncBarOffset);
+  });
+
+  function openPanel() {
+    window.clearTimeout(hideTimer);
+    panel.hidden = false;
+
+    if (overlay) {
+      overlay.hidden = false;
+    }
+
+    // Принудительный reflow: transition должен стартовать из скрытого состояния.
+    void panel.offsetHeight;
+
+    panel.classList.add("is-open");
+    overlay?.classList.add("is-open");
+    document.body.classList.add("is-sfera-open");
+    launcher.setAttribute("aria-expanded", "true");
+    closeButton?.focus({ preventScroll: true });
+  }
+
+  function closePanel({ returnFocus = false } = {}) {
+    if (!isOpen()) {
+      return;
+    }
+
+    window.clearTimeout(hideTimer);
+
+    panel.classList.remove("is-open");
+    overlay?.classList.remove("is-open");
+    document.body.classList.remove("is-sfera-open");
+    launcher.setAttribute("aria-expanded", "false");
+
+    // hidden возвращаем после анимации, иначе панель исчезнет рывком.
+    hideTimer = window.setTimeout(() => {
+      if (!isOpen()) {
+        panel.hidden = true;
+
+        if (overlay) {
+          overlay.hidden = true;
+        }
+      }
+    }, SFERA_PANEL_ANIMATION_MS);
+
+    if (returnFocus) {
+      launcher.focus({ preventScroll: true });
+    }
+  }
+
+  function scrollToQuestionAnchor(target, hash) {
+    // #format — аккордеон: раскрываем так же, как при переходе по якорю.
+    if (target.classList.contains("is-collapsible")) {
+      const toggle = target.querySelector("[data-section-toggle]");
+
+      if (toggle && toggle.getAttribute("aria-expanded") !== "true") {
+        setSectionState(target, true);
+      }
+    }
+
+    window.history.replaceState(null, "", hash);
+
+    window.setTimeout(() => {
+      const header = document.querySelector("header");
+      const headerHeight = header ? header.getBoundingClientRect().height : 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+
+      window.scrollTo({
+        top: Math.max(top, 0),
+        behavior: prefersReducedMotion() ? "auto" : "smooth"
+      });
+    }, 80);
+  }
+
+  launcher.addEventListener("click", () => {
+    if (isOpen()) {
+      closePanel();
+      return;
+    }
+
+    openPanel();
+  });
+
+  closeButton?.addEventListener("click", () => closePanel({ returnFocus: true }));
+  overlay?.addEventListener("click", () => closePanel({ returnFocus: true }));
+
+  questionLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const hash = link.dataset.sferaAnchor || link.getAttribute("href") || "";
+      const target = hash ? document.querySelector(hash) : null;
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      closePanel();
+      scrollToQuestionAnchor(target, hash);
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isOpen()) {
+      closePanel({ returnFocus: true });
+    }
+  });
+
+  // Клик вне панели закрывает её; клики внутри панели и по кнопке — нет.
+  document.addEventListener("click", (event) => {
+    if (!isOpen()) {
+      return;
+    }
+
+    const target = event.target;
+
+    if (panel.contains(target) || launcher.contains(target)) {
+      return;
+    }
+
+    closePanel();
   });
 }
 
@@ -902,6 +1069,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCollapsibleSections();
   initConfiguredContactLinks();
   initContactLists();
+  initSferaWidget();
   initMaxContact();
   initMaxCopy();
   initTariffClicks();

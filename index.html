@@ -207,6 +207,10 @@
     <path d="M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6"/>
     <path d="M12 14v2"/>
   </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.8 6.8 17.2 17.2"/>
+    <path d="M17.2 6.8 6.8 17.2"/>
+  </symbol>
 </svg>
 <div class="top-cta top-cta--alt">
   <p class="top-cta-text">Курс ОГЭ по математике с нуля — для 8 классов. К экзамену нужно готовиться заранее.</p>
@@ -555,10 +559,56 @@
   </section>
 </main>
 
-<aside class="floating-widget" aria-label="Быстрые контакты">
-  <span class="floating-widget-title">Связаться</span>
-  <div class="floating-widget-links" data-contact-list="widget"></div>
-</aside>
+<!-- Сфера: кнопка-персонаж и свёрнутая панель помощи. Чат — этап 8, ИИ-слой — этап 14. -->
+<button class="sfera-launcher" type="button" aria-label="Открыть Сферу — помощь и связь" aria-expanded="false" aria-controls="sferaPanel" data-sfera-launcher>
+  <span class="sfera-launcher-hint" aria-hidden="true">Спросить Сферу</span>
+  <img class="sfera-launcher-img" src="images/sfera-icon-192.png" srcset="images/sfera-icon-96.png 1x, images/sfera-icon-192.png 2x" alt="" width="88" height="88" decoding="async">
+</button>
+
+<div class="sfera-overlay" data-sfera-overlay hidden></div>
+
+<div id="sferaPanel" class="sfera-panel" role="dialog" aria-modal="false" aria-label="Сфера — помощь и связь" hidden>
+  <div class="sfera-panel-header">
+    <img class="sfera-panel-avatar" src="images/sfera-icon-96.png" srcset="images/sfera-icon-96.png 1x, images/sfera-icon-192.png 2x" alt="" width="44" height="44" loading="lazy" decoding="async">
+    <div class="sfera-panel-titles">
+      <p class="sfera-panel-name">Сфера</p>
+      <p class="sfera-panel-subtitle">Помощь и связь</p>
+    </div>
+    <button class="sfera-close" type="button" aria-label="Закрыть" data-sfera-close>
+      <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+  </div>
+
+  <div class="sfera-panel-body">
+    <p class="sfera-greeting">Здравствуйте! Я Сфера. Помогу разобраться с занятиями или сразу соединю с Татьяной Викторовной.</p>
+    <div class="sfera-questions">
+      <a class="sfera-question" href="#pricing" data-sfera-anchor="#pricing" data-analytics-goal="sfera_question" data-analytics-label="pricing">
+        <span>Какие цены?</span>
+        <svg class="icon sfera-question-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+      </a>
+      <a class="sfera-question" href="#format" data-sfera-anchor="#format" data-analytics-goal="sfera_question" data-analytics-label="format">
+        <span>Как проходят занятия?</span>
+        <svg class="icon sfera-question-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+      </a>
+      <a class="sfera-question" href="#teacher" data-sfera-anchor="#teacher" data-analytics-goal="sfera_question" data-analytics-label="teacher">
+        <span>Кто преподаватель?</span>
+        <svg class="icon sfera-question-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+      </a>
+      <a class="sfera-question" href="#application-form" data-sfera-anchor="#application-form" data-analytics-goal="sfera_question" data-analytics-label="application">
+        <span>Записаться</span>
+        <svg class="icon sfera-question-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+      </a>
+    </div>
+    <div class="sfera-chat-slot" hidden>
+      <!-- Чат и ИИ подключим на этапе 8 -->
+    </div>
+  </div>
+
+  <div class="sfera-panel-contacts">
+    <p class="sfera-panel-contacts-title">Или напишите напрямую</p>
+    <div class="sfera-channels" data-contact-list="widget"></div>
+  </div>
+</div>
 
 <div class="copy-toast" id="copyToast" role="status" aria-live="polite">
   Сообщение скопировано — вставьте его в чат MAX
