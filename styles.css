@@ -34,6 +34,9 @@
   --muted: #6b6252;
   --gold: #c8962f;
   --gold-2: #f5d287;
+  /* Только для цифр цен: #a1751e даёт 4.13:1 на белой карточке.
+     Сам по себе #a87b22 давал 3.80:1 — ниже порога 4:1 из ТЗ. */
+  --gold-text: #a1751e;
   --accent: #1f6f5c;
   --accent-soft: #e8f1ed;
   --accent-hover: #17574a;
@@ -90,6 +93,8 @@
   --muted: #a69c8c;
   --gold: #d9a845;
   --gold-2: #e8be6c;
+  /* В тёмной теме цена остаётся тем же золотом: 7.46:1 на --card. */
+  --gold-text: #d9a845;
   --accent: #3e9b84;
   --accent-soft: #1a2a26;
   --accent-hover: #4fb39a;
@@ -625,9 +630,10 @@ section,
   padding: 60px 0;
 }
 
-/* #format и #teacher идут с одинаковым фоном: убираем двойной отступ между ними.
-   Пара — единственное исключение из чередования --bg / --bg-2: см. docs/DESIGN.md § 2. */
-#format.is-open {
+/* #format и #teacher идут одним фоном: вместо двойных 60 + 60 оставляем
+   по 30 px с каждой стороны. Пара — единственное исключение из чередования
+   --bg / --bg-2: см. docs/DESIGN.md § 2. */
+#format {
   padding-bottom: 30px;
 }
 
@@ -638,16 +644,6 @@ section,
 /* Между последним вопросом FAQ и формой — не меньше --s-8. */
 #faq {
   padding-bottom: var(--s-8);
-}
-
-/* Свёрнутая секция — только заголовок и подзаголовок, без двойных вертикальных отступов. */
-.is-collapsible:not(.is-open) {
-  padding-top: 36px;
-  padding-bottom: 36px;
-}
-
-.is-collapsible:not(.is-open) .section-sub {
-  margin-bottom: 0;
 }
 
 /* Чередование фонов задаётся классом в разметке, а не nth-child: порядок
@@ -820,94 +816,14 @@ section,
   font-size: var(--fs-body);
 }
 
-/* Аккордеон секций #results, #format, #trust */
-.section-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 0;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
-  text-align: center;
-}
-
-.section-toggle:hover,
-.section-toggle:focus-visible {
-  color: var(--accent);
-}
-
-.section-chevron {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  color: var(--muted);
-  transition: transform .3s ease;
-}
-
-.section-toggle.is-open .section-chevron {
-  transform: rotate(180deg);
-}
-
-.section-more {
-  display: block;
-  width: fit-content;
-  margin: 22px auto 0;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  background: var(--card);
-  color: var(--text);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--fs-small);
-  font-weight: 700;
-  padding: 9px 20px;
-  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
-    color var(--dur) var(--ease);
-}
-
-.section-more:hover {
-  border-color: var(--accent);
-  background: var(--card);
-  color: var(--accent);
-}
-
-.no-js .section-more {
-  display: none;
-}
-
-.section-body {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height .45s ease, opacity .35s ease;
-}
-
-.no-js .section-body {
-  max-height: none;
-  overflow: visible;
-  opacity: 1;
-}
-
-.no-js .section-toggle {
-  cursor: default;
-  pointer-events: none;
-}
-
-.no-js .section-chevron {
-  display: none;
-}
+/* Аккордеон секций убран 17.11.2026: #results, #format и #trust всегда
+   раскрыты. Остался только аккордеон FAQ — см. .faq-item ниже. */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .section-body,
-  .section-chevron,
   .copy-toast {
     transition: none;
   }
@@ -987,12 +903,11 @@ section,
   white-space: nowrap;
 }
 
-/* Кнопка в карточке — визуальная часть карточки-ссылки: клик обрабатывает
-   сама ссылка, поэтому у кнопки нет своих обработчиков и pointer-events. */
+/* Кнопка в карточке — декоративная надпись: клик обрабатывает карточка-ссылка.
+   Из порядка табуляции и дерева доступности надпись убрана (aria-hidden). */
 .price-cta {
   width: 100%;
   margin-top: var(--s-5);
-  pointer-events: none;
 }
 
 a.price {
@@ -1031,7 +946,7 @@ a.price:focus-visible {
 
 .price .amount {
   margin: 4px 0;
-  color: var(--gold);
+  color: var(--gold-text);
   font-size: 30px;
   font-weight: 700;
 }
@@ -2724,7 +2639,6 @@ a.price:focus-visible {
   .sfera-question-icon,
   .sfera-channels a,
   .sfera-close,
-  .section-more,
   .faq-icon,
   .faq-answer,
   .card,

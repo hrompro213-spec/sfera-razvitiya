@@ -115,7 +115,6 @@ const TARIFF_MESSAGES = {
 };
 
 const COPY_TOAST_TIMEOUT = 5000;
-const SECTION_ANIMATION_MS = 450;
 // Длительность появления панели «Сферы» — совпадает с transition в styles.css.
 const SFERA_PANEL_ANIMATION_MS = 220;
 // Шапка получает фон после этой прокрутки (класс .is-scrolled).
@@ -418,15 +417,6 @@ function initSferaWidget() {
   closeSferaPanel = () => closePanel();
 
   function scrollToQuestionAnchor(target, hash) {
-    // #format — аккордеон: раскрываем так же, как при переходе по якорю.
-    if (target.classList.contains("is-collapsible")) {
-      const toggle = target.querySelector("[data-section-toggle]");
-
-      if (toggle && toggle.getAttribute("aria-expanded") !== "true") {
-        setSectionState(target, true);
-      }
-    }
-
     window.history.replaceState(null, "", hash);
 
     window.setTimeout(() => {
@@ -715,136 +705,35 @@ function initFaq() {
 
   faqRoot.querySelectorAll(".faq-item").forEach((item) => {
     const button = item.querySelector(".faq-question");
-    const answerBlock = item.querySelector(".faq-answer");
 
-    if (!button || !answerBlock) {
+    if (!button) {
       return;
     }
 
     button.addEventListener("click", () => {
-      const isOpen = item.classList.toggle("is-open");
-
-      button.setAttribute("aria-expanded", String(isOpen));
-      answerBlock.style.maxHeight = isOpen ? `${answerBlock.scrollHeight}px` : "0";
+      setFaqItemState(item, !item.classList.contains("is-open"));
     });
   });
 }
 
-function expandSectionBody(body) {
-  body.dataset.sectionState = "open";
-  body.style.overflow = "hidden";
-  body.style.maxHeight = "0px";
-  body.style.opacity = "0";
+// Аккордеонов секций больше нет (17.11.2026): #results, #format и #trust
+// всегда раскрыты. Аккордеон остался только у FAQ.
+function setFaqItemState(item, expanded) {
+  const button = item.querySelector(".faq-question");
+  const answerBlock = item.querySelector(".faq-answer");
 
-  // Принудительный reflow, чтобы transition начался именно с нулевой высоты.
-  void body.offsetHeight;
-
-  body.style.maxHeight = `${body.scrollHeight}px`;
-  body.style.opacity = "1";
-
-  // Страховка: даже если transitionend не придёт, секция раскроется полностью.
-  window.setTimeout(() => {
-    if (body.dataset.sectionState === "open") {
-      body.style.maxHeight = "none";
-      body.style.overflow = "visible";
-    }
-  }, SECTION_ANIMATION_MS);
-}
-
-function collapseSectionBody(body) {
-  if (body.dataset.sectionState === "closed") {
+  if (!button || !answerBlock) {
     return;
   }
 
-  body.dataset.sectionState = "closed";
-  body.style.overflow = "hidden";
-  body.style.maxHeight = `${body.scrollHeight}px`;
-  body.style.opacity = "1";
-
-  void body.offsetHeight;
-
-  body.style.maxHeight = "0px";
-  body.style.opacity = "0";
+  item.classList.toggle("is-open", expanded);
+  button.setAttribute("aria-expanded", String(expanded));
+  answerBlock.style.maxHeight = expanded ? `${answerBlock.scrollHeight}px` : "0";
 }
 
-function initSectionBody(body) {
-  body.addEventListener("transitionend", (event) => {
-    if (event.propertyName !== "max-height") {
-      return;
-    }
-
-    if (body.dataset.sectionState === "open") {
-      body.style.maxHeight = "none";
-      body.style.overflow = "visible";
-      return;
-    }
-
-    body.style.maxHeight = "";
-    body.style.opacity = "";
-    body.style.overflow = "";
-  });
-}
-
-function setSectionState(section, expanded) {
-  const toggles = [...section.querySelectorAll("[data-section-toggle]")];
-  const body = section.querySelector("[data-section-body]");
-
-  if (!toggles.length || !body) {
-    return;
-  }
-
-  section.classList.toggle("is-open", expanded);
-
-  toggles.forEach((toggle) => {
-    toggle.setAttribute("aria-expanded", String(expanded));
-    toggle.classList.toggle("is-open", expanded);
-
-    if (toggle.classList.contains("section-more")) {
-      toggle.textContent = expanded ? "Свернуть" : "Показать подробнее";
-    }
-  });
-
-  if (expanded) {
-    expandSectionBody(body);
-  } else {
-    collapseSectionBody(body);
-  }
-}
-
-function initCollapsibleSections() {
-  document.querySelectorAll(".is-collapsible").forEach((section) => {
-    const toggles = [...section.querySelectorAll("[data-section-toggle]")];
-    const body = section.querySelector("[data-section-body]");
-
-    if (!toggles.length || !body) {
-      return;
-    }
-
-    initSectionBody(body);
-
-    const expanded = toggles[0].getAttribute("aria-expanded") === "true";
-
-    section.classList.toggle("is-open", expanded);
-
-    toggles.forEach((toggle) => {
-      toggle.classList.toggle("is-open", expanded);
-
-      toggle.addEventListener("click", () => {
-        setSectionState(section, toggle.getAttribute("aria-expanded") !== "true");
-      });
-    });
-
-    if (expanded) {
-      body.dataset.sectionState = "open";
-      body.style.maxHeight = "none";
-      body.style.overflow = "visible";
-      body.style.opacity = "1";
-    } else {
-      body.dataset.sectionState = "closed";
-    }
-  });
-}
-
+// Хэш-навигация: если якорь ведёт внутрь FAQ (например, #faq-answer-3),
+// раскрываем этот вопрос, чтобы ответ был виден. Секции открыты всегда,
+// поэтому других сценариев у функции не осталось.
 function expandCollapsibleFromHash() {
   const id = window.location.hash.slice(1);
 
@@ -854,34 +743,24 @@ function expandCollapsibleFromHash() {
 
   const target = document.getElementById(id);
 
-  if (!target || !target.classList.contains("is-collapsible")) {
+  if (!target) {
     return;
   }
 
-  const toggle = target.querySelector("[data-section-toggle]");
+  const item = target.closest(".faq-item");
 
-  if (!toggle || toggle.getAttribute("aria-expanded") === "true") {
-    return;
+  if (item) {
+    setFaqItemState(item, true);
   }
-
-  setSectionState(target, true);
-  window.setTimeout(() => target.scrollIntoView({ block: "start" }), 80);
 }
 
 // Ссылки на форму (#application-form): плавный скролл с поправкой на высоту
-// шапки и раскрытие свёрнутого блока, если форма спрятана в аккордеоне.
-// Новых целей Метрики эти ссылки не отправляют.
+// шапки. Новых целей Метрики эти ссылки не отправляют.
 function scrollToApplicationForm() {
   const target = getElement("application-form");
 
   if (!target) {
     return;
-  }
-
-  const collapsible = target.closest(".is-collapsible");
-
-  if (collapsible && !collapsible.classList.contains("is-open")) {
-    setSectionState(collapsible, true);
   }
 
   window.history.replaceState(null, "", "#application-form");
@@ -1206,7 +1085,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initSiteMenu();
   initHeroImage();
   initFaq();
-  initCollapsibleSections();
   initFormAnchorLinks();
   initConfiguredContactLinks();
   initContactLists();
