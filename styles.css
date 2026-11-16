@@ -109,6 +109,20 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Липкая шапка (81 px на десктопе, 60 px на телефоне) не должна накрывать
+   заголовок секции при переходе по якорю. 92 px = 64 + 24 + 4. */
+section[id],
+#application-form {
+  scroll-margin-top: calc(var(--s-8) + var(--s-5) + var(--s-1));
+}
+
+@media (max-width: 900px) {
+  section[id],
+  #application-form {
+    scroll-margin-top: calc(var(--s-8) + var(--s-2));
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -306,6 +320,12 @@ header.is-scrolled {
 
 .nav-links a:hover {
   color: var(--accent);
+}
+
+/* Пункт меню, который виден только в мобильной панели: на десктопе в шапке
+   пять пунктов, в панели — все восемь разделов. */
+.nav-links .nav-link-mobile {
+  display: none;
 }
 
 .nav-right {
@@ -600,17 +620,24 @@ header.is-scrolled {
   color: var(--accent);
 }
 
-section {
+section,
+.section {
   padding: 60px 0;
 }
 
-/* #format и #teacher идут с одинаковым фоном: убираем двойной отступ между ними. */
+/* #format и #teacher идут с одинаковым фоном: убираем двойной отступ между ними.
+   Пара — единственное исключение из чередования --bg / --bg-2: см. docs/DESIGN.md § 2. */
 #format.is-open {
   padding-bottom: 30px;
 }
 
 #teacher {
   padding-top: 30px;
+}
+
+/* Между последним вопросом FAQ и формой — не меньше --s-8. */
+#faq {
+  padding-bottom: var(--s-8);
 }
 
 /* Свёрнутая секция — только заголовок и подзаголовок, без двойных вертикальных отступов. */
@@ -623,7 +650,10 @@ section {
   margin-bottom: 0;
 }
 
-.section-alt {
+/* Чередование фонов задаётся классом в разметке, а не nth-child: порядок
+   секций можно менять без побочных эффектов. --bg у секции без класса,
+   --bg-2 у .section--alt. */
+.section--alt {
   background: var(--bg-2);
 }
 
@@ -828,7 +858,7 @@ section {
   margin: 22px auto 0;
   border: 1px solid var(--line);
   border-radius: var(--r-pill);
-  background: transparent;
+  background: var(--card);
   color: var(--text);
   cursor: pointer;
   font: inherit;
@@ -841,7 +871,7 @@ section {
 
 .section-more:hover {
   border-color: var(--accent);
-  background: transparent;
+  background: var(--card);
   color: var(--accent);
 }
 
@@ -933,6 +963,38 @@ section {
   text-align: center;
 }
 
+/* Средний тариф (VIP-группа) — единственная акцентная карточка на секции:
+   рамка 2 px --accent, тень --shadow-md, бейдж «Часто выбирают» поверх рамки. */
+.price--featured {
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow-md);
+  padding-top: 40px;
+}
+
+.price-badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-width: calc(100% - var(--s-4));
+  transform: translate(-50%, -50%);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.2;
+  padding: var(--s-1) var(--s-3);
+  white-space: nowrap;
+}
+
+/* Кнопка в карточке — визуальная часть карточки-ссылки: клик обрабатывает
+   сама ссылка, поэтому у кнопки нет своих обработчиков и pointer-events. */
+.price-cta {
+  width: 100%;
+  margin-top: var(--s-5);
+  pointer-events: none;
+}
+
 a.price {
   cursor: pointer;
   transition: transform .2s, border-color .2s, box-shadow .2s;
@@ -942,6 +1004,10 @@ a.price:hover {
   border-color: var(--gold);
   box-shadow: var(--shadow-md);
   transform: translateY(-5px);
+}
+
+a.price--featured:hover {
+  border-color: var(--accent-hover);
 }
 
 a.price:focus-visible {
@@ -971,6 +1037,7 @@ a.price:focus-visible {
 }
 
 .price .amount small {
+  color: var(--muted);
   font-size: 16px;
 }
 
@@ -985,61 +1052,89 @@ a.price:focus-visible {
 .teacher-card {
   display: flex;
   align-items: flex-start;
+  gap: var(--s-6);
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   background: var(--card);
   box-shadow: var(--shadow-sm);
-  gap: 30px;
-  flex-wrap: wrap;
-  padding: 34px;
+  padding: var(--s-6);
 }
 
 .teacher-photo {
-  width: 380px;
+  width: 360px;
+  max-width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
   border: 2px solid var(--gold);
-  border-radius: 18px;
+  border-radius: var(--r-md);
   flex-shrink: 0;
   object-fit: cover;
   object-position: center;
 }
 
 .teacher-content {
-  flex: 1;
-  min-width: 260px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
-.teacher-content h3 {
-  color: var(--text);
+.teacher-title {
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-h2);
+}
+
+.teacher-name {
+  margin-bottom: var(--s-4);
   font-size: var(--fs-h3);
 }
 
-.teacher-role {
-  margin: 4px 0 16px;
-  color: var(--muted);
+/* Цитата: левая линия --gold, отступ --s-3, без курсива. */
+.teacher-quote {
+  margin: 0 0 var(--s-4);
+  border-left: 3px solid var(--gold);
+  padding-left: var(--s-3);
+  font-size: calc(var(--fs-body) + 1px);
+  font-style: normal;
 }
 
-.teacher-label {
-  margin-bottom: 6px;
-  font-weight: 700;
-}
-
-.teacher-list {
-  margin-bottom: 14px;
-  color: var(--muted);
+.teacher-facts {
+  display: grid;
+  gap: var(--s-2);
   list-style: none;
 }
 
-.teacher-text {
-  margin-bottom: 12px;
+.teacher-facts li {
+  position: relative;
+  padding-left: var(--s-4);
   color: var(--muted);
+  font-size: calc(var(--fs-body) - 1px);
 }
 
-.teacher-note {
-  margin-top: 10px;
-  color: var(--muted);
-  font-size: 15px;
+.teacher-facts li::before {
+  content: "";
+  position: absolute;
+  top: .72em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.teacher-facts strong {
+  color: var(--text);
+}
+
+/* ≤900 px: фото сверху (не шире 320 px), текст ниже. */
+@media (max-width: 900px) {
+  .teacher-card {
+    flex-direction: column;
+  }
+
+  .teacher-photo {
+    align-self: center;
+    width: 100%;
+    max-width: 320px;
+  }
 }
 
 .trust-grid {
@@ -1077,6 +1172,88 @@ a.price:focus-visible {
   font-size: var(--fs-body);
 }
 
+/* Учебные материалы: три карточки-заглушки с бейджем «Скоро». */
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-5);
+}
+
+.material-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  padding: calc(var(--s-5) + var(--s-2)) var(--s-5) var(--s-5);
+}
+
+.material-card .ico {
+  margin-bottom: var(--s-3);
+  color: var(--gold);
+}
+
+.material-card .ico .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.material-card h3 {
+  margin-bottom: var(--s-2);
+  color: var(--text);
+  font-size: var(--fs-h3);
+}
+
+.material-card p {
+  color: var(--muted);
+  font-size: calc(var(--fs-body) - 1px);
+}
+
+.material-badge {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1.2;
+  padding: var(--s-1) var(--s-3);
+}
+
+[data-theme="dark"] .material-badge {
+  color: var(--accent-hover);
+}
+
+.materials-note {
+  max-width: var(--measure);
+  margin: var(--s-6) auto 0;
+  color: var(--muted);
+  font-size: calc(var(--fs-body) - 1px);
+  text-align: center;
+}
+
+.materials-note a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.materials-note a:hover {
+  color: var(--accent-hover);
+}
+
+@media (max-width: 700px) {
+  .materials-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .faq-list {
   display: grid;
   gap: 14px;
@@ -1103,13 +1280,18 @@ a.price:focus-visible {
   text-align: left;
   font-size: 17px;
   font-weight: 700;
+  transition: background var(--dur) var(--ease);
+}
+
+.faq-question:hover {
+  background: var(--accent-soft);
 }
 
 .faq-icon {
-  color: var(--gold);
-  font-size: 24px;
-  line-height: 1;
-  transition: transform .3s;
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  transition: transform .3s, color var(--dur) var(--ease);
 }
 
 .faq-answer {
@@ -1121,11 +1303,21 @@ a.price:focus-visible {
 
 .faq-answer p {
   color: var(--muted);
-  padding-bottom: 20px;
+  padding-bottom: var(--s-5);
 }
 
 .faq-item.is-open .faq-icon {
-  transform: rotate(45deg);
+  color: var(--accent);
+  transform: rotate(180deg);
+}
+
+/* Без JS аккордеон не открыть — ответы показываем сразу. */
+.no-js .faq-answer {
+  max-height: none;
+}
+
+.no-js .faq-icon {
+  display: none;
 }
 
 .cta-section {
@@ -1192,14 +1384,14 @@ a.price:focus-visible {
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--s-4);
   margin-top: 22px;
 }
 
 .form-field {
   display: grid;
-  gap: 8px;
-  margin-top: 16px;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
   color: var(--text);
   font-weight: 700;
 }
@@ -1221,8 +1413,8 @@ a.price:focus-visible {
 .form-field textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--bg);
+  border-radius: var(--r-md);
+  background: var(--card);
   color: var(--text);
   font: inherit;
   font-weight: 500;
@@ -1238,14 +1430,28 @@ a.price:focus-visible {
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-  border-color: var(--focus);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent);
   outline: none;
+}
+
+/* Ошибка поля: рамка --gold, без красного — палитра без красного. */
+.form-field input:user-invalid,
+.form-field select:user-invalid,
+.form-field textarea:user-invalid {
+  border-color: var(--gold);
+}
+
+.form-field input:user-invalid:focus,
+.form-field select:user-invalid:focus,
+.form-field textarea:user-invalid:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 22%, transparent);
 }
 
 .form-field input::placeholder,
 .form-field textarea::placeholder {
-  color: color-mix(in srgb, var(--muted) 78%, transparent);
+  color: var(--muted);
 }
 
 .checkbox-field {
@@ -1287,7 +1493,11 @@ a.price:focus-visible {
 }
 
 .form-message.is-error {
-  color: #b13b2e;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--text);
+  line-height: 1.45;
+  padding: var(--s-2) var(--s-3);
 }
 
 .form-message.is-success {
@@ -1310,7 +1520,10 @@ a.price:focus-visible {
 }
 
 .form-submit {
+  min-height: 52px;
   margin-top: 18px;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .form-submit:disabled {
@@ -2085,6 +2298,22 @@ a.price:focus-visible {
   color: var(--accent);
 }
 
+/* 901–1180 px: пять пунктов меню ещё помещаются в одну строку, но плотнее. */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .nav {
+    gap: var(--s-4);
+  }
+
+  .nav-links {
+    gap: var(--s-3);
+    font-size: 13px;
+  }
+
+  .nav-phone {
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 900px) {
   /* Шапка поднимается выше постоянных слоёв: меню и затемнение — её дети,
      поэтому выше шапки им не подняться. Эффективный слой меню = 130 + local. */
@@ -2251,6 +2480,11 @@ a.price:focus-visible {
     border-bottom: 1px solid var(--line);
   }
 
+  /* В мобильной панели — все восемь разделов, включая те, что скрыты в шапке. */
+  .site-header .nav-links .nav-link-mobile {
+    display: block;
+  }
+
   .site-header .nav-right {
     align-items: stretch;
     gap: var(--s-3);
@@ -2347,16 +2581,15 @@ a.price:focus-visible {
   }
 
   .teacher-card {
-    padding: 24px;
-  }
-
-  .teacher-photo {
-    width: 100%;
-    max-width: none;
+    padding: var(--s-5);
   }
 
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .form-submit {
+    width: 100%;
   }
 
   .application-form,
@@ -2490,7 +2723,17 @@ a.price:focus-visible {
   .sfera-question,
   .sfera-question-icon,
   .sfera-channels a,
-  .sfera-close {
+  .sfera-close,
+  .section-more,
+  .faq-icon,
+  .faq-answer,
+  .card,
+  a.price {
     transition: none;
+  }
+
+  .card:hover,
+  a.price:hover {
+    transform: none;
   }
 }

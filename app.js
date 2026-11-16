@@ -151,32 +151,8 @@ const HERO_IMAGES = {
   }
 };
 
-const faqs = [
-  {
-    question: "Что будет на бесплатной диагностике?",
-    answer: "Познакомимся с ребёнком, определим текущий уровень, обсудим трудности и подберём подходящий формат занятий."
-  },
-  {
-    question: "Можно ли заниматься только русским или только математикой?",
-    answer: "Да. Формат можно подобрать индивидуально после вводной встречи."
-  },
-  {
-    question: "Подойдут ли занятия, если ребёнок сильно отстал?",
-    answer: "Да. Мы начинаем с диагностики и двигаемся от текущего уровня ребёнка, без давления и сравнения с другими."
-  },
-  {
-    question: "Что такое нейротренировки?",
-    answer: "Это упражнения на внимание, память, логику, речь и скорость мышления. Они помогают ребёнку легче воспринимать и запоминать учебный материал."
-  },
-  {
-    question: "Можно ли заниматься индивидуально?",
-    answer: "Да. Индивидуальные занятия подойдут, если ребёнку нужен личный темп или точечная помощь."
-  },
-  {
-    question: "Где проходят занятия?",
-    answer: "Онлайн в Zoom. Ребёнку нужен интернет, компьютер или планшет и спокойное место для урока."
-  }
-];
+// FAQ размечен в index.html статически: секция читается и без JS, а скрипт
+// только навешивает раскрытие. Вопросы и ответы совпадают с JSON-LD FAQPage.
 
 function getElement(id) {
   return document.getElementById(id);
@@ -730,35 +706,6 @@ function initTheme() {
   });
 }
 
-function createFaqItem({ question, answer }, index) {
-  const item = document.createElement("article");
-  const questionId = `faq-question-${index}`;
-  const answerId = `faq-answer-${index}`;
-
-  item.className = "faq-item";
-  item.innerHTML = `
-    <button class="faq-question" type="button" id="${questionId}" aria-expanded="false" aria-controls="${answerId}">
-      <span>${question}</span>
-      <span class="faq-icon" aria-hidden="true">+</span>
-    </button>
-    <div class="faq-answer" id="${answerId}" role="region" aria-labelledby="${questionId}">
-      <p>${answer}</p>
-    </div>
-  `;
-
-  const button = item.querySelector(".faq-question");
-  const answerBlock = item.querySelector(".faq-answer");
-
-  button.addEventListener("click", () => {
-    const isOpen = item.classList.toggle("is-open");
-
-    button.setAttribute("aria-expanded", String(isOpen));
-    answerBlock.style.maxHeight = isOpen ? `${answerBlock.scrollHeight}px` : "0";
-  });
-
-  return item;
-}
-
 function initFaq() {
   const faqRoot = getElement("faqList");
 
@@ -766,14 +713,21 @@ function initFaq() {
     return;
   }
 
-  const list = document.createElement("div");
-  list.className = "faq-list";
+  faqRoot.querySelectorAll(".faq-item").forEach((item) => {
+    const button = item.querySelector(".faq-question");
+    const answerBlock = item.querySelector(".faq-answer");
 
-  faqs.forEach((faq, index) => {
-    list.append(createFaqItem(faq, index));
+    if (!button || !answerBlock) {
+      return;
+    }
+
+    button.addEventListener("click", () => {
+      const isOpen = item.classList.toggle("is-open");
+
+      button.setAttribute("aria-expanded", String(isOpen));
+      answerBlock.style.maxHeight = isOpen ? `${answerBlock.scrollHeight}px` : "0";
+    });
   });
-
-  faqRoot.replaceChildren(list);
 }
 
 function expandSectionBody(body) {
@@ -912,6 +866,50 @@ function expandCollapsibleFromHash() {
 
   setSectionState(target, true);
   window.setTimeout(() => target.scrollIntoView({ block: "start" }), 80);
+}
+
+// Ссылки на форму (#application-form): плавный скролл с поправкой на высоту
+// шапки и раскрытие свёрнутого блока, если форма спрятана в аккордеоне.
+// Новых целей Метрики эти ссылки не отправляют.
+function scrollToApplicationForm() {
+  const target = getElement("application-form");
+
+  if (!target) {
+    return;
+  }
+
+  const collapsible = target.closest(".is-collapsible");
+
+  if (collapsible && !collapsible.classList.contains("is-open")) {
+    setSectionState(collapsible, true);
+  }
+
+  window.history.replaceState(null, "", "#application-form");
+
+  window.setTimeout(() => {
+    const header = document.querySelector("header");
+    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: prefersReducedMotion() ? "auto" : "smooth"
+    });
+  }, 80);
+}
+
+function initFormAnchorLinks() {
+  document.querySelectorAll('a[href="#application-form"]').forEach((link) => {
+    // У панели «Сферы» свой обработчик: он ещё и закрывает панель.
+    if (link.closest(".sfera-panel")) {
+      return;
+    }
+
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      scrollToApplicationForm();
+    });
+  });
 }
 
 async function copyText(text) {
@@ -1209,6 +1207,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroImage();
   initFaq();
   initCollapsibleSections();
+  initFormAnchorLinks();
   initConfiguredContactLinks();
   initContactLists();
   initSferaWidget();

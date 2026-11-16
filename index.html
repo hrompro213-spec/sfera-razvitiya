@@ -173,6 +173,13 @@
     <path d="M12 6.4C10.4 5.1 8.3 4.5 5.6 4.5v13c2.7 0 4.8.6 6.4 1.9 1.6-1.3 3.7-1.9 6.4-1.9v-13c-2.7 0-4.8.6-6.4 1.9Z"/>
     <path d="M12 6.4v13"/>
   </symbol>
+  <symbol id="icon-notes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.6 3.8h7.6L18 7.6v12.6H6.6Z"/>
+    <path d="M14.2 3.8v3.8H18"/>
+    <path d="M9.4 11.8h5.8"/>
+    <path d="M9.4 15.2h5.8"/>
+    <path d="M9.4 8.4h2.4"/>
+  </symbol>
   <symbol id="icon-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 20.2v-7"/>
     <path d="M12 13.2c0-3 2-5 5-5 0 3-2 5-5 5Z"/>
@@ -239,9 +246,13 @@
       </div>
       <nav class="nav-links" aria-label="Основная навигация">
         <a href="#audience">Кому подходит</a>
-        <a href="#results">Что получит ребёнок</a>
+        <a class="nav-link-mobile" href="#results">Что получит ребёнок</a>
+        <a href="#format">Как проходят</a>
+        <a href="#teacher">Преподаватель</a>
+        <a class="nav-link-mobile" href="#trust">Почему нам доверяют</a>
         <a href="#pricing">Цены</a>
-        <a href="#faq">FAQ</a>
+        <a class="nav-link-mobile" href="#materials">Учебные материалы</a>
+        <a href="#faq">Вопросы</a>
       </nav>
       <a class="nav-phone" data-contact-link="phone" data-contact-phone aria-label="Позвонить">
         <svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
@@ -321,7 +332,7 @@
     </div>
   </section>
 
-  <section class="section-alt is-collapsible" id="results">
+  <section class="section--alt is-collapsible" id="results">
     <div class="container">
       <h2 class="section-title">
         <button class="section-toggle" type="button" data-section-toggle aria-expanded="false" aria-controls="results-body">
@@ -392,32 +403,23 @@
 
   <section id="teacher">
     <div class="container">
-      <h2 class="section-title">Занятия ведёт педагог <span>с опытом более 15 лет</span></h2>
       <article class="teacher-card">
         <img src="images/teacher.jpg" alt="Татьяна Викторовна Задонская, педагог" class="teacher-photo" width="1229" height="1536" loading="lazy" decoding="async">
         <div class="teacher-content">
-          <h3>Татьяна Викторовна Задонская</h3>
-          <p class="teacher-role">Педагог и специалист по когнитивному развитию</p>
-          <p class="teacher-text">Помогает детям развивать память, внимание, мышление и увереннее справляться со школьными предметами.</p>
-          <p class="teacher-text">В работе сочетает предметную подготовку и нейротренировки, чтобы ребёнок не просто «зазубрил», а лучше понимал и запоминал материал.</p>
-          <p class="teacher-label">Образование:</p>
-          <ul class="teacher-list">
-            <li>✦ ПКИ РУК (Москва)</li>
-            <li>✦ КГУКИ (Казань)</li>
-            <li>✦ НИИДПО (Санкт-Петербург)</li>
-          </ul>
-          <p class="teacher-label">Опыт:</p>
-          <ul class="teacher-list">
-            <li>✦ Более 15 лет в образовании</li>
-            <li>✦ Школа скорочтения и когнитивного развития</li>
-            <li>✦ Основатель проекта «Сфера Развития»</li>
+          <h2 class="teacher-title">Преподаватель</h2>
+          <h3 class="teacher-name">Задонская Татьяна Викторовна</h3>
+          <blockquote class="teacher-quote">В работе сочетает предметную подготовку и нейротренировки, чтобы ребёнок не просто «зазубрил», а лучше понимал и запоминал материал.</blockquote>
+          <ul class="teacher-facts">
+            <li><strong>Стаж:</strong> более 15 лет в образовании.</li>
+            <li><strong>Образование:</strong> ПКИ РУК (Москва), КГУКИ (Казань), НИИДПО (Санкт-Петербург).</li>
+            <li><strong>Специализация:</strong> нейротренировки и когнитивное развитие — внимание, память, мышление.</li>
           </ul>
         </div>
       </article>
     </div>
   </section>
 
-  <section class="section-alt is-collapsible" id="trust">
+  <section class="section--alt is-collapsible" id="trust">
     <div class="container">
       <h2 class="section-title">
         <button class="section-toggle" type="button" data-section-toggle aria-expanded="false" aria-controls="trust-body">
@@ -459,25 +461,112 @@
           <h4>Индивидуальное занятие</h4>
           <div class="amount">1 500 <small>₽</small></div>
           <p>Занятие один на один с педагогом: разбираем темы ОГЭ и ВПР в комфортном темпе.</p>
+          <span class="btn btn-secondary price-cta">Записаться</span>
         </a>
-        <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-vip" target="_blank" rel="noopener">
+        <a class="price price--featured" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-vip" target="_blank" rel="noopener">
+          <span class="price-badge">Часто выбирают</span>
           <h4>VIP-группа (2–3 человека)</h4>
           <div class="amount">1 000 <small>₽</small></div>
           <p>Небольшая группа: педагог успевает поработать с каждым, а заниматься интереснее вместе.</p>
+          <span class="btn price-cta">Записаться</span>
         </a>
         <a class="price" data-contact-link="max" data-analytics-goal="pricing_click" data-tariff="oge-group" target="_blank" rel="noopener">
           <h4>Групповое занятие (от 4 человек)</h4>
           <div class="amount">500 <small>₽</small></div>
           <p>Разбираем задания ОГЭ и ВПР и сразу отрабатываем их на практике в группе.</p>
+          <span class="btn btn-secondary price-cta">Записаться</span>
         </a>
       </div>
     </div>
   </section>
 
-  <section class="section-alt" id="faq">
+  <section id="materials" class="section section--alt">
+    <div class="container">
+      <h2 class="section-title">Учебные материалы</h2>
+      <p class="section-sub">Готовим разборы, конспекты и тренажёры — чтобы можно было заниматься и между занятиями.</p>
+      <div class="materials-grid">
+        <article class="material-card">
+          <span class="material-badge">Скоро</span>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-book"></use></svg></div>
+          <h3>Разборы заданий ОГЭ</h3>
+          <p>Пошаговые решения типовых задач с ловушками.</p>
+        </article>
+        <article class="material-card">
+          <span class="material-badge">Скоро</span>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-notes"></use></svg></div>
+          <h3>Конспекты по темам</h3>
+          <p>Коротко и по делу, чтобы повторить перед экзаменом.</p>
+        </article>
+        <article class="material-card">
+          <span class="material-badge">Скоро</span>
+          <div class="ico"><svg class="icon" aria-hidden="true"><use href="#icon-target"></use></svg></div>
+          <h3>Тренажёры</h3>
+          <p>Короткие задания с проверкой, можно заниматься самому.</p>
+        </article>
+      </div>
+      <p class="materials-note">Материалы появятся в течение учебного года. Хотите узнать первыми — <a href="#application-form">напишите нам</a>.</p>
+    </div>
+  </section>
+
+  <section id="faq">
     <div class="container">
       <h2 class="section-title">Частые <span>вопросы</span></h2>
-      <div id="faqList"></div>
+      <div class="faq-list" id="faqList">
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-0" aria-expanded="false" aria-controls="faq-answer-0">
+            <span>Что будет на бесплатной диагностике?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-0" role="region" aria-labelledby="faq-question-0">
+            <p>Познакомимся с ребёнком, определим текущий уровень, обсудим трудности и подберём подходящий формат занятий.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-1" aria-expanded="false" aria-controls="faq-answer-1">
+            <span>Можно ли заниматься только русским или только математикой?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1">
+            <p>Да. Формат можно подобрать индивидуально после вводной встречи.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-2" aria-expanded="false" aria-controls="faq-answer-2">
+            <span>Подойдут ли занятия, если ребёнок сильно отстал?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2">
+            <p>Да. Мы начинаем с диагностики и двигаемся от текущего уровня ребёнка, без давления и сравнения с другими.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-3" aria-expanded="false" aria-controls="faq-answer-3">
+            <span>Что такое нейротренировки?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3">
+            <p>Это упражнения на внимание, память, логику, речь и скорость мышления. Они помогают ребёнку легче воспринимать и запоминать учебный материал.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-4" aria-expanded="false" aria-controls="faq-answer-4">
+            <span>Можно ли заниматься индивидуально?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4">
+            <p>Да. Индивидуальные занятия подойдут, если ребёнку нужен личный темп или точечная помощь.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button" id="faq-question-5" aria-expanded="false" aria-controls="faq-answer-5">
+            <span>Где проходят занятия?</span>
+            <svg class="icon faq-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+          <div class="faq-answer" id="faq-answer-5" role="region" aria-labelledby="faq-question-5">
+            <p>Онлайн в Zoom. Ребёнку нужен интернет, компьютер или планшет и спокойное место для урока.</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -671,7 +760,8 @@
       <a href="#audience">Кому подходит</a>
       <a href="#results">Что получит ребёнок</a>
       <a href="#pricing">Цены</a>
-      <a href="#faq">FAQ</a>
+      <a href="#materials">Учебные материалы</a>
+      <a href="#faq">Вопросы</a>
     </nav>
 
     <div class="footer-contacts">
