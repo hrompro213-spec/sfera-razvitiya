@@ -2213,8 +2213,10 @@ a.price:focus-visible {
   color: var(--accent);
 }
 
-/* 901–1180 px: пять пунктов меню ещё помещаются в одну строку, но плотнее. */
-@media (min-width: 901px) and (max-width: 1180px) {
+/* 901 px и выше: в шапке шесть пунктов меню при контейнере 1100 px.
+   Держим плотный режим на всём десктопе — иначе на 1280–1920 px шапка
+   переносится в две строки. */
+@media (min-width: 901px) {
   .nav {
     gap: var(--s-4);
   }
@@ -2228,6 +2230,16 @@ a.price:focus-visible {
     font-size: 13px;
   }
 }
+
+/* 901–1050 px: контейнер уже, шапке не хватает ещё ~40 px — сжимаем только
+   промежутки, кегль не трогаем. */
+@media (min-width: 901px) and (max-width: 1050px) {
+  .nav,
+  .nav-links {
+    gap: var(--s-2);
+  }
+}
+
 
 @media (max-width: 900px) {
   /* Шапка поднимается выше постоянных слоёв: меню и затемнение — её дети,
@@ -2651,3 +2663,75 @@ a.price:focus-visible {
     transform: none;
   }
 }
+
+/* --- Каталог учебных материалов (/materials/) ------------------------------
+   Страница каталога использует общие токены, шапку, футер и компонент
+   .material-card. Новые классы нужны только фильтрам и ссылкам «Читать / PDF». */
+.catalog-page {
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-8);
+}
+
+.catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-6);
+}
+
+.catalog-filter {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  padding: var(--s-2) var(--s-4);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.catalog-filter:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.catalog-filter.is-active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .catalog-filter.is-active {
+  color: #0d1512;
+}
+
+/* Фильтр прячет карточки атрибутом hidden; display:flex у .material-card
+   перебивает браузерный стиль [hidden], поэтому правило нужно явно. */
+.material-card[hidden] {
+  display: none;
+}
+
+.material-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin-top: auto;
+  padding-top: var(--s-4);
+}
+
+.material-actions a {
+  color: var(--accent);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.material-actions a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+

@@ -325,3 +325,61 @@
 9. **OG-обложка:** отдельный `og-cover.jpg` 1200×630 до 300 КБ — сделано,
    пересобрать из `logo-lockup-light.png` (прозрачный PNG) — отдельная задача.
 10. **Языки:** только русский, альтернатив не нужно.
+
+---
+
+## 9. Учебные материалы (`materials/`, 17.11.2026)
+
+Источник — локальная папка `PROJECTS/` (в git не попадает). В репозиторий
+скопированы только финальные сборки; дубли, черновики, бэкапы и печатные
+прогоны не публиковались.
+
+| Материал | Источник | Опубликовано | Вес |
+|---|---|---|---|
+| Уравнения №20 ОГЭ | `PROJECTS/261111_УРАВНЕНИЯ_ФИПИ/READY/book_light.html`, `book_dark.html` | `materials/uravneniya-20-oge/index.html`, `index-dark.html` | 241 КБ + 354 КБ |
+| Уравнения — PDF | `READY/sfera_v5_light.pdf`, `sfera_v5_dark.pdf` | `uravneniya-light.pdf`, `uravneniya-dark.pdf` | 1,36 МБ + 2,14 МБ |
+| Окружности №16 ОГЭ | `PROJECTS/261109_CIRCLE/CIRCLE_3/out/krugi.html` | `materials/okruzhnosti-16-oge/index.html` | 5,24 МБ |
+| Окружности — PDF | `CIRCLE_3/out/krugi_all.pdf` | `okruzhnosti.pdf` | 6,60 МБ |
+| Планиметрия №15 ОГЭ | `PROJECTS/261107_PLANIMETRI/TRIANGL/OGE15_book_v15.html` | `materials/planimetriya-15-oge/index.html` | 5,66 МБ |
+| Планиметрия — PDF | `TRIANGL/OGE15_Planimetry_v15.pdf` | `planimetriya.pdf` | 5,61 МБ |
+| Тёплый хлеб, 3 класс | `PROJECTS/261031_ОСЕННИЕ СКАЗКИ/Тёплый хлеб_КНИГА_ПЕРВАЯ.html` | `materials/teplyy-hleb-3-klass/index.html` | 6,42 МБ |
+| Тёплый хлеб — PDF | `Тёплый хлеб_КНИГА_ПЕРВАЯ.pdf` | `teplyy-hleb.pdf` | 2,85 МБ |
+| Цветик-семицветик, 3 класс | `.../Цветик-семицветик _КНИГА_ВТОРАЯ.html` | `materials/tsvetik-semitsvetik-3-klass/index.html` | 6,34 МБ |
+| Цветик-семицветик — PDF | `Цветик-семицветик _КНИГА_ВТОРАЯ.pdf` | `tsvetik-semitsvetik.pdf` | 2,79 МБ |
+| Кладовая солнца, 3 класс | `.../Кладовая солнца_КНИГА_ТРЕТЬЯ.html` | `materials/kladovaya-solntsa-3-klass/index.html` | 6,45 МБ |
+| Кладовая солнца — PDF | `Кладовая солнца_КНИГА_ТРЕТЬЯ.pdf` | `kladovaya-solntsa.pdf` | 2,93 МБ |
+| Три сказки — сборник | `.../3 сказки 3 класс.pdf` | `materials/skazki-3-klass.pdf` | 0,54 МБ |
+
+`materials/index.html` — новый каталог, не копия: собран из шапки, футера
+и токенов сайта, карточки ведут на семь материалов.
+
+**Что не опубликовано и почему**
+
+- `OGE15_book_v13.html` — MD5 совпадает с v15 (фактически копия);
+  `OGE15_Planimetry_v13.pdf`, `oge15_planimetry.pdf` и
+  `oge15_planimetry(1).pdf` — предыдущая версия и побайтовые дубли;
+  `oge15_planimetry_print.pdf` (40 МБ) — печатный прогон.
+- `CIRCLE_3/OGE16_Krugi_probe_v0.2.pdf` (и его копия в `Krugi_handoff`),
+  `krugi_step3.pdf`, `krugi_step3b.pdf` — пробники и промежуточные шаги.
+- `sfera_v3_*.pdf`, `sfera_v4_*.pdf`, `sfera_light/dark.pdf` (14 с.),
+  `sfera_light/dark (1)(2).pdf` — предыдущие итерации и побайтовые дубли;
+  финал — `sfera_v5_light/dark.pdf`.
+- `3 сказки 3 класс.html` — десктопная печатная вёрстка без viewport
+  (170×240 мм, `break-after: page`); как веб-страница не публикуется,
+  полный текст доступен в `skazki-3-klass.pdf`.
+- `ВСЕ №15 из ФИПИ + ответы.pdf/.docx` и `Все №20 из ФИПИ + ответы (1).pdf` —
+  внешние исходники (чужой дизайн, 677×957 мм), права не подтверждены.
+- Служебные каталоги `PARSED/`, `work/`, `tex/` — конвейер сборки, не контент.
+
+**Особенности публикации**
+
+- Материалы — изолированные страницы со своим CSS; `styles.css` и Golos Text
+  к ним не подключаются, `font-family` внутри не переопределяется.
+- Все HTML самодостаточны: картинки и шрифты в base64, внешних CDN нет.
+- В каждый файл добавлена панель `.sfera-return` (стили только под этот класс),
+  `meta name="description"` и `link rel="canonical"`.
+- У «Окружностей» панель статичная (не sticky): внутри страницы уже есть свой
+  липкий `.nav`, иначе он уходил бы под панель.
+- Заголовок на обложке «Уравнений» заменён на «От задачи до ответа» — так же
+  назван PDF v5; в `<title>` — читаемые названия вместо технических.
+

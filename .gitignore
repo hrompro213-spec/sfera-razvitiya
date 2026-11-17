@@ -13,3 +13,10 @@ images/source/
 .clasprc.json
 
 images/*-source.jpg
+
+images/sfera-icon-source.png
+images/sfera-icon.png
+
+# Учебные материалы: PDF — часть публикации, исключение из общего *.pdf
+!materials/*.pdf
+!materials/**/*.pdf
