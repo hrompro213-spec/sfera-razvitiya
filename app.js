@@ -39,7 +39,7 @@ const CONTACT_CONFIG = {
       href: "https://max.ru/u/f9LHodD0cOIm5I3ZWYpkPE-hwEkZxMSVgINMWR4_n5Te3Z4QABp1GVYDHuQ",
       active: true,
       visible: true,
-      placements: ["contact", "widget", "mobile", "thankyou"]
+      placements: ["contact", "widget", "mobile", "thankyou", "footer"]
     },
     phone: {
       label: "Позвонить",
@@ -49,7 +49,7 @@ const CONTACT_CONFIG = {
       href: "tel:+79872617779",
       active: true,
       visible: true,
-      placements: ["contact", "widget", "mobile", "thankyou"]
+      placements: ["contact", "widget", "mobile", "thankyou", "footer"]
     },
     whatsapp: {
       label: "WhatsApp",
@@ -83,7 +83,7 @@ const CONTACT_CONFIG = {
       href: "mailto:zadonskaya.tanja@yandex.ru",
       active: true,
       visible: true,
-      placements: ["contact", "widget", "mobile", "thankyou"]
+      placements: ["contact", "widget", "mobile", "thankyou", "footer"]
     },
     sms: {
       label: "SMS",
@@ -215,11 +215,15 @@ function getContactFallbackChannels() {
 function createContactAnchor(channel, placement) {
   const link = document.createElement("a");
   const channelKey = getChannelKey(channel);
+  // В подвале нужны значения, а не названия каналов: номер телефона и адрес
+  // почты читаются и копируются, а «Телефон» и «Email» — нет.
   const label = placement === "widget" && channel.widgetLabel
     ? channel.widgetLabel
     : placement === "mobile" && channel.shortLabel
       ? channel.shortLabel
-      : channel.label;
+      : placement === "footer" && channel.displayValue
+        ? channel.displayValue
+        : channel.label;
 
   link.href = channel.href;
   link.textContent = label;

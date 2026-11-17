@@ -37,6 +37,10 @@
   /* Только для цифр цен: #a1751e даёт 4.13:1 на белой карточке.
      Сам по себе #a87b22 давал 3.80:1 — ниже порога 4:1 из ТЗ. */
   --gold-text: #a1751e;
+  /* Текст на золотой плашке (бейдж «новое» в меню): тёмный, как --bg тёмной
+     темы. На золоте светлой темы — 7.11:1, тёмной — 8.71:1. Кремовый --bg
+     светлой темы на золоте дал бы 2.5:1, поэтому цвет фиксированный. */
+  --on-gold: #12100e;
   --accent: #1f6f5c;
   --accent-soft: #e8f1ed;
   --accent-hover: #17574a;
@@ -319,12 +323,33 @@ header.is-scrolled {
 }
 
 .nav-links a {
+  display: inline-flex;
+  align-items: center;
   padding: var(--s-2) 0;
   transition: color var(--dur) var(--ease);
 }
 
 .nav-links a:hover {
   color: var(--accent);
+}
+
+/* Бейдж «новое» у пункта «Материалы» — временная пометка нового раздела
+   (снять в середине декабря 2026, см. docs/BACKLOG.md). Стоит в потоке через
+   margin-left, не absolute: соседние пункты не перекрывает. Высоту шапки
+   не меняет — 10 px кегль с отступами ниже строки пункта (22 px). */
+.nav-badge {
+  flex: none;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  background: var(--gold);
+  color: var(--on-gold);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Пункт меню, который виден только в мобильной панели: на десктопе в шапке
@@ -2104,8 +2129,9 @@ a.price:focus-visible {
   color: var(--accent-hover);
 }
 
-/* Футер: три колонки (бренд / навигация / контакты) и служебная строка.
-   Логотип-локап при 64 px не читается, поэтому знак + название текстом. */
+/* Футер: три колонки (бренд / разделы / контакты) на сетке контейнера
+   и служебная строка под линией. Логотип-локап при 64 px не читается,
+   поэтому знак + название текстом. */
 .footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
@@ -2113,9 +2139,10 @@ a.price:focus-visible {
   padding: var(--s-7) var(--s-5) var(--s-5);
 }
 
-.footer-inner {
+.footer-top {
   display: grid;
-  grid-template-columns: 1.2fr .8fr 1fr;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  align-items: start;
   gap: var(--s-6);
   max-width: var(--container);
   margin: 0 auto;
@@ -2151,16 +2178,18 @@ a.price:focus-visible {
   text-transform: uppercase;
 }
 
-.footer-nav {
-  display: grid;
-  align-content: start;
-  gap: var(--s-2);
+/* Списки подвала — вертикальные, строки на общей сетке 28 px (line-height 2):
+   так пункты «Разделы» и «Контакты» стоят друг напротив друга. */
+.footer-nav,
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.footer-contacts {
-  display: grid;
-  align-content: start;
-  gap: var(--s-2);
+.footer-nav a,
+.footer-contact-list a {
+  line-height: 2;
 }
 
 .footer a {
@@ -2174,9 +2203,12 @@ a.price:focus-visible {
   text-underline-offset: 3px;
 }
 
+/* Служебная строка: копирайт слева, документы в центре, автор справа.
+   space-between разводит три части по краям, align-items держит их на одной оси. */
 .footer-bottom {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   gap: var(--s-2) var(--s-4);
   max-width: var(--container);
   margin: var(--s-6) auto 0;
@@ -2192,21 +2224,46 @@ a.price:focus-visible {
   text-align: center;
 }
 
-/* Футер в столбик на узких экранах: иначе адрес почты в третьей колонке
-   задаёт минимальную ширину и ломает 390 px. */
+/* Футер в столбик на узких экранах: одна колонка по центру. Иначе адрес
+   почты в третьей колонке задаёт минимальную ширину и ломает 390 px. */
 @media (max-width: 700px) {
-  .footer-inner {
+  .footer-top {
     grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
     gap: var(--s-5);
+    text-align: center;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+    text-align: center;
   }
 
   .footer-brand img {
     height: 56px;
   }
+
+  .footer-nav,
+  .footer-contact-list {
+    align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--s-2);
+    text-align: center;
+  }
 }
 
 .footer p + p {
   margin-top: 6px;
+}
+
+/* Служебная строка — флекс-ряд: вертикальные отступы соседних абзацев
+   сдвигали бы части относительно друг друга. Правило должно быть
+   специфичнее `.footer p + p` (0,1,2), поэтому два класса. */
+.footer .footer-bottom p {
+  margin: 0;
 }
 
 .footer-link {
@@ -2237,6 +2294,14 @@ a.price:focus-visible {
   .nav,
   .nav-links {
     gap: var(--s-2);
+  }
+
+  /* Бейдж «новое» у «Материалов» добавляет ~49 px, и на 1000–1049 px шапка
+     уходила во вторую строку. Освобождаем место подписью кнопки темы:
+     иконка и aria-label остаются, кегль пунктов не меняется.
+     Снять вместе с бейджем (docs/BACKLOG.md, § 3, п. 28). */
+  .theme-btn-text {
+    display: none;
   }
 }
 
